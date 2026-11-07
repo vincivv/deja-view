@@ -1,10 +1,11 @@
 """End-to-end smoke test: demo baseline (v1) then a v2 build; prints what the engine found."""
-import json, sys, time, urllib.request
+import http.cookiejar, json, sys, time, urllib.request
 API = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8000"
+_op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))   # keeps the guest session
 def call(m, p, body=None):
     req = urllib.request.Request(API + p, method=m, data=json.dumps(body).encode() if body is not None else None,
                                  headers={"Content-Type": "application/json"})
-    return json.load(urllib.request.urlopen(req, timeout=60))
+    return json.load(_op.open(req, timeout=60))
 def wait(rid):
     t = time.time()
     while True:

@@ -4,14 +4,14 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import db, jobs
+from . import auth, db, jobs
 from .demo import DEMO_PATHS, router as demo_router
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -105,24 +105,114 @@ def _norm_url(u):
     return u
 
 
-def _project(pid):
-    p = db.one("select * from projects where id=?", (pid,))
+def _project(pid, user):
+    p = db.one("select * from projects where id=? and owner_id=?", (pid, user["id"]))
     if not p:
         raise HTTPException(404, "Project not found")
     return p
 
 
-# ---------------------------------------------------------------- routes
+def _owned_run(rid, user):
+    r = db.one("select r.* from runs r join projects p on p.id=r.project_id where r.id=? and p.owner_id=?", (rid, user["id"]))
+    if not r:
+        raise HTTPException(404, "Build not found")
+    return r
+
+
+class SignupIn(BaseModel):
+    email: str
+    password: str
+    name: str | None = None
+
+
+class LoginIn(BaseModel):
+    email: str
+    password: str
+
+
+class TokenIn(BaseModel):
+    name: str
+
+
+# ---------------------------------------------------------------- auth
 @app.get("/api/health")
 def health():
     return {"ok": True}
 
 
+@app.get("/api/auth/me")
+def me(user=Depends(auth.current_user)):
+    return auth.user_json(user)
+
+
+@app.post("/api/auth/signup")
+def signup(body: SignupIn, request: Request, response: Response):
+    email = body.email.strip().lower()
+    if "@" not in email or len(email) > 200:
+        raise HTTPException(422, "Enter a valid email")
+    if len(body.password) < 8:
+        raise HTTPException(422, "Password must be at least 8 characters")
+    if db.one("select id from users where email=?", (email,)):
+        raise HTTPException(409, "An account with this email already exists")
+    name = (body.name or "").strip() or email.split("@")[0]
+    cur = auth.optional_user(request)
+    if cur and cur["is_guest"]:
+        # upgrade the guest in place: their demo projects carry over
+        db.x("update users set email=?, name=?, pw_hash=?, is_guest=0 where id=?",
+             (email, name, auth.hash_password(body.password), cur["id"]))
+        user = db.one("select * from users where id=?", (cur["id"],))
+    else:
+        user = auth.create_user(email=email, name=name, password=body.password)
+    auth.start_session(response, request, user["id"])
+    return auth.user_json(user)
+
+
+@app.post("/api/auth/login")
+def login(body: LoginIn, request: Request, response: Response):
+    user = db.one("select * from users where email=? and is_guest=0", (body.email.strip().lower(),))
+    if not user or not auth.check_password(body.password, user["pw_hash"]):
+        raise HTTPException(401, "Wrong email or password")
+    auth.start_session(response, request, user["id"])
+    return auth.user_json(user)
+
+
+@app.post("/api/auth/logout")
+def logout(request: Request, response: Response):
+    auth.end_session(response, request)
+    return {"ok": True}
+
+
+@app.get("/api/tokens")
+def list_tokens(user=Depends(auth.current_user)):
+    return [{"id": t["id"], "name": t["name"], "prefix": t["prefix"], "created_at": jobs._iso(t["created_at"]),
+             "last_used_at": jobs._iso(t["last_used_at"]) if t["last_used_at"] else None}
+            for t in db.q("select * from api_tokens where user_id=? order by created_at desc", (user["id"],))]
+
+
+@app.post("/api/tokens")
+def create_token(body: TokenIn, user=Depends(auth.current_user)):
+    token, h, prefix = auth.new_api_token()
+    tid = db.uid("t_")
+    name = body.name.strip()[:80] or "CI"
+    db.x("insert into api_tokens(id,user_id,name,token_hash,prefix,created_at) values(?,?,?,?,?,?)",
+         (tid, user["id"], name, h, prefix, db.now()))
+    return {"id": tid, "name": name, "prefix": prefix, "created_at": jobs._iso(db.now()), "last_used_at": None, "token": token}
+
+
+@app.delete("/api/tokens/{tid}")
+def delete_token(tid: str, user=Depends(auth.current_user)):
+    if not db.one("select id from api_tokens where id=? and user_id=?", (tid, user["id"])):
+        raise HTTPException(404, "Token not found")
+    db.x("delete from api_tokens where id=?", (tid,))
+    return {"ok": True}
+
+
+# ---------------------------------------------------------------- projects
 @app.get("/api/projects")
-def list_projects():
+def list_projects(user=Depends(auth.current_user)):
     # every "Try the demo" click makes its own demo project; list only the newest so the page stays clean
     rows, seen_demo = [], False
-    for p in db.q("select * from projects order by created_at desc"):
+    for p in db.q("select * from projects where owner_id=? order by created_at desc", (user["id"],)):
         if p["is_demo"]:
             if seen_demo:
                 continue
@@ -132,22 +222,22 @@ def list_projects():
 
 
 @app.post("/api/projects")
-def create_project(body: ProjectIn):
+def create_project(body: ProjectIn, user=Depends(auth.current_user)):
     pid = db.uid("p_")
-    db.x("insert into projects(id,name,base_url,paths,viewports,created_at) values(?,?,?,?,?,?)",
+    db.x("insert into projects(id,name,base_url,paths,viewports,created_at,owner_id) values(?,?,?,?,?,?,?)",
          (pid, body.name.strip() or "Untitled", _norm_url(body.base_url), db.j(_norm_paths(body.paths)),
-          db.j(_norm_viewports(body.viewports)), db.now()))
-    return jobs.project_json(_project(pid))
+          db.j(_norm_viewports(body.viewports)), db.now(), user["id"]))
+    return jobs.project_json(_project(pid, user))
 
 
 @app.get("/api/projects/{pid}")
-def get_project(pid: str):
-    return jobs.project_json(_project(pid))
+def get_project(pid: str, user=Depends(auth.current_user)):
+    return jobs.project_json(_project(pid, user))
 
 
 @app.patch("/api/projects/{pid}")
-def patch_project(pid: str, body: ProjectPatch):
-    _project(pid)
+def patch_project(pid: str, body: ProjectPatch, user=Depends(auth.current_user)):
+    _project(pid, user)
     if body.name is not None:
         db.x("update projects set name=? where id=?", (body.name.strip() or "Untitled", pid))
     if body.base_url is not None:
@@ -156,12 +246,10 @@ def patch_project(pid: str, body: ProjectPatch):
         db.x("update projects set paths=? where id=?", (db.j(_norm_paths(body.paths)), pid))
     if body.viewports is not None:
         db.x("update projects set viewports=? where id=?", (db.j(_norm_viewports(body.viewports)), pid))
-    return jobs.project_json(_project(pid))
+    return jobs.project_json(_project(pid, user))
 
 
-@app.delete("/api/projects/{pid}")
-def delete_project(pid: str):
-    _project(pid)
+def _delete_project(pid):
     runs = [r["id"] for r in db.q("select id from runs where project_id=?", (pid,))]
 
     def rm():
@@ -172,25 +260,33 @@ def delete_project(pid: str):
         db.x("delete from baselines where project_id=?", (pid,))
         db.x("delete from projects where id=?", (pid,))
     db.tx(rm)
+
+
+@app.delete("/api/projects/{pid}")
+def delete_project(pid: str, user=Depends(auth.current_user)):
+    _project(pid, user)
+    if db.one("select 1 x from runs where project_id=? and status in ('queued','capturing','diffing')", (pid,)):
+        raise HTTPException(409, "A build is still running. Try again when it finishes.")
+    _delete_project(pid)
     return {"ok": True}
 
 
 @app.get("/api/projects/{pid}/runs")
-def list_runs(pid: str):
-    _project(pid)
+def list_runs(pid: str, user=Depends(auth.current_user)):
+    _project(pid, user)
     return [jobs.run_summary(r) for r in db.q("select * from runs where project_id=? order by number desc limit 100", (pid,))]
 
 
 @app.post("/api/projects/{pid}/runs")
-async def start_run(pid: str, body: RunIn):
-    _project(pid)
+async def start_run(pid: str, body: RunIn, user=Depends(auth.current_user)):
+    _project(pid, user)
     rid = jobs.create_run(pid, _norm_url(body.base_url) if body.base_url else None, (body.label or "").strip() or None)
     return jobs.run_summary(db.one("select * from runs where id=?", (rid,)))
 
 
 @app.get("/api/projects/{pid}/baselines")
-def baselines(pid: str):
-    p = _project(pid)
+def baselines(pid: str, user=Depends(auth.current_user)):
+    p = _project(pid, user)
     names = {x["path"]: x["name"] for x in db.uj(p["paths"])}
     rows = db.q("select b.*, s.run_id from baselines b join snapshots s on s.id=b.snapshot_id where b.project_id=? "
                 "order by b.path, b.viewport desc", (pid,))
@@ -199,12 +295,26 @@ def baselines(pid: str):
              "updated_at": jobs._iso(r["updated_at"])} for r in rows]
 
 
+# ---------------------------------------------------------------- builds and review
 @app.get("/api/runs/{rid}")
-def get_run(rid: str):
-    d = jobs.run_detail(rid)
-    if not d:
-        raise HTTPException(404, "Build not found")
-    return d
+def get_run(rid: str, user=Depends(auth.current_user)):
+    _owned_run(rid, user)
+    return jobs.run_detail(rid)
+
+
+@app.get("/api/runs/{rid}/status")
+def run_status(rid: str, request: Request, user=Depends(auth.current_user)):
+    """Small polling payload for CI."""
+    s = jobs.run_summary(_owned_run(rid, user))
+    return {"id": s["id"], "number": s["number"], "status": s["status"], "result": s["result"], "counts": s["counts"],
+            "url": f"{_origin(request)}/builds/{rid}"}
+
+
+def _origin(request: Request):
+    # behind a tunnel or proxy, build links from the forwarded host the client actually used
+    proto = request.headers.get("x-forwarded-proto", request.url.scheme)
+    host = request.headers.get("x-forwarded-host") or request.headers.get("host") or request.url.netloc
+    return f"{proto}://{host}"
 
 
 def _check_status(s):
@@ -213,49 +323,53 @@ def _check_status(s):
 
 
 @app.post("/api/runs/{rid}/review")
-def review_run(rid: str, body: ReviewIn):
+def review_run(rid: str, body: ReviewIn, user=Depends(auth.current_user)):
     _check_status(body.status)
-    if not db.one("select id from runs where id=?", (rid,)):
-        raise HTTPException(404, "Build not found")
+    _owned_run(rid, user)
     gids = [g["id"] for g in db.q("select id from groups where run_id=?", (rid,))]
     jobs.review_groups(rid, gids, body.status)
     return jobs.run_detail(rid)
 
 
 @app.post("/api/groups/{gid}/review")
-def review_group(gid: str, body: ReviewIn):
+def review_group(gid: str, body: ReviewIn, user=Depends(auth.current_user)):
     _check_status(body.status)
     g = db.one("select run_id from groups where id=?", (gid,))
     if not g:
         raise HTTPException(404, "Group not found")
+    _owned_run(g["run_id"], user)
     jobs.review_groups(g["run_id"], [gid], body.status)
     return jobs.run_detail(g["run_id"])
 
 
 @app.post("/api/snapshots/{sid}/review")
-def review_snapshot(sid: str, body: ReviewIn):
+def review_snapshot(sid: str, body: ReviewIn, user=Depends(auth.current_user)):
     _check_status(body.status)
     s = db.one("select run_id from snapshots where id=?", (sid,))
     if not s:
         raise HTTPException(404, "Snapshot not found")
+    _owned_run(s["run_id"], user)
     gids = [r["group_id"] for r in db.q("select distinct group_id from changes where snapshot_id=?", (sid,))]
     jobs.review_groups(s["run_id"], gids, body.status)
     return jobs.run_detail(s["run_id"])
 
 
 @app.post("/api/demo")
-async def demo():
-    # every click gets its own fresh demo project at the v1 baseline, so parallel visitors (and QA agents)
-    # never see each other's approvals. Older demo projects are pruned.
+async def demo(request: Request, response: Response):
+    # "Try the demo" never needs a login: a visitor without an account gets a throwaway guest account.
+    # Every click gets its own fresh demo project at the v1 baseline, so parallel visitors and QA agents never collide.
+    user = auth.optional_user(request)
+    if not user:
+        user = auth.create_user(name="Guest", guest=True)
+        auth.start_session(response, request, user["id"])
     pid = db.uid("p_")
-    db.x("insert into projects(id,name,base_url,paths,viewports,created_at,is_demo) values(?,?,?,?,?,?,1)",
-         (pid, "Acme Supply (demo)", f"http://127.0.0.1:{PORT}/demo/v1", db.j(DEMO_PATHS), db.j([1280, 390]), db.now()))
+    db.x("insert into projects(id,name,base_url,paths,viewports,created_at,is_demo,owner_id) values(?,?,?,?,?,?,1,?)",
+         (pid, "Acme Supply (demo)", f"http://127.0.0.1:{PORT}/demo/v1", db.j(DEMO_PATHS), db.j([1280, 390]), db.now(), user["id"]))
     jobs.create_run(pid, label="Baseline · v1")
-    for old in db.q("select id from projects where is_demo=1 order by created_at desc limit -1 offset 15"):
-        busy = db.one("select 1 x from runs where project_id=? and status in ('queued','capturing','diffing')", (old["id"],))
-        if not busy:
-            delete_project(old["id"])
-    return jobs.project_json(_project(pid))
+    for old in db.q("select id from projects where is_demo=1 and owner_id=? order by created_at desc limit -1 offset 5", (user["id"],)):
+        if not db.one("select 1 x from runs where project_id=? and status in ('queued','capturing','diffing')", (old["id"],)):
+            _delete_project(old["id"])
+    return jobs.project_json(_project(pid, user))
 
 
 # ---------------------------------------------------------------- frontend (production build)

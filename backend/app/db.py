@@ -34,6 +34,14 @@ create table if not exists changes(
   id text primary key, snapshot_id text not null, run_id text not null, group_id text not null, kind text not null,
   title text not null, detail text, selector text, bbox text, base_bbox text, before text, after text, idx integer);
 create index if not exists changes_run on changes(run_id);
+create table if not exists users(
+  id text primary key, email text unique, name text not null, pw_hash text, is_guest integer not null default 0,
+  created_at real not null);
+create table if not exists sessions(
+  token_hash text primary key, user_id text not null, created_at real not null, expires_at real not null);
+create table if not exists api_tokens(
+  id text primary key, user_id text not null, name text not null, token_hash text unique not null, prefix text not null,
+  created_at real not null, last_used_at real);
 create table if not exists baselines(
   project_id text not null, path text not null, viewport integer not null, snapshot_id text not null,
   updated_at real not null, primary key(project_id, path, viewport));
@@ -45,6 +53,10 @@ _conn.row_factory = sqlite3.Row
 _conn.execute("pragma journal_mode=wal")
 _conn.execute("pragma synchronous=normal")
 _conn.executescript(SCHEMA)
+# migrations for databases created before accounts existed
+if "owner_id" not in [r[1] for r in _conn.execute("pragma table_info(projects)").fetchall()]:
+    _conn.execute("alter table projects add column owner_id text")
+_conn.execute("create index if not exists projects_owner on projects(owner_id, created_at)")
 
 
 def uid(prefix=""):

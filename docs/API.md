@@ -115,3 +115,54 @@ Errors return `{detail: string}` with 4xx/5xx.
 - **Approving** every change in a snapshot makes it the new baseline for that page×viewport.
 - **Polling:** the UI polls `GET /api/runs/{id}` about every 1 s while `status` is not `done` or `failed`.
 - **The demo project** captures a built-in shop at `/demo/v1/...` (the baseline) and `/demo/v2/...` (with planted regressions plus live noise such as clocks and rotating content). `demo_urls` gives the two quick picks.
+
+## Accounts, sessions and API tokens
+
+Every project belongs to one account, and users only ever see their own projects.
+Requests are authenticated in one of two ways:
+
+- **Browser:** an httpOnly cookie `sl_session`, set by signup, login or the demo endpoint. The frontend needs to do nothing beyond `fetch` with default credentials (same origin).
+- **CI and scripts:** `Authorization: Bearer sl_...`, using an API token created in Settings.
+
+Without either, every `/api/projects*`, `/api/runs*`, `/api/groups*`, `/api/snapshots*` and `/api/tokens*` endpoint returns **401** with `{"detail": "Not signed in"}`.
+A project, run, group or snapshot owned by another account returns **404**, never 403.
+`/api/health`, `/api/auth/*`, `/api/demo`, `/demo/*` and `/files/*` stay public.
+
+```ts
+interface User {
+  id: string;
+  email: string | null;      // null for guests
+  name: string;
+  is_guest: boolean;         // true for the throwaway account "Try the demo" creates
+  created_at: string;
+}
+interface ApiToken {
+  id: string; name: string;
+  prefix: string;            // first characters, for display: "sl_3fa9…"
+  created_at: string; last_used_at: string | null;
+}
+```
+
+| Method | Path | Body | Returns |
+|---|---|---|---|
+| GET | `/api/auth/me` | — | `User`, or 401 |
+| POST | `/api/auth/signup` | `{email, password, name?}` | `User` and sets the cookie. If the caller is a guest, the guest account is upgraded in place, so its demo projects carry over. 409 if the email is taken. 422 if the password is under 8 characters. |
+| POST | `/api/auth/login` | `{email, password}` | `User` and sets the cookie. 401 `"Wrong email or password"`. |
+| POST | `/api/auth/logout` | — | `{ok: true}` and clears the cookie |
+| GET | `/api/tokens` | — | `ApiToken[]` |
+| POST | `/api/tokens` | `{name}` | `ApiToken & {token: string}`. The full token is returned only this once. |
+| DELETE | `/api/tokens/{id}` | — | `{ok: true}` |
+| POST | `/api/demo` | — | `Project`. If the caller is not signed in, this first creates a **guest** account and sets its cookie, so "Try the demo" never needs a login. |
+
+### CI usage
+
+```bash
+# start a build against a preview URL, wait for it, fail if there are unreviewed changes
+curl -s -X POST "$SIGHTLINE_URL/api/projects/$PROJECT_ID/runs" \
+  -H "Authorization: Bearer $SIGHTLINE_TOKEN" -H "Content-Type: application/json" \
+  -d '{"base_url": "https://pr-123.preview.example.com", "label": "PR #123"}'
+# → RunSummary {id, status: "queued", ...}; poll GET /api/runs/{id} until status is "done" or "failed"
+# result: "passed" (no changes) | "changes" (needs review) | "approved" | "rejected" | "failed"
+```
+
+Also available: `GET /api/runs/{id}/status`, which returns a small `{id, number, status, result, counts, url}` for polling. `url` is the review page.
