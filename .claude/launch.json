@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sightline-api",
+      "runtimeExecutable": "/Users/vinci/Desktop/Hackathons/sightline/backend/.venv/bin/uvicorn",
+      "runtimeArgs": ["app.main:app", "--app-dir", "/Users/vinci/Desktop/Hackathons/sightline/backend", "--host", "127.0.0.1", "--port", "8000"],
+      "port": 8000
+    }
+  ]
+}
