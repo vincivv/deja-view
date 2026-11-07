@@ -1,23 +1,23 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useParams } from "react-router-dom";
-import { Check, Columns2, ExternalLink, Image as ImageIcon, Keyboard, Layers, Maximize2, PanelRight, ScanLine, ShieldCheck, SplitSquareHorizontal, X } from "lucide-react";
-import { api } from "../api/client";
+import { ArrowDownUp, Check, Columns2, ExternalLink, EyeOff, Image as ImageIcon, Info, Keyboard, Layers, Maximize2, PanelRight, ScanSearch, ShieldCheck, SplitSquareHorizontal, X } from "lucide-react";
+import { api, notifyProjectsChanged } from "../api/client";
 import type { Change, Group, ReviewStatus, RunDetail, Snapshot } from "../api/types";
 import { useResource, useNow } from "../hooks/useResource";
 import { useBreadcrumbs } from "../components/Layout";
-import { Button, Dialog, ErrorBox, IconButton, Kbd, ProgressBar, Segmented, Skeleton, Toggle } from "../components/ui";
+import { Button, Dialog, ErrorBox, IconButton, Kbd, Popover, ProgressBar, Segmented, Skeleton } from "../components/ui";
 import { ResultBadge } from "../components/status";
 import { useToast } from "../components/Toast";
 import { STATUS_LABEL, cn, duration, isActive, plural, shortUrl, timeAgo } from "../lib/format";
 import { Viewer, type ViewMode, type Zoom } from "../review/Viewer";
-import { Sidebar, pagesIn, type SnapFilter } from "../review/Sidebar";
+import { Sidebar, type SnapFilter } from "../review/Sidebar";
 import { Details } from "../review/Details";
 
-const MODES: { id: ViewMode; label: string; key: string; icon: typeof Columns2 }[] = [
-  { id: "side", label: "Side by side", key: "1", icon: Columns2 },
-  { id: "overlay", label: "Overlay", key: "2", icon: Layers },
-  { id: "swipe", label: "Swipe", key: "3", icon: SplitSquareHorizontal },
-  { id: "single", label: "Single", key: "4", icon: ImageIcon },
+const MODES: { id: ViewMode; label: string; short: string; key: string; icon: typeof Columns2 }[] = [
+  { id: "side", label: "Side by side", short: "Side", key: "1", icon: Columns2 },
+  { id: "overlay", label: "Overlay", short: "Overlay", key: "2", icon: Layers },
+  { id: "swipe", label: "Swipe", short: "Swipe", key: "3", icon: SplitSquareHorizontal },
+  { id: "single", label: "Single", short: "Single", key: "4", icon: ImageIcon },
 ];
 
 function defaultSnap(run: RunDetail): Snapshot | undefined {
@@ -33,7 +33,10 @@ export function BuildPage() {
   const run = useResource(() => api.getRun(id), [id], { poll: (d) => !d || isActive(d.status), interval: 1000 });
   const r = run.data;
 
-  useBreadcrumbs(r ? [{ label: r.project.name, to: `/projects/${r.project.id}` }, { label: `Build #${r.number}` }] : [], [r?.project.name, r?.number]);
+  useBreadcrumbs(
+    [{ label: "Projects", to: "/projects" }, ...(r ? [{ label: r.project.name, to: `/projects/${r.project.id}` }, { label: `Build #${r.number}` }] : [])],
+    [r?.project.name, r?.number],
+  );
 
   const [snapId, setSnapId] = useState<string | null>(null);
   const [groupId, setGroupId] = useState<string | null>(null);
@@ -45,7 +48,7 @@ export function BuildPage() {
   const [showNoise, setShowNoise] = useState(false);
   const [showPixel, setShowPixel] = useState(false);
   const [filter, setFilter] = useState<SnapFilter>("changed");
-  const [showDetails, setShowDetails] = useState(() => window.innerWidth >= 1360);
+  const [showDetails, setShowDetails] = useState(false);
   const [help, setHelp] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
 
@@ -70,7 +73,6 @@ export function BuildPage() {
   }, [r]);
 
   const snap = r?.snapshots.find((s) => s.id === snapId) ?? null;
-  const groupMap = useMemo(() => new Map((r?.groups ?? []).map((g) => [g.id, g])), [r]);
   const changeNumber = useMemo(() => new Map((snap?.changes ?? []).map((c, i) => [c.id, i + 1])), [snap]);
 
   const navList = useMemo(() => {
@@ -117,12 +119,7 @@ export function BuildPage() {
     try {
       const d = await api.reviewGroup(g.id, status);
       applyResult(d);
-      const n = g.snapshot_ids.length;
-      toast(
-        status === "approved"
-          ? { tone: "success", title: `Approved: ${g.title}`, body: `${plural(n, "snapshot")} on ${plural(pagesIn(d, g), "page")}, accepted as the new baseline once all of a snapshot's changes are approved.` }
-          : { tone: "reject", title: `Rejected: ${g.title}`, body: `Marked as a regression on ${plural(n, "snapshot")}. The baseline is unchanged.` },
-      );
+      notifyProjectsChanged();
       if (advance) {
         const next = d.groups.find((x) => x.review === "pending" && x.id !== g.id);
         if (next) {
@@ -141,14 +138,10 @@ export function BuildPage() {
     if (!r) return;
     setBusy("run");
     try {
-      const pending = r.groups.filter((g) => g.review === "pending").length;
       const d = await api.reviewRun(r.id, status);
       applyResult(d);
-      toast(
-        status === "approved"
-          ? { tone: "success", title: `Approved build #${d.number}`, body: `${plural(pending, "group")} approved. Changed snapshots are the new baseline.` }
-          : { tone: "reject", title: `Rejected build #${d.number}`, body: `${plural(pending, "group")} rejected. The baseline is unchanged.` },
-      );
+      notifyProjectsChanged();
+      toast(status === "approved" ? { tone: "success", title: `Build #${d.number} approved` } : { tone: "reject", title: `Build #${d.number} rejected` });
     } catch (e) {
       toast({ tone: "error", title: "Review failed", body: e instanceof Error ? e.message : String(e) });
     } finally {
@@ -162,7 +155,7 @@ export function BuildPage() {
     try {
       const d = await api.reviewSnapshot(snap.id, status);
       applyResult(d);
-      toast({ tone: status === "approved" ? "success" : "reject", title: `${status === "approved" ? "Approved" : "Rejected"} ${snap.name} @ ${snap.viewport}px` });
+      notifyProjectsChanged();
     } catch (e) {
       toast({ tone: "error", title: "Review failed", body: e instanceof Error ? e.message : String(e) });
     } finally {
@@ -223,66 +216,74 @@ export function BuildPage() {
   const prevLabel = "Baseline";
   const newLabel = `New · #${r.number}`;
   const canCompare = !!snap?.baseline_image_url;
+  const shift = snap?.layout_shifts[0];
+  const shiftCause = shift?.cause_change_id ? changeNumber.get(shift.cause_change_id) : undefined;
+  const detailsOpen = showDetails && !!snap;
 
   return (
     <div className="flex h-full min-h-0 flex-col" data-testid="build-page" data-result={r.result}>
-      {/* top bar */}
-      <div className="shrink-0 border-b border-zinc-800 bg-zinc-950 px-4 py-3">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-          <h1 className="flex items-baseline gap-2 text-[16px] font-semibold tracking-tight text-zinc-50" data-testid="build-title">
-            <span>Build #{r.number}</span>
-            {r.label && <span className="max-w-[360px] truncate text-[13px] font-normal text-zinc-400">{r.label}</span>}
-          </h1>
-          <ResultBadge result={r.result} baseline={r.is_baseline_build} />
-          <a href={r.base_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-mono text-[11.5px] text-zinc-500 hover:text-zinc-300">
-            {shortUrl(r.base_url)}
-            <ExternalLink className="size-3" />
-          </a>
-          <span className="text-[11.5px] text-zinc-600">
-            {timeAgo(r.created_at)}
-            {r.duration_ms != null && ` · ${duration(r.duration_ms)}`}
-          </span>
-          <div className="ml-auto flex items-center gap-2">
-            <Button size="sm" variant="ghost" icon={<Keyboard className="size-3.5" />} onClick={() => setHelp(true)} data-testid="shortcuts-button">
-              Shortcuts <Kbd>?</Kbd>
-            </Button>
-            {!r.is_baseline_build && r.groups.length > 0 && (
-              <>
-                <Button size="sm" variant="danger" icon={<X className="size-3.5" />} disabled={!pending || busy !== null} onClick={() => reviewAll("rejected")} data-testid="reject-all">
-                  Reject
-                </Button>
-                <Button size="sm" variant="success" icon={<Check className="size-3.5" strokeWidth={3} />} disabled={!pending || busy !== null} loading={busy === "run"} onClick={() => reviewAll("approved")} data-testid="approve-all">
-                  Approve all{pending ? ` (${pending})` : ""}
-                </Button>
-              </>
-            )}
+      {/* header: title, status, one summary, primary actions */}
+      <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-2 border-b border-zinc-800 bg-zinc-950 px-4 py-2.5">
+        <h1 className="flex min-w-0 items-baseline gap-2 text-[16px] font-semibold tracking-tight text-zinc-50" data-testid="build-title">
+          <span className="shrink-0">Build #{r.number}</span>
+          {r.label && <span className="max-w-[280px] truncate text-[13px] font-normal text-zinc-500">{r.label}</span>}
+        </h1>
+        <ResultBadge result={r.result} baseline={r.is_baseline_build} />
+        {running ? (
+          <div className="flex items-center gap-2" data-testid="build-progress" title={STATUS_LABEL[r.status]}>
+            <ProgressBar done={r.progress.done} total={r.progress.total} className="w-32" />
+            <span className="font-mono text-[11.5px] text-sky-300">
+              {r.progress.done}/{r.progress.total}
+            </span>
           </div>
-        </div>
-        <div className="mt-2.5">
-          {running ? (
-            <div className="flex items-center gap-3" data-testid="build-progress">
-              <span className="w-24 text-[12px] font-medium text-sky-300">{STATUS_LABEL[r.status]}…</span>
-              <ProgressBar done={r.progress.done} total={r.progress.total} className="max-w-md" />
-              <span className="font-mono text-[11.5px] text-zinc-400">
-                {r.progress.done}/{r.progress.total} snapshots
-              </span>
-            </div>
-          ) : r.status === "failed" ? (
-            <div className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-1.5 font-mono text-xs text-red-200">{r.error ?? "Build failed"}</div>
-          ) : r.is_baseline_build ? (
-            <div className="flex items-center gap-2 text-[12.5px] text-sky-200" data-testid="baseline-banner">
-              <ShieldCheck className="size-4 text-sky-400" />
-              <b className="font-semibold">Baseline build: auto-accepted.</b>
-              <span className="text-zinc-400">These {r.counts.snapshots} screenshots are now the baseline that future builds are compared with.</span>
-            </div>
-          ) : (
-            <SummaryChips r={r} />
+        ) : r.status === "failed" ? (
+          <span className="max-w-md truncate font-mono text-xs text-red-300" title={r.error ?? undefined}>
+            {r.error ?? "Build failed"}
+          </span>
+        ) : r.is_baseline_build ? (
+          <span
+            className="inline-flex items-center gap-1.5 rounded-full bg-sky-500/10 px-2 py-0.5 text-[12px] text-sky-200"
+            data-testid="baseline-banner"
+            title="The first build is accepted automatically. Future builds are compared with these screenshots."
+          >
+            <ShieldCheck className="size-3.5" />
+            {r.counts.snapshots} baselines saved
+          </span>
+        ) : (
+          <span
+            className={cn("text-[13px] font-medium", r.groups.length === 0 ? "text-emerald-300" : pending ? "text-zinc-200" : "text-zinc-400")}
+            data-testid="summary-chips"
+          >
+            {r.groups.length === 0 ? "No changes" : plural(r.groups.length, "change")}
+            {pending > 0 && pending < r.groups.length && <span className="ml-1.5 font-normal text-zinc-500">· {pending} left</span>}
+            {r.counts.failed > 0 && <span className="ml-1.5 font-normal text-red-300">· {r.counts.failed} failed</span>}
+          </span>
+        )}
+        <BuildInfo r={r} />
+        <div className="ml-auto flex items-center gap-1.5">
+          <IconButton label="Keyboard shortcuts (?)" onClick={() => setHelp(true)} data-testid="shortcuts-button">
+            <Keyboard className="size-4" />
+          </IconButton>
+          {!r.is_baseline_build && r.groups.length > 0 && (
+            <>
+              <Button size="sm" variant="danger" icon={<X className="size-3.5" />} disabled={!pending || busy !== null} onClick={() => reviewAll("rejected")} data-testid="reject-all">
+                Reject
+              </Button>
+              <Button size="sm" variant="success" icon={<Check className="size-3.5" strokeWidth={3} />} disabled={!pending || busy !== null} loading={busy === "run"} onClick={() => reviewAll("approved")} data-testid="approve-all">
+                Approve all
+              </Button>
+            </>
           )}
         </div>
       </div>
 
       {/* body */}
-      <div className={cn("grid min-h-0 flex-1", showDetails && snap ? "grid-cols-[300px_minmax(0,1fr)_300px]" : "grid-cols-[300px_minmax(0,1fr)]")}>
+      <div
+        className={cn(
+          "grid min-h-0 flex-1",
+          detailsOpen ? "grid-cols-[260px_minmax(0,1fr)_280px] xl:grid-cols-[288px_minmax(0,1fr)_300px]" : "grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[288px_minmax(0,1fr)]",
+        )}
+      >
         <Sidebar
           run={r}
           selectedGroupId={groupId}
@@ -297,7 +298,7 @@ export function BuildPage() {
 
         <section className="flex min-h-0 min-w-0 flex-col bg-zinc-900/30">
           {/* viewer toolbar */}
-          <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-zinc-800 bg-zinc-950 px-3 py-2">
+          <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-zinc-800 bg-zinc-950 px-3 py-1.5">
             <Segmented<ViewMode>
               value={canCompare ? mode : "single"}
               onChange={setMode}
@@ -309,37 +310,67 @@ export function BuildPage() {
                 label: (
                   <>
                     <m.icon className="size-3.5" />
-                    <span className="hidden min-[1700px]:inline">{m.label}</span>
-                    <span className="min-[1700px]:hidden">{m.label === "Side by side" ? "Side" : m.label}</span>
+                    <span className="hidden xl:inline">{m.short}</span>
                   </>
                 ),
               }))}
             />
-            {canCompare && (
+            {snap && canCompare && (
               <>
-                <div className="mx-1 h-5 w-px bg-zinc-800" />
-                <Toggle on={showNoise} onChange={setShowNoise} label="Show ignored noise" kbd="N" tone="amber" testId="toggle-noise" />
-                <Toggle on={showPixel} onChange={setShowPixel} label="Pixel diff" kbd="P" tone="red" testId="toggle-pixel-diff" />
+                <IconToggle
+                  on={showNoise}
+                  onChange={setShowNoise}
+                  label={`Show ignored noise (N) · ${plural(snap.noise_rects.length, "region")}`}
+                  tone="amber"
+                  testId="toggle-noise"
+                  icon={<EyeOff className="size-3.5" />}
+                  count={snap.noise_rects.length}
+                />
+                <IconToggle
+                  on={showPixel}
+                  onChange={setShowPixel}
+                  label={`Compare with a plain pixel diff (P) · ${plural(snap.pixel_diff.regions.length, "region")}`}
+                  tone="red"
+                  testId="toggle-pixel-diff"
+                  icon={<ScanSearch className="size-3.5" />}
+                />
               </>
             )}
             {showPixel && snap && canCompare && (
-              <span className="rounded-md border border-red-500/30 bg-red-500/10 px-2 py-1 font-mono text-[11px] text-red-200" data-testid="pixel-diff-chip">
-                Plain pixel diff: {snap.pixel_diff.regions.length} regions, {snap.pixel_diff.pct}% of pixels
+              <span className="rounded-full bg-red-500/10 px-2 py-0.5 font-mono text-[11px] text-red-200" data-testid="pixel-diff-chip" title={`${snap.pixel_diff.pct}% of pixels differ`}>
+                {snap.pixel_diff.regions.length} px regions → {snap.changes.length}
               </span>
             )}
-            <div className="ml-auto flex items-center gap-2">
+            {shift && !showPixel && (
+              <span
+                className="inline-flex items-center gap-1 rounded-full bg-sky-500/10 px-2 py-0.5 font-mono text-[11px] text-sky-200"
+                data-testid="layout-shift-banner"
+                title={`${plural(shift.elements, "element")} below y=${shift.from_y} moved ${Math.abs(shift.dy)}px ${shift.dy > 0 ? "down" : "up"} together. Counted as one layout shift, not reviewed separately.`}
+              >
+                <ArrowDownUp className="size-3" />
+                {shift.elements} moved{shiftCause ? ` · from #${shiftCause}` : ""}
+              </span>
+            )}
+            {snap && !canCompare && snap.status !== "failed" && (
+              <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-[11px] text-sky-200" data-testid="new-snapshot-chip" title="No baseline to compare with yet. This snapshot becomes the baseline.">
+                New
+              </span>
+            )}
+            <div className="ml-auto flex items-center gap-1.5">
               <Segmented<Zoom>
                 value={zoom}
                 onChange={setZoom}
+                size="sm"
                 options={[
-                  { id: "fit", label: <><Maximize2 className="size-3" />Fit</>, testId: "zoom-fit", title: "Fit width (Z)" },
-                  { id: "actual", label: <><ScanLine className="size-3" />100%</>, testId: "zoom-actual", title: "Actual size (Z)" },
+                  { id: "fit", label: <Maximize2 className="size-3" />, testId: "zoom-fit", title: "Fit width (Z)" },
+                  { id: "actual", label: "1:1", testId: "zoom-actual", title: "Actual size (Z)" },
                 ]}
               />
               <IconButton
                 label={showDetails ? "Hide details (D)" : "Show details (D)"}
                 onClick={() => setShowDetails((v) => !v)}
                 data-testid="toggle-details"
+                aria-pressed={showDetails}
                 className={showDetails ? "bg-zinc-800 text-zinc-100" : ""}
               >
                 <PanelRight className="size-4" />
@@ -369,20 +400,19 @@ export function BuildPage() {
                 {running ? (
                   <div className="flex flex-col items-center gap-3">
                     <Skeleton className="h-64 w-48" />
-                    Capturing first snapshot…
+                    Capturing…
                   </div>
                 ) : (
-                  "No snapshots in this build."
+                  "No snapshots"
                 )}
               </div>
             )}
           </div>
         </section>
 
-        {showDetails && snap && (
+        {detailsOpen && snap && (
           <Details
             snap={snap}
-            groups={groupMap}
             changeNumber={changeNumber}
             activeChangeId={activeChangeId}
             hoverChangeId={hoverChangeId}
@@ -390,10 +420,6 @@ export function BuildPage() {
             onHover={setHoverChangeId}
             onReviewSnap={reviewSnap}
             busy={busy !== null}
-            showNoise={showNoise}
-            onToggleNoise={() => setShowNoise((v) => !v)}
-            showPixel={showPixel}
-            onTogglePixel={() => setShowPixel((v) => !v)}
           />
         )}
       </div>
@@ -403,37 +429,96 @@ export function BuildPage() {
   );
 }
 
-function SummaryChips({ r }: { r: RunDetail }) {
+function BuildInfo({ r }: { r: RunDetail }) {
   const c = r.counts;
-  const pending = r.groups.filter((g) => g.review === "pending").length;
-  const chip = "inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-[12px]";
+  const row = "flex items-center justify-between gap-4 px-2 py-1.5 text-[12px]";
   return (
-    <div className="flex flex-wrap items-center gap-1.5" data-testid="summary-chips">
-      {c.groups > 0 ? (
-        <span className={cn(chip, pending ? "border-amber-400/25 bg-amber-400/[0.07] text-amber-200" : "border-emerald-500/25 bg-emerald-500/[0.07] text-emerald-200 [&_span]:text-emerald-200/60")}>
-          <b className="font-semibold">{plural(c.groups, "change")}</b>
-          <span className="text-amber-200/60">
-            {pending ? `${pending} to review` : r.result === "approved" ? "all approved" : "reviewed"} · {plural(c.changes, "occurrence")} on {plural(c.changed, "snapshot")}
-          </span>
-        </span>
-      ) : (
-        <span className={cn(chip, "border-emerald-500/25 bg-emerald-500/[0.07] text-emerald-200")}>No visual changes</span>
+    <Popover
+      align="left"
+      width="w-64"
+      testId="build-info"
+      trigger={({ open, toggle }) => (
+        <IconButton label="Build details" onClick={toggle} aria-expanded={open} className={cn("size-6", open && "bg-zinc-800 text-zinc-100")} data-testid="build-info-button">
+          <Info className="size-3.5" />
+        </IconButton>
       )}
-      <span className={cn(chip, "border-zinc-800 bg-zinc-900 text-zinc-400")}>
-        <b className="font-semibold text-zinc-200">{c.unchanged}</b> unchanged
-      </span>
-      {c.failed > 0 && (
-        <span className={cn(chip, "border-red-500/25 bg-red-500/[0.07] text-red-200")}>
-          <b className="font-semibold">{c.failed}</b> failed
-        </span>
+    >
+      {() => (
+        <div className="divide-y divide-zinc-800/80">
+          <a href={r.base_url} target="_blank" rel="noreferrer" className={cn(row, "font-mono text-zinc-300 hover:text-zinc-100")}>
+            <span className="truncate">{shortUrl(r.base_url)}</span>
+            <ExternalLink className="size-3 shrink-0" />
+          </a>
+          <div className={row}>
+            <span className="text-zinc-500">Started</span>
+            <span className="text-zinc-300">{timeAgo(r.created_at)}</span>
+          </div>
+          {r.duration_ms != null && (
+            <div className={row}>
+              <span className="text-zinc-500">Duration</span>
+              <span className="font-mono text-zinc-300">{duration(r.duration_ms)}</span>
+            </div>
+          )}
+          <div className={row}>
+            <span className="text-zinc-500">Snapshots</span>
+            <span className="font-mono text-zinc-300">
+              {c.snapshots}
+              {c.unchanged ? <span className="text-zinc-500"> · {c.unchanged} same</span> : null}
+            </span>
+          </div>
+          {!r.is_baseline_build && (
+            <>
+              <div className={row} data-testid="noise-chip">
+                <span className="text-zinc-500">Noise ignored</span>
+                <span className="font-mono text-amber-200">{c.noise_ignored}</span>
+              </div>
+              <div className={row} data-testid="pixel-compare-chip">
+                <span className="text-zinc-500">Pixel diff would flag</span>
+                <span className="font-mono text-red-300">{c.pixel_regions}</span>
+              </div>
+            </>
+          )}
+        </div>
       )}
-      <span className={cn(chip, "border-zinc-800 bg-zinc-900 text-zinc-400")} data-testid="noise-chip">
-        <b className="font-semibold text-zinc-200">{c.noise_ignored}</b> noise regions ignored
-      </span>
-      <span className={cn(chip, "border-zinc-800 bg-zinc-900 text-zinc-500")} data-testid="pixel-compare-chip">
-        plain pixel diff would flag <b className="font-semibold text-red-300">{c.pixel_regions}</b>
-      </span>
-    </div>
+    </Popover>
+  );
+}
+
+function IconToggle({
+  on,
+  onChange,
+  label,
+  icon,
+  count,
+  testId,
+  tone,
+}: {
+  on: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+  icon: ReactNode;
+  count?: number;
+  testId?: string;
+  tone: "amber" | "red";
+}) {
+  const onCls = tone === "red" ? "border-red-500/50 bg-red-500/15 text-red-200" : "border-amber-400/50 bg-amber-400/10 text-amber-200";
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      title={label}
+      data-testid={testId}
+      onClick={() => onChange(!on)}
+      className={cn(
+        "inline-flex h-7 items-center gap-1 rounded-md border px-2 text-[11px] font-medium transition-colors",
+        on ? onCls : "border-zinc-800 bg-zinc-900 text-zinc-500 hover:text-zinc-200",
+      )}
+    >
+      {icon}
+      {count !== undefined && count > 0 && <span className="font-mono">{count}</span>}
+    </button>
   );
 }
 
@@ -444,7 +529,7 @@ function BuildSkeleton() {
         <Skeleton className="h-5 w-72" />
         <Skeleton className="h-5 w-[480px]" />
       </div>
-      <div className="grid flex-1 grid-cols-[300px_1fr]">
+      <div className="grid flex-1 grid-cols-[260px_1fr] xl:grid-cols-[288px_1fr]">
         <div className="space-y-2 border-r border-zinc-800 p-3">
           <Skeleton className="h-20" />
           <Skeleton className="h-20" />
@@ -474,6 +559,7 @@ const SHORTCUTS: [string[], string][] = [
   [["P"], "Toggle plain pixel diff"],
   [["Z"], "Fit width / 100%"],
   [["D"], "Toggle details panel"],
+  [["["], "Toggle app sidebar"],
   [["?"], "Show this sheet"],
 ];
 

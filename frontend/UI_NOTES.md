@@ -13,3 +13,16 @@
 - **Trust signals:** tools flag flaky or unstable areas ("I: ignore flaky change" in Argos, and Chromatic's flagged unstable tests). Sightline goes further with a "show ignored noise" overlay.
 - **Discussions/comments** are attached to a change (Chromatic, Argos). These are out of scope for the hackathon.
 - **Cleaner than them:** one accent color, dense mono metadata, no marketing chrome, and change cards that read like a commit log ("`.cta` color #333 → #e00000 · 3 pages").
+
+## v2 redesign (less reading, more seeing)
+
+Sources: Argos docs (review changes), Percy/BrowserStack "new dashboard" docs, Chromatic UI Review docs, Lost Pixel site (product is being sunset, little public UI detail).
+
+- **Persistent left rail, collapsible.** Percy's new dashboard moved navigation into an always-on left rail with a project switcher, so you change projects without going back to a list. Sightline: collapsible sidebar (`[`), project list with status dots, icon-only rail when collapsed.
+- **Fold tool bars into one place, open on demand.** Percy merged its top bar, snapshot-tools row and bottom bar into one panel whose tools open over the canvas; filters became two icons instead of an always-open panel. Sightline: build stats live in an (i) popover, details panel is hidden until `D`.
+- **The diff canvas is the hero.** Every tool gives the comparison most of the screen; approve/reject sit top right (Percy) or in one review control with a progress chip like "2 / 3 reviewed" (Argos). Sightline: one summary ("3 changes · 2 left"), Approve all / Reject, nothing else in the header.
+- **Collapse duplicates into one row with a count.** Argos shows identical diffs once with "N similar"; accepting the row accepts all. Sightline: one row per group with a `×8` badge; scope ("4 pages · 8 snapshots") is a tooltip, not a sentence.
+- **Show the value, not a description of it.** Rows carry a swatch pair or the quoted text instead of title + detail + selector. The selector and raw before/after are details-on-demand.
+- **Row actions appear on hover/selection** as icon buttons; state is a tint plus a check/cross icon instead of a badge and two labelled buttons.
+- **Thumbnails over text.** Project cards show the latest baseline screenshot; snapshot rows show a tiny thumbnail with a status dot.
+- **Keyboard first, help behind `?`.** Argos/Percy keep a full shortcut sheet but do not print key hints everywhere; Sightline removed inline `J`/`K`/`N`/`P` hints and kept them in the sheet and tooltips.

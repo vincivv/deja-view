@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
 import { Loader2, X } from "lucide-react";
 import { cn } from "../lib/format";
 
@@ -316,4 +316,93 @@ export function Toggle({ on, onChange, label, kbd, testId, tone = "accent" }: { 
       {kbd && <Kbd className="ml-0.5 max-[1599px]:hidden">{kbd}</Kbd>}
     </button>
   );
+}
+
+/** Click-to-open floating panel (menus, info popovers). Closes on outside click and Escape. */
+export function Popover({
+  trigger,
+  children,
+  align = "right",
+  width = "w-56",
+  testId,
+}: {
+  trigger: (p: { open: boolean; toggle: () => void }) => ReactNode;
+  children: (close: () => void) => ReactNode;
+  align?: "left" | "right";
+  width?: string;
+  testId?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("mousedown", onDown);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("mousedown", onDown);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+  return (
+    <div ref={ref} className="relative">
+      {trigger({ open, toggle: () => setOpen((v) => !v) })}
+      {open && (
+        <div
+          data-testid={testId}
+          className={cn(
+            "absolute top-full z-50 mt-1.5 rounded-lg border border-zinc-800 bg-zinc-900 p-1 shadow-2xl shadow-black/60 animate-pop",
+            align === "right" ? "right-0" : "left-0",
+            width,
+          )}
+        >
+          {children(() => setOpen(false))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function MenuItem({ icon, children, danger, className, ...rest }: ButtonHTMLAttributes<HTMLButtonElement> & { icon?: ReactNode; danger?: boolean }) {
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      {...rest}
+      className={cn(
+        "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[13px] transition-colors",
+        danger ? "text-red-300 hover:bg-red-500/10" : "text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100",
+        className,
+      )}
+    >
+      {icon}
+      {children}
+    </button>
+  );
+}
+
+export async function copyText(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      ta.remove();
+      return ok;
+    } catch {
+      return false;
+    }
+  }
 }

@@ -2,6 +2,7 @@
 // Implements the same contract as docs/API.md, including streaming builds.
 import { ABOUT_TEXT, CTA_COLORS, renderOverlay, renderPage, type PageKind, type Rendered } from "./mockPages";
 import type {
+  ApiToken,
   Baseline,
   Change,
   CreateProjectBody,
@@ -18,6 +19,7 @@ import type {
   SightlineApi,
   Snapshot,
   UpdateProjectBody,
+  User,
 } from "./types";
 import { ApiError } from "./client";
 
@@ -40,6 +42,7 @@ interface StoredRun {
 }
 
 const projects: StoredProject[] = [];
+const owners = new Map<string, string>(); // projectId -> userId
 const runs: StoredRun[] = [];
 const baselines = new Map<string, Map<string, BaselineEntry>>(); // projectId -> key -> entry
 
@@ -88,7 +91,7 @@ function plannedChanges(kind: PageKind, base: Rendered, baseV: "v1" | "v2", next
     out.push({
       groupKey: "style:cta",
       kind: "style",
-      title: "Button color changed",
+      title: "Button background changed",
       detail: `background-color ${before} → ${after}`,
       selector: "a.btn.cta",
       bbox: next.boxes.cta,
@@ -409,12 +412,16 @@ function projectOut(p: StoredProject): Project {
 }
 
 function findProject(id: string) {
-  const p = projects.find((x) => x.id === id);
+  const u = requireUser();
+  const p = projects.find((x) => x.id === id && owners.get(x.id) === u.id);
   if (!p) throw new ApiError(404, "Project not found");
   return p;
 }
+function ownsRun(r: StoredRun) {
+  return owners.get(r.detail.project_id) === requireUser().id;
+}
 function findRun(id: string) {
-  const r = runs.find((x) => x.detail.id === id);
+  const r = runs.find((x) => x.detail.id === id && ownsRun(x));
   if (!r) throw new ApiError(404, "Build not found");
   return r;
 }
@@ -438,12 +445,60 @@ function applyReview(run: StoredRun, groupIds: string[], status: ReviewStatus) {
   return clone(d);
 }
 
+// ---------- accounts ----------
+
+interface MockUser extends User {
+  password: string;
+}
+
+// Seeded test account for `pnpm dev:mock` (mock only, never sent anywhere).
+export const MOCK_LOGIN = { email: "ada@example.com", password: "password123" };
+const users: MockUser[] = [
+  { id: "usr_ada", email: MOCK_LOGIN.email, name: "Ada Lovelace", is_guest: false, created_at: new Date(Date.now() - 30 * 86400_000).toISOString(), password: MOCK_LOGIN.password },
+];
+const tokens = new Map<string, (ApiToken & { user_id: string })[]>();
+const SIGNED_OUT_KEY = "sl.mock.signedOut";
+function readSignedOut() {
+  try {
+    return localStorage.getItem(SIGNED_OUT_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+function writeSignedOut(v: boolean) {
+  try {
+    if (v) localStorage.setItem(SIGNED_OUT_KEY, "1");
+    else localStorage.removeItem(SIGNED_OUT_KEY);
+  } catch {
+    /* storage unavailable */
+  }
+}
+let sessionUserId: string | null = readSignedOut() ? null : "usr_ada";
+
+function publicUser(u: MockUser): User {
+  const { password: _pw, ...rest } = u;
+  void _pw;
+  return clone(rest);
+}
+function currentUser(): MockUser | null {
+  return users.find((u) => u.id === sessionUserId) ?? null;
+}
+function requireUser(): MockUser {
+  const u = currentUser();
+  if (!u) throw new ApiError(401, "Not signed in");
+  return u;
+}
+function signIn(u: MockUser) {
+  sessionUserId = u.id;
+  writeSignedOut(false);
+}
+
 // ---------- seed ----------
 
-function makeDemo(startedAt: number, withHistory: boolean): StoredProject {
+function makeDemo(startedAt: number, withHistory: boolean, ownerId: string): StoredProject {
   const p: StoredProject = {
     id: uid("proj"),
-    name: "Acme Store",
+    name: "Acme Supply (demo)",
     base_url: `${DEMO_ORIGIN}/demo/v1`,
     paths: [
       { path: "/", name: "Home" },
@@ -456,11 +511,12 @@ function makeDemo(startedAt: number, withHistory: boolean): StoredProject {
     created_at: new Date(startedAt).toISOString(),
     is_demo: true,
     demo_urls: [
-      { label: "v1 (baseline)", url: `${DEMO_ORIGIN}/demo/v1` },
-      { label: "v2 (with regressions)", url: `${DEMO_ORIGIN}/demo/v2` },
+      { label: "v1 · baseline", url: `${DEMO_ORIGIN}/demo/v1` },
+      { label: "v2 · with regressions", url: `${DEMO_ORIGIN}/demo/v2` },
     ],
   };
   projects.push(p);
+  owners.set(p.id, ownerId);
   const r1 = createRunInternal(p, { label: "Initial baseline" }, startedAt);
   if (withHistory) {
     promoteBaselines(r1, false);
@@ -472,7 +528,7 @@ function makeDemo(startedAt: number, withHistory: boolean): StoredProject {
 
 function seed() {
   const now = Date.now();
-  makeDemo(now - 3 * 3600_000, true);
+  makeDemo(now - 3 * 3600_000, true, "usr_ada");
 
   const docs: StoredProject = {
     id: uid("proj"),
@@ -488,6 +544,7 @@ function seed() {
     is_demo: false,
   };
   projects.push(docs);
+  owners.set(docs.id, "usr_ada");
   const d1 = createRunInternal(docs, { label: "Initial baseline" }, now - 4 * 86400_000);
   promoteBaselines(d1, false);
   (d1 as StoredRun & { _promoted?: boolean })._promoted = true;
@@ -507,10 +564,15 @@ export const mockApi: SightlineApi = {
   },
   async listProjects() {
     await delay();
-    return [...projects].reverse().map(projectOut);
+    const u = requireUser();
+    return [...projects]
+      .filter((p) => owners.get(p.id) === u.id)
+      .reverse()
+      .map(projectOut);
   },
   async createProject(body: CreateProjectBody) {
     await delay();
+    const u = requireUser();
     if (!body.name?.trim()) throw new ApiError(422, "Name is required");
     if (!/^https?:\/\//.test(body.base_url ?? "")) throw new ApiError(422, "Base URL must start with http:// or https://");
     const p: StoredProject = {
@@ -523,6 +585,7 @@ export const mockApi: SightlineApi = {
       is_demo: false,
     };
     projects.push(p);
+    owners.set(p.id, u.id);
     return projectOut(p);
   },
   async getProject(id) {
@@ -540,8 +603,8 @@ export const mockApi: SightlineApi = {
   },
   async deleteProject(id) {
     await delay();
+    findProject(id);
     const i = projects.findIndex((p) => p.id === id);
-    if (i < 0) throw new ApiError(404, "Project not found");
     projects.splice(i, 1);
     baselines.delete(id);
     for (let j = runs.length - 1; j >= 0; j--) if (runs[j].detail.project_id === id) runs.splice(j, 1);
@@ -590,21 +653,87 @@ export const mockApi: SightlineApi = {
   },
   async reviewGroup(id, status) {
     await delay();
-    const r = runs.find((x) => x.detail.groups.some((g) => g.id === id));
+    const r = runs.find((x) => x.detail.groups.some((g) => g.id === id) && ownsRun(x));
     if (!r) throw new ApiError(404, "Group not found");
     return applyReview(r, [id], status);
   },
   async reviewSnapshot(id, status) {
     await delay();
-    const r = runs.find((x) => x.detail.snapshots.some((s) => s.id === id));
+    const r = runs.find((x) => x.detail.snapshots.some((s) => s.id === id) && ownsRun(x));
     if (!r) throw new ApiError(404, "Snapshot not found");
     const snap = r.detail.snapshots.find((s) => s.id === id)!;
     return applyReview(r, [...new Set(snap.changes.map((c) => c.group_id))], status);
   },
   async createDemo() {
     await delay(300);
-    const existing = projects.find((p) => p.is_demo);
+    let u = currentUser();
+    if (!u) {
+      u = { id: uid("usr"), email: null, name: "Guest", is_guest: true, created_at: new Date().toISOString(), password: "" };
+      users.push(u);
+      signIn(u);
+    }
+    const existing = projects.find((p) => p.is_demo && owners.get(p.id) === u.id);
     if (existing) return projectOut(existing);
-    return projectOut(makeDemo(Date.now(), false));
+    return projectOut(makeDemo(Date.now(), false, u.id));
+  },
+  async me() {
+    await delay(80);
+    return publicUser(requireUser());
+  },
+  async login({ email, password }) {
+    await delay();
+    const u = users.find((x) => !x.is_guest && x.email?.toLowerCase() === email.trim().toLowerCase());
+    if (!u || u.password !== password) throw new ApiError(401, "Wrong email or password");
+    signIn(u);
+    return publicUser(u);
+  },
+  async signup({ email, password, name }) {
+    await delay();
+    const e = email.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) throw new ApiError(422, "Enter a valid email address");
+    if ((password ?? "").length < 8) throw new ApiError(422, "Password must be at least 8 characters");
+    if (users.some((x) => x.email?.toLowerCase() === e)) throw new ApiError(409, "An account with this email already exists");
+    const nm = name?.trim() || e.split("@")[0];
+    const cur = currentUser();
+    if (cur?.is_guest) {
+      // upgrade the guest in place so its demo projects carry over
+      Object.assign(cur, { email: e, name: nm, is_guest: false, password });
+      return publicUser(cur);
+    }
+    const u: MockUser = { id: uid("usr"), email: e, name: nm, is_guest: false, created_at: new Date().toISOString(), password };
+    users.push(u);
+    signIn(u);
+    return publicUser(u);
+  },
+  async logout() {
+    await delay(80);
+    sessionUserId = null;
+    writeSignedOut(true);
+    return { ok: true };
+  },
+  async listTokens() {
+    await delay();
+    const u = requireUser();
+    return (tokens.get(u.id) ?? []).map(({ id, name, prefix, created_at, last_used_at }) => ({ id, name, prefix, created_at, last_used_at })).reverse();
+  },
+  async createToken(name) {
+    await delay();
+    const u = requireUser();
+    if (!name.trim()) throw new ApiError(422, "Give the token a name");
+    const hex = Array.from(crypto.getRandomValues(new Uint8Array(20)), (b) => b.toString(16).padStart(2, "0")).join("");
+    const token = `sl_${hex}`;
+    const t = { id: uid("tok"), name: name.trim(), prefix: `${token.slice(0, 7)}…`, created_at: new Date().toISOString(), last_used_at: null, user_id: u.id };
+    tokens.set(u.id, [...(tokens.get(u.id) ?? []), t]);
+    const { user_id: _u, ...out } = t;
+    void _u;
+    return { ...clone(out), token };
+  },
+  async deleteToken(id) {
+    await delay();
+    const u = requireUser();
+    const list = tokens.get(u.id) ?? [];
+    if (!list.some((t) => t.id === id)) throw new ApiError(404, "Token not found");
+    tokens.set(u.id, list.filter((t) => t.id !== id));
+    return { ok: true };
   },
 };

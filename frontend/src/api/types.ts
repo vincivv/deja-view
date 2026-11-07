@@ -156,6 +156,37 @@ export interface CreateRunBody {
 
 export type ReviewStatus = "approved" | "rejected";
 
+export interface User {
+  id: string;
+  email: string | null; // null for guests
+  name: string;
+  is_guest: boolean;
+  created_at: string;
+}
+
+export interface ApiToken {
+  id: string;
+  name: string;
+  prefix: string; // "sl_3fa9…"
+  created_at: string;
+  last_used_at: string | null;
+}
+
+export interface CreatedApiToken extends ApiToken {
+  token: string; // full token, returned only once
+}
+
+export interface SignupBody {
+  email: string;
+  password: string;
+  name?: string;
+}
+
+export interface LoginBody {
+  email: string;
+  password: string;
+}
+
 export interface SightlineApi {
   health(): Promise<{ ok: boolean }>;
   listProjects(): Promise<Project[]>;
@@ -171,4 +202,11 @@ export interface SightlineApi {
   reviewGroup(id: string, status: ReviewStatus): Promise<RunDetail>;
   reviewSnapshot(id: string, status: ReviewStatus): Promise<RunDetail>;
   createDemo(): Promise<Project>;
+  me(): Promise<User>;
+  login(body: LoginBody): Promise<User>;
+  signup(body: SignupBody): Promise<User>;
+  logout(): Promise<{ ok: boolean }>;
+  listTokens(): Promise<ApiToken[]>;
+  createToken(name: string): Promise<CreatedApiToken>;
+  deleteToken(id: string): Promise<{ ok: boolean }>;
 }

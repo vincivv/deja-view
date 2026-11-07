@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { ExternalLink, History, ImageIcon, Play, Trash2, Zap } from "lucide-react";
-import { api } from "../api/client";
+import { ExternalLink, History, ImageIcon, MoreHorizontal, Play, Settings2, Trash2, Zap } from "lucide-react";
+import { api, notifyProjectsChanged } from "../api/client";
 import type { Baseline, Project, RunSummary } from "../api/types";
 import { useResource, useNow } from "../hooks/useResource";
 import { useBreadcrumbs } from "../components/Layout";
-import { Button, Dialog, EmptyState, ErrorBox, Field, Input, ProgressBar, Skeleton, Tabs, Textarea, ViewportChips } from "../components/ui";
+import { Button, Dialog, EmptyState, ErrorBox, Field, IconButton, Input, MenuItem, Popover, ProgressBar, Skeleton, Tabs, Textarea, ViewportChips } from "../components/ui";
 import { ResultBadge } from "../components/status";
 import { useToast } from "../components/Toast";
-import { STATUS_LABEL, cn, duration, isActive, plural, shortUrl, timeAgo } from "../lib/format";
-import { parsePaths } from "./Projects";
+import { STATUS_LABEL, cn, duration, isActive, shortUrl, timeAgo } from "../lib/format";
+import { parsePaths } from "../components/NewProjectDialog";
 
 type Tab = "builds" | "baselines" | "settings";
 
@@ -20,9 +20,10 @@ export function ProjectPage() {
   const project = useResource(() => api.getProject(id), [id]);
   const runs = useResource(() => api.listRuns(id), [id], { poll: (d) => !!d?.some((r) => isActive(r.status)), interval: 1000 });
   const [runOpen, setRunOpen] = useState(params.get("run") === "1");
+  const [deleteOpen, setDeleteOpen] = useState(false);
   useNow();
 
-  useBreadcrumbs(project.data ? [{ label: project.data.name }] : [], [project.data?.name]);
+  useBreadcrumbs([{ label: "Projects", to: "/projects" }, ...(project.data ? [{ label: project.data.name }] : [])], [project.data?.name]);
 
   // keep the header counts (baselines, last run) live: refresh the project on every runs update
   useEffect(() => {
@@ -62,13 +63,6 @@ export function ProjectPage() {
                 {shortUrl(p.base_url)}
                 <ExternalLink className="size-3" />
               </a>
-              <div className="mt-2 flex items-center gap-3 text-xs text-zinc-500">
-                <span>{plural(p.paths.length, "page")}</span>
-                <span className="text-zinc-700">·</span>
-                <span className="font-mono">{p.viewports.map((v) => `${v}px`).join(" / ")}</span>
-                <span className="text-zinc-700">·</span>
-                <span>{plural(p.baseline_count, "baseline")}</span>
-              </div>
             </>
           ) : (
             <div className="space-y-2">
@@ -77,9 +71,48 @@ export function ProjectPage() {
             </div>
           )}
         </div>
-        <Button variant="primary" icon={<Play className="size-3.5 fill-current" />} onClick={() => setRunOpen(true)} disabled={!p} data-testid="run-build">
-          Run build
-        </Button>
+        <div className="flex items-center gap-1.5">
+          <Button variant="primary" icon={<Play className="size-3.5 fill-current" />} onClick={() => setRunOpen(true)} disabled={!p} data-testid="run-build">
+            Run build
+          </Button>
+          {p && (
+            <Popover
+              width="w-48"
+              testId="project-menu"
+              trigger={({ open, toggle }) => (
+                <IconButton label="More actions" onClick={toggle} aria-expanded={open} aria-haspopup="menu" className={cn("size-8 border border-zinc-800", open && "bg-zinc-800 text-zinc-100")} data-testid="project-menu-button">
+                  <MoreHorizontal className="size-4" />
+                </IconButton>
+              )}
+            >
+              {(close) => (
+                <div role="menu">
+                  <MenuItem
+                    icon={<Settings2 className="size-3.5" />}
+                    onClick={() => {
+                      close();
+                      setTab("settings");
+                    }}
+                    data-testid="menu-settings"
+                  >
+                    Project settings
+                  </MenuItem>
+                  <MenuItem
+                    danger
+                    icon={<Trash2 className="size-3.5" />}
+                    onClick={() => {
+                      close();
+                      setDeleteOpen(true);
+                    }}
+                    data-testid="menu-delete-project"
+                  >
+                    Delete project
+                  </MenuItem>
+                </div>
+              )}
+            </Popover>
+          )}
+        </div>
       </div>
 
       <Tabs<Tab>
@@ -98,6 +131,7 @@ export function ProjectPage() {
       </div>
 
       {p && <RunBuildDialog open={runOpen} onClose={() => setRunOpen(false)} project={p} />}
+      {p && <DeleteProjectDialog open={deleteOpen} onClose={() => setDeleteOpen(false)} project={p} />}
     </div>
   );
 }
@@ -130,17 +164,6 @@ function BuildsTable({ runs, loading, error, onRun }: { runs: RunSummary[] | nul
   return (
     <div className="overflow-hidden rounded-xl border border-zinc-800">
       <table className="w-full text-left text-[13px]" data-testid="builds-table">
-        <thead className="border-b border-zinc-800 bg-zinc-900/60 text-[11px] font-medium uppercase tracking-wider text-zinc-500">
-          <tr>
-            <th className="px-4 py-2.5 font-medium">Build</th>
-            <th className="px-4 py-2.5 font-medium">Result</th>
-            <th className="px-4 py-2.5 font-medium">Changes</th>
-            <th className="hidden px-4 py-2.5 font-medium lg:table-cell">Snapshots</th>
-            <th className="hidden px-4 py-2.5 font-medium lg:table-cell">Noise ignored</th>
-            <th className="px-4 py-2.5 text-right font-medium">Duration</th>
-            <th className="px-4 py-2.5 text-right font-medium">Created</th>
-          </tr>
-        </thead>
         <tbody className="divide-y divide-zinc-800/80">
           {runs.map((r) => {
             const active = isActive(r.status);
@@ -151,47 +174,34 @@ function BuildsTable({ runs, loading, error, onRun }: { runs: RunSummary[] | nul
                 data-build-number={r.number}
                 onClick={() => navigate(`/builds/${r.id}`)}
                 className="cursor-pointer bg-zinc-950 transition-colors hover:bg-zinc-900/70"
+                title={`${shortUrl(r.base_url)}${r.duration_ms != null ? ` · ${duration(r.duration_ms)}` : ""}`}
               >
-                <td className="max-w-[340px] px-4 py-3">
-                  <Link to={`/builds/${r.id}`} className="flex items-baseline gap-2" onClick={(e) => e.stopPropagation()}>
-                    <span className="font-mono text-zinc-500">#{r.number}</span>
-                    <span className="truncate font-medium text-zinc-100">{r.label || (r.is_baseline_build ? "Baseline build" : "Build")}</span>
+                <td className="w-16 py-3 pl-4 font-mono text-zinc-500">#{r.number}</td>
+                <td className="max-w-[360px] px-2 py-3">
+                  <Link to={`/builds/${r.id}`} className="block truncate font-medium text-zinc-100" onClick={(e) => e.stopPropagation()}>
+                    {r.label || (r.is_baseline_build ? "Baseline build" : "Build")}
                   </Link>
-                  <div className="mt-0.5 truncate font-mono text-[11px] text-zinc-500">{shortUrl(r.base_url)}</div>
                 </td>
                 <td className="px-4 py-3">
                   {active ? (
-                    <div className="w-36">
-                      <div className="mb-1.5 flex justify-between text-[11px] text-sky-300">
-                        <span>{STATUS_LABEL[r.status]}…</span>
-                        <span className="font-mono">
-                          {r.progress.done}/{r.progress.total}
-                        </span>
-                      </div>
+                    <div className="flex w-40 items-center gap-2">
                       <ProgressBar done={r.progress.done} total={r.progress.total} />
+                      <span className="font-mono text-[11px] text-sky-300" title={STATUS_LABEL[r.status]}>
+                        {r.progress.done}/{r.progress.total}
+                      </span>
                     </div>
                   ) : (
                     <ResultBadge result={r.result} baseline={r.is_baseline_build} />
                   )}
                 </td>
-                <td className="px-4 py-3 text-zinc-300">
-                  {r.is_baseline_build ? (
-                    <span className="text-zinc-500">{r.counts.new} new</span>
-                  ) : r.counts.changes ? (
-                    <span>
-                      <span className="font-medium text-amber-300">{r.counts.changes}</span>
-                      <span className="text-zinc-500"> in {plural(r.counts.groups, "group")}</span>
+                <td className="hidden px-4 py-3 sm:table-cell">
+                  {!r.is_baseline_build && r.counts.groups > 0 && (
+                    <span className="rounded-full bg-zinc-800 px-2 py-0.5 font-mono text-[11px] text-zinc-300" title={`${r.counts.changes} occurrences`}>
+                      {r.counts.groups} {r.counts.groups === 1 ? "change" : "changes"}
                     </span>
-                  ) : active ? (
-                    <span className="text-zinc-600">—</span>
-                  ) : (
-                    <span className="text-zinc-500">None</span>
                   )}
-                  {r.counts.failed > 0 && <span className="ml-2 text-red-300">{r.counts.failed} failed</span>}
+                  {r.counts.failed > 0 && <span className="ml-2 rounded-full bg-red-500/10 px-2 py-0.5 font-mono text-[11px] text-red-300">{r.counts.failed} failed</span>}
                 </td>
-                <td className="hidden px-4 py-3 font-mono text-xs text-zinc-400 lg:table-cell">{r.counts.snapshots}</td>
-                <td className="hidden px-4 py-3 font-mono text-xs text-zinc-500 lg:table-cell">{r.counts.noise_ignored || "—"}</td>
-                <td className="px-4 py-3 text-right font-mono text-xs text-zinc-500">{duration(r.duration_ms)}</td>
                 <td className="px-4 py-3 text-right text-xs text-zinc-500" title={new Date(r.created_at).toLocaleString()}>
                   {timeAgo(r.created_at)}
                 </td>
@@ -224,7 +234,8 @@ function RunBuildDialog({ open, onClose, project }: { open: boolean; onClose: ()
     setErr(null);
     try {
       const run = await api.createRun(project.id, { base_url: url.trim() || undefined, label: label.trim() || undefined });
-      toast({ tone: "info", title: `Build #${run.number} started`, body: `Capturing ${run.progress.total || "all"} snapshots of ${shortUrl(url)}` });
+      toast({ tone: "info", title: `Build #${run.number} started` });
+      notifyProjectsChanged();
       onClose();
       setLabel("");
       navigate(`/builds/${run.id}`);
@@ -337,7 +348,6 @@ function BaselinesGrid({ project, runs }: { project: Project; runs: RunSummary[]
 }
 
 function SettingsForm({ project, onSaved }: { project: Project; onSaved: (p: Project) => void }) {
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [name, setName] = useState(project.name);
   const [baseUrl, setBaseUrl] = useState(project.base_url);
@@ -345,7 +355,6 @@ function SettingsForm({ project, onSaved }: { project: Project; onSaved: (p: Pro
   const [viewports, setViewports] = useState(project.viewports);
   const [busy, setBusy] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [deleting, setDeleting] = useState(false);
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -353,23 +362,12 @@ function SettingsForm({ project, onSaved }: { project: Project; onSaved: (p: Pro
     try {
       const p = await api.updateProject(project.id, { name, base_url: baseUrl, paths: parsePaths(paths), viewports });
       onSaved(p);
+      notifyProjectsChanged();
       toast({ tone: "success", title: "Settings saved" });
     } catch (e2) {
       toast({ tone: "error", title: "Couldn't save", body: e2 instanceof Error ? e2.message : String(e2) });
     } finally {
       setBusy(false);
-    }
-  };
-
-  const del = async () => {
-    setDeleting(true);
-    try {
-      await api.deleteProject(project.id);
-      toast({ tone: "success", title: `Deleted ${project.name}` });
-      navigate("/projects");
-    } catch (e2) {
-      toast({ tone: "error", title: "Couldn't delete", body: e2 instanceof Error ? e2.message : String(e2) });
-      setDeleting(false);
     }
   };
 
@@ -403,16 +401,39 @@ function SettingsForm({ project, onSaved }: { project: Project; onSaved: (p: Pro
           Delete
         </Button>
       </div>
-      <Dialog open={confirmDelete} onClose={() => setConfirmDelete(false)} title={`Delete ${project.name}?`} description="All builds and baselines will be permanently removed." width="max-w-sm">
-        <div className="flex justify-end gap-2 px-5 py-4">
-          <Button variant="ghost" onClick={() => setConfirmDelete(false)}>
-            Cancel
-          </Button>
-          <Button variant="danger" loading={deleting} onClick={del} data-testid="confirm-delete" data-autofocus>
-            Delete project
-          </Button>
-        </div>
-      </Dialog>
+      <DeleteProjectDialog open={confirmDelete} onClose={() => setConfirmDelete(false)} project={project} />
     </div>
+  );
+}
+
+function DeleteProjectDialog({ open, onClose, project }: { open: boolean; onClose: () => void; project: Project }) {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [deleting, setDeleting] = useState(false);
+  const del = async () => {
+    setDeleting(true);
+    try {
+      await api.deleteProject(project.id);
+      toast({ tone: "success", title: `Deleted ${project.name}` });
+      notifyProjectsChanged();
+      onClose();
+      navigate("/projects");
+    } catch (e2) {
+      toast({ tone: "error", title: "Couldn't delete", body: e2 instanceof Error ? e2.message : String(e2) });
+    } finally {
+      setDeleting(false);
+    }
+  };
+  return (
+    <Dialog open={open} onClose={onClose} title={`Delete ${project.name}?`} description="All builds and baselines are removed for good." width="max-w-sm" testId="delete-project-dialog">
+      <div className="flex justify-end gap-2 px-5 py-4">
+        <Button variant="ghost" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="danger" loading={deleting} onClick={del} data-testid="confirm-delete" data-autofocus>
+          Delete project
+        </Button>
+      </div>
+    </Dialog>
   );
 }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
-import { AlertTriangle, ArrowDownUp, ImageOff, Info, Loader2, MoveHorizontal, ScanSearch } from "lucide-react";
+import { AlertTriangle, ImageOff, Loader2, MoveHorizontal } from "lucide-react";
 import type { Change, Rect, Snapshot } from "../api/types";
-import { cn, plural } from "../lib/format";
+import { cn } from "../lib/format";
 
 export type ViewMode = "side" | "overlay" | "swipe" | "single";
 export type Zoom = "fit" | "actual";
@@ -39,12 +39,10 @@ const PAD = 20;
 const PAD_TOP = 40;
 
 export function Viewer(props: ViewerProps) {
-  const { snap, mode, zoom, showPixel } = props;
+  const { snap, mode, zoom } = props;
   const hasBase = !!snap.baseline_image_url;
   const effectiveMode: ViewMode = hasBase ? mode : "single";
 
-  const shift = snap.layout_shifts[0];
-  const banners: ReactNode[] = [];
   if (snap.status === "failed") {
     return (
       <div className="flex h-full items-center justify-center p-8">
@@ -58,40 +56,9 @@ export function Viewer(props: ViewerProps) {
       </div>
     );
   }
-  if (!hasBase) {
-    banners.push(
-      <Banner key="new" tone="sky" icon={<Info className="size-3.5" />}>
-        {snap.status === "new" ? "New snapshot: no baseline to compare with. It's accepted as the baseline." : "No baseline image available."}
-      </Banner>,
-    );
-  }
-  if (showPixel && hasBase) {
-    banners.push(
-      <Banner key="px" tone="red" icon={<ScanSearch className="size-3.5" />} testId="pixel-diff-banner">
-        This is what a plain pixel diff flags: <b>{plural(snap.pixel_diff.regions.length, "region")}</b>. Sightline reduced it to{" "}
-        <b>{plural(snap.changes.length, "real change")}</b>.
-      </Banner>,
-    );
-  }
-  if (shift && !showPixel) {
-    const cause = shift.cause_change_id ? props.changeNumber.get(shift.cause_change_id) : undefined;
-    banners.push(
-      <Banner key="shift" tone="zinc" icon={<ArrowDownUp className="size-3.5" />} testId="layout-shift-banner">
-        Content below y={shift.from_y} moved {shift.dy > 0 ? "down" : "up"} {Math.abs(shift.dy)}px{shift.dx ? ` and ${shift.dx > 0 ? "right" : "left"} ${Math.abs(shift.dx)}px` : ""}. That's{" "}
-        {plural(shift.elements, "element")} moving together, counted as one layout shift and not reviewed separately
-        {cause ? (
-          <>
-            {" "}
-            · caused by change <span className="rounded bg-accent-500/20 px-1 font-mono text-accent-200">#{cause}</span>
-          </>
-        ) : null}
-      </Banner>,
-    );
-  }
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      {banners.length > 0 && <div className="space-y-1.5 border-b border-zinc-800 px-3 py-2">{banners}</div>}
       <div className="min-h-0 flex-1">
         {effectiveMode === "side" ? (
           <SideBySide {...props} />
@@ -99,21 +66,6 @@ export function Viewer(props: ViewerProps) {
           <SinglePane {...props} mode={effectiveMode} zoom={zoom} />
         )}
       </div>
-    </div>
-  );
-}
-
-function Banner({ tone, icon, children, testId }: { tone: "zinc" | "red" | "sky"; icon: ReactNode; children: ReactNode; testId?: string }) {
-  const cls =
-    tone === "red"
-      ? "border-red-500/25 bg-red-500/[0.07] text-red-200"
-      : tone === "sky"
-        ? "border-sky-500/25 bg-sky-500/[0.07] text-sky-200"
-        : "border-zinc-700/70 bg-zinc-800/40 text-zinc-300";
-  return (
-    <div data-testid={testId} className={cn("flex items-start gap-2 rounded-md border px-2.5 py-1.5 text-xs leading-relaxed", cls)}>
-      <span className="mt-0.5 shrink-0 opacity-80">{icon}</span>
-      <span>{children}</span>
     </div>
   );
 }
