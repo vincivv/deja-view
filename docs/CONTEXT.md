@@ -109,10 +109,12 @@ backend/.venv/bin/python bench/mutations.py && python3 bench/summarize.py -v
 - **Remaining false alarms on live sites** mostly come from the site really changing between the baseline and the new capture, such as A/B tests and new content. On a staging app that doesn't change between captures, this should be lower, but that hasn't been measured.
 - **Product gaps:** Chromium only, no auth, no CI integration or GitHub status check, and pages are capped at 8000px tall.
 - **Security:** the public tunnel has no auth, so anyone with the URL can make the host machine screenshot any URL (SSRF). Share it only with the judges and Wren.
-- **Hackathon to-dos:** run Wren on 2 core workflows against the final build, and rerun it after the last change.
-  - **Workflow 1:** Try the demo → start a build against "v2 · with regressions" → review the change groups.
-  - **Workflow 2:** Approve the changes → the baselines move to that build.
-  - **Note:** the local demo project's baseline is currently v2, so a build against "v1 · baseline" is the one that shows changes now.
+- **Hackathon QA (Seldon/Wren):** both workflows live in `seldon.yml` at the repo root.
+  - **Workflow 1:** Try the demo → build against v2 → the regressions are listed.
+  - **Workflow 2:** Approve all → the baselines move to build #2.
+  - **Commands:** `seldon validate`, then `seldon run --url http://localhost:8000`. Each run costs one simulation per case.
+  - **Repeatable:** every "Try the demo" click creates a fresh demo project at the v1 baseline, so the cases can run in parallel and be rerun.
+  - **Queued builds:** builds of one project run in order, so a build started during the baseline capture waits for it.
 
 ## Repo
 

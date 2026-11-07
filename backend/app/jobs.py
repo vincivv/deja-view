@@ -75,11 +75,24 @@ def _url(base, path):
     return base.rstrip("/") + ("/" + path.lstrip("/") if path not in ("", "/") else "/")
 
 
+_project_locks: dict[str, asyncio.Lock] = {}
+
+
 async def execute_run(rid):
+    # builds of one project run in order: a build started while the baseline is still capturing waits for it
+    pid = db.one("select project_id from runs where id=?", (rid,))["project_id"]
+    async with _project_locks.setdefault(pid, asyncio.Lock()):
+        await _execute_run(rid)
+
+
+async def _execute_run(rid):
     run = db.one("select * from runs where id=?", (rid,))
     p = db.one("select * from projects where id=?", (run["project_id"],))
+    if not p:
+        return
     t0 = time.time()
-    db.x("update runs set status='capturing' where id=?", (rid,))
+    has_base = db.one("select 1 x from baselines where project_id=? limit 1", (p["id"],)) is not None
+    db.x("update runs set status='capturing', is_baseline_build=? where id=?", (0 if has_base else 1, rid))
     paths, viewports = db.uj(p["paths"]), db.uj(p["viewports"])
     bases = {(b["path"], b["viewport"]): b["snapshot_id"]
              for b in db.q("select * from baselines where project_id=?", (p["id"],))}

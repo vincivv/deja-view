@@ -237,15 +237,17 @@ def review_snapshot(sid: str, body: ReviewIn):
 
 @app.post("/api/demo")
 async def demo():
-    p = db.one("select * from projects where is_demo=1 order by created_at limit 1")
-    if not p:
-        pid = db.uid("p_")
-        db.x("insert into projects(id,name,base_url,paths,viewports,created_at,is_demo) values(?,?,?,?,?,?,1)",
-             (pid, "Acme Supply (demo)", f"http://127.0.0.1:{PORT}/demo/v1", db.j(DEMO_PATHS), db.j([1280, 390]), db.now()))
-        p = _project(pid)
-    if not db.one("select id from runs where project_id=? limit 1", (p["id"],)):
-        jobs.create_run(p["id"], label="Baseline · v1")
-    return jobs.project_json(_project(p["id"]))
+    # every click gets its own fresh demo project at the v1 baseline, so parallel visitors (and QA agents)
+    # never see each other's approvals. Older demo projects are pruned.
+    pid = db.uid("p_")
+    db.x("insert into projects(id,name,base_url,paths,viewports,created_at,is_demo) values(?,?,?,?,?,?,1)",
+         (pid, "Acme Supply (demo)", f"http://127.0.0.1:{PORT}/demo/v1", db.j(DEMO_PATHS), db.j([1280, 390]), db.now()))
+    jobs.create_run(pid, label="Baseline · v1")
+    for old in db.q("select id from projects where is_demo=1 order by created_at desc limit -1 offset 15"):
+        busy = db.one("select 1 x from runs where project_id=? and status in ('queued','capturing','diffing')", (old["id"],))
+        if not busy:
+            delete_project(old["id"])
+    return jobs.project_json(_project(pid))
 
 
 # ---------------------------------------------------------------- frontend (production build)

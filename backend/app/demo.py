@@ -79,8 +79,9 @@ NOISE_JS = """
   var q=[["“Best purchase I made all year. Shipping was fast and the quality is unreal.”","Maya R., Portland"],
          ["“Customer support answered in four minutes. Four! I'm a customer for life.”","Devin K., Austin"],
          ["“The design is beautiful and it actually holds up to daily use.”","Sofia L., Chicago"]];
-  var el=document.querySelector('.testimonial'); if(el){var p=q[Math.floor(Math.random()*q.length)]; el.querySelector('p').textContent=p[0]; el.querySelector('footer').textContent=p[1];}
-  var a=document.querySelector('.avatar'); var cols=['#f03e3e','#ae3ec9','#1098ad','#37b24d','#f59f00']; a.style.background=cols[Math.floor(Math.random()*cols.length)];
+  var n=Math.floor(Math.random()*15); try{var k='acme-rot',sv=sessionStorage.getItem(k); n=sv===null?n:(+sv+1); sessionStorage.setItem(k,n);}catch(e){}
+  var el=document.querySelector('.testimonial'); if(el){var p=q[n%q.length]; el.querySelector('p').textContent=p[0]; el.querySelector('footer').textContent=p[1];}
+  var a=document.querySelector('.avatar'); var cols=['#f03e3e','#ae3ec9','#1098ad','#37b24d','#f59f00']; a.style.background=cols[n%cols.length];
 })();
 </script>"""
 

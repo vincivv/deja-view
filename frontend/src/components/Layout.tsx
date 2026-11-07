@@ -40,7 +40,7 @@ export function useStartDemo() {
     setBusy(true);
     try {
       const p = await api.createDemo();
-      toast({ tone: "success", title: "Demo project ready", body: "Acme Store: capturing the v1 baseline…" });
+      toast({ tone: "success", title: "Demo project ready", body: "Acme Supply: capturing the v1 baseline…" });
       navigate(`/projects/${p.id}`);
     } catch (e) {
       toast({ tone: "error", title: "Couldn't start the demo", body: e instanceof Error ? e.message : String(e) });

@@ -1,0 +1,35 @@
+# Seldon QA baseline for Sightline: the two core workflows submitted for the hackathon.
+# Run against the local server (the CLI opens a temporary tunnel):
+#   seldon validate
+#   seldon run --url http://localhost:8000
+# Each "Try the demo" click creates a fresh demo project, so the cases can run in parallel and be rerun.
+version: 1
+name: sightline
+run:
+  url: "http://localhost:8000"
+  credentials: none
+testCases:
+  - name: A demo build catches the planted visual regressions
+    id: demo-build-finds-regressions
+    steps:
+      - go to the home page
+      - click "Try the demo"
+      - on the project page, click "Run build"
+      - in the dialog, pick the quick pick "v2 · with regressions" and click "Start build"
+      - wait until the build page stops showing capture progress
+    criteria: >-
+      the build page shows "Needs review" and its change list includes "Button background changed",
+      "Banner added", "Image missing" and "Button text changed"
+
+  - name: Approving a build makes it the new baseline
+    id: approve-updates-baselines
+    steps:
+      - go to the home page
+      - click "Try the demo"
+      - on the project page, click "Run build"
+      - in the dialog, pick the quick pick "v2 · with regressions" and click "Start build"
+      - wait until the build page stops showing capture progress, then click "Approve all"
+      - click the project name "Acme Supply (demo)" in the top breadcrumb, then open the "Baselines" tab
+    criteria: >-
+      every snapshot on the Baselines tab (Home, Product, Pricing and Cart at 1280px and 390px)
+      is labelled as coming from build #2
