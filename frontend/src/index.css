@@ -100,3 +100,9 @@ input[type="range"].slider::-webkit-slider-thumb {
   background: #fafafa;
   border: 2px solid var(--color-accent-500);
 }
+
+/* landing: amber hatching for learned noise */
+.lp-hatch {
+  background-image: repeating-linear-gradient(135deg, rgba(245, 158, 11, 0.28) 0 4px, rgba(245, 158, 11, 0.06) 4px 8px);
+}
+.lp { scroll-behavior: smooth; }

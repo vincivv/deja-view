@@ -120,7 +120,15 @@ def health():
 
 @app.get("/api/projects")
 def list_projects():
-    return [jobs.project_json(p) for p in db.q("select * from projects order by created_at desc")]
+    # every "Try the demo" click makes its own demo project; list only the newest so the page stays clean
+    rows, seen_demo = [], False
+    for p in db.q("select * from projects order by created_at desc"):
+        if p["is_demo"]:
+            if seen_demo:
+                continue
+            seen_demo = True
+        rows.append(jobs.project_json(p))
+    return rows
 
 
 @app.post("/api/projects")

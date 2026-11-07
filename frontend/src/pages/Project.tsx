@@ -24,12 +24,11 @@ export function ProjectPage() {
 
   useBreadcrumbs(project.data ? [{ label: project.data.name }] : [], [project.data?.name]);
 
-  // refresh project (baseline count / last run) when a run finishes
-  const activeCount = runs.data?.filter((r) => isActive(r.status)).length ?? 0;
+  // keep the header counts (baselines, last run) live: refresh the project on every runs update
   useEffect(() => {
-    if (activeCount === 0 && project.data) void project.reload();
+    if (project.data) void project.reload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCount]);
+  }, [runs.data]);
 
   const setTab = (t: Tab) => {
     const next = new URLSearchParams(params);
@@ -367,7 +366,7 @@ function SettingsForm({ project, onSaved }: { project: Project; onSaved: (p: Pro
     try {
       await api.deleteProject(project.id);
       toast({ tone: "success", title: `Deleted ${project.name}` });
-      navigate("/");
+      navigate("/projects");
     } catch (e2) {
       toast({ tone: "error", title: "Couldn't delete", body: e2 instanceof Error ? e2.message : String(e2) });
       setDeleting(false);

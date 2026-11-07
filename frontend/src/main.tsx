@@ -7,13 +7,14 @@ import { ToastProvider } from "./components/Toast";
 import { ProjectsPage } from "./pages/Projects";
 import { ProjectPage } from "./pages/Project";
 import { BuildPage } from "./pages/Build";
+import { LandingPage } from "./pages/Landing";
 
 function NotFound() {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-2 text-center">
       <div className="font-mono text-xs text-zinc-500">404</div>
       <h1 className="text-lg font-semibold">Page not found</h1>
-      <Link to="/" className="text-sm text-accent-400 hover:underline">
+      <Link to="/projects" className="text-sm text-accent-400 hover:underline">
         Back to projects
       </Link>
     </div>
@@ -25,8 +26,9 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <ToastProvider>
         <Routes>
+          <Route index element={<LandingPage />} />
           <Route element={<Layout />}>
-            <Route index element={<ProjectsPage />} />
+            <Route path="projects" element={<ProjectsPage />} />
             <Route path="projects/:id" element={<ProjectPage />} />
             <Route path="builds/:id" element={<BuildPage />} />
             <Route path="*" element={<NotFound />} />

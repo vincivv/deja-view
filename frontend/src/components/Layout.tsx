@@ -84,7 +84,7 @@ export function Layout() {
     <CrumbCtx.Provider value={setCrumbs}>
       <div className="flex h-full flex-col">
         <header className="sticky top-0 z-40 flex h-12 shrink-0 items-center gap-3 border-b border-zinc-800/80 bg-zinc-950/85 px-4 backdrop-blur">
-          <Link to="/" className="flex items-center gap-2 rounded-md pr-1 text-[14px] font-semibold tracking-tight text-zinc-100" data-testid="nav-home">
+          <Link to="/projects" className="flex items-center gap-2 rounded-md pr-1 text-[14px] font-semibold tracking-tight text-zinc-100" data-testid="nav-home">
             <Logo />
             Sightline
           </Link>
