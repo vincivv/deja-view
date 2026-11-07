@@ -22,6 +22,25 @@ Sightline matches DOM elements between the baseline and the new build, so it rep
 
 Speed: the demo build (8 snapshots × 2 loads) finishes in about 4.6 s on an M2.
 
+### Benchmark: seeded bugs on 15 live sites
+
+This uses the method from WUICC-bench: load a real site, inject one bug, and see whether the tool finds it at the right spot with the right label.
+The sites were Stripe, Vercel, Linear, GitHub pricing, MDN, BBC, The Verge, Airbnb, Shopify, Figma, Tailwind, python.org, the Python docs, HN and Wikipedia.
+There were 115 bug cases across 9 bug types, plus 14 no-change controls.
+
+| | Plain pixel diff | Sightline |
+|---|---|---|
+| Bug found at the right spot | n/a (flags everything) | **87%**, labelled right 86% |
+| No-change controls: noise per page | 5.7 regions, 64% of pages clean | **1.7 items, 79% clean** |
+| Bug cases: things to review per page | 43.6 regions (40.1 not the bug) | **8.0 items** |
+
+Run it with `backend/.venv/bin/python bench/mutations.py && python3 bench/summarize.py -v`.
+
+**Real changes:** `bench/wayback.py` diffs 8 real pages (python.org, go.dev, htmx, Django, Tailwind, Linear pricing, HN, Wikipedia) between two Wayback Machine dates.
+These are genuine content updates, so there's no ground truth for them; the run shows how the review load compares.
+Pixel diff gave 1–400 regions per page. With the latest engine, python.org came to 54 changes in 27 review groups, against 113 pixel regions.
+The full rerun on the latest engine was blocked by archive.org rate limits. `bench/results/wayback.json` holds the earlier engine's results.
+
 ## How it works
 
 1. **Capture**: Playwright and Chromium, with animations frozen, fonts and lazy images settled, and a full-page screenshot plus a DOM snapshot of every painted element (rect, text, src, computed style).

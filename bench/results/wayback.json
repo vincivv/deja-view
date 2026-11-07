@@ -1,0 +1,254 @@
+[
+ {
+  "url": "https://www.python.org/",
+  "from": "20250301",
+  "to": "20250601",
+  "secs": 81.5,
+  "changes": 26,
+  "groups": 26,
+  "kinds": {
+   "text": 24,
+   "visual": 1,
+   "image": 1
+  },
+  "layout_shifts": 4,
+  "pixel_regions": 82,
+  "pixel_pct": 15.26,
+  "sample": [
+   "text: Link text changed | \"PyCon APAC 2025\" \u2192 \"Django Girls Medell\u00edn\"",
+   "text: Link text changed | \"PyLadies Amsterdam: Global AI Bootcamp\" \u2192 \"Python Norte 202",
+   "text: Link text changed | \"PyCamp Argentina 2025\" \u2192 \"Django User Group Berlin\"",
+   "text: Link text changed | \"Python Leiden User Group\" \u2192 \"PyData London 2025\"",
+   "text: Link text changed | \"Python Conference Austria 2025\" \u2192 \"Django Girls Beira #1\"",
+   "text: Link text changed | \"Saving the world with Open Data and Python\" \u2192 \"Python provi",
+   "text: Text text changed | \"by James Baster\" \u2192 \"by Dean Wampler\"",
+   "text: Link text changed | \"When an Open Data standard is created and promo\u2026\" \u2192 \"Python",
+   "visual: Paragraph looks different | pixels changed in a 230\u00d725 area",
+   "text: Link text changed | \"Where is the PSF? 2025 Edition\" \u2192 \"Python 3.14.0 beta 2 is ",
+   "text: Link text changed | \"Python 3.14.0 alpha 5 is out\" \u2192 \"Python 3.14.0 beta 1 is he",
+   "text: Link text changed | \"Python 3.13.2 and 3.12.9 now available!\" \u2192 \"Announcing Pyth"
+  ]
+ },
+ {
+  "url": "https://go.dev/",
+  "from": "20250201",
+  "to": "20250601",
+  "secs": 116.8,
+  "changes": 52,
+  "groups": 42,
+  "kinds": {
+   "visual": 12,
+   "image": 40
+  },
+  "layout_shifts": 0,
+  "pixel_regions": 11,
+  "pixel_pct": 0.12,
+  "sample": [
+   "visual: Link looks different | pixels changed in a 129\u00d756 area",
+   "image: Image changed | ladder.svg \u2192 ladder.svg",
+   "image: Image changed | google-white.png \u2192 google-white.png",
+   "visual: Link looks different | pixels changed in a 286\u00d719 area",
+   "visual: Text looks different | pixels changed in a 24\u00d724 area",
+   "visual: Text looks different | pixels changed in a 24\u00d724 area",
+   "visual: Text looks different | pixels changed in a 24\u00d724 area",
+   "image: Image changed | go-logo-white.svg \u2192 go-logo-white.svg",
+   "visual: Text looks different | pixels changed in a 24\u00d724 area",
+   "image: Image changed | biplane.svg \u2192 biplane.svg",
+   "image: Image changed | sphere.svg \u2192 sphere.svg",
+   "image: Image changed | command-folder.svg \u2192 command-folder.svg"
+  ]
+ },
+ {
+  "url": "https://htmx.org/",
+  "from": "20250101",
+  "to": "20250601",
+  "secs": 87.7,
+  "changes": 62,
+  "groups": 62,
+  "kinds": {
+   "resized": 1,
+   "image": 2,
+   "added": 27,
+   "removed": 32
+  },
+  "layout_shifts": 5,
+  "pixel_regions": 62,
+  "pixel_pct": 10.98,
+  "sample": [
+   "resized: Heading resized | 309\u00d724 \u2192 298\u00d724",
+   "image: Image changed | bss_bars.png \u2192 bss_bars.png",
+   "image: Image changed | hypermedia-systems.png \u2192 hypermedia-systems.png",
+   "added: Footer added | footer",
+   "added: Image added | commspace.svg",
+   "added: Image added | bmb-light.svg",
+   "added: Image added | sekun-doggo.jpg",
+   "added: Image added | das-filter.svg",
+   "added: Image added | edubirdie-light.png",
+   "added: Image added | Cased_Logo_DarkBlue.svg",
+   "added: Image added | rxdb.svg",
+   "added: Image added | BroadbandMapLogo2LineLightMode.png"
+  ]
+ },
+ {
+  "url": "https://www.djangoproject.com/",
+  "from": "20250301",
+  "to": "20250601",
+  "secs": 86.9,
+  "changes": 31,
+  "groups": 25,
+  "kinds": {
+   "text": 10,
+   "image": 1,
+   "visual": 1,
+   "style": 6,
+   "resized": 2,
+   "added": 6,
+   "removed": 5
+  },
+  "layout_shifts": 10,
+  "pixel_regions": 81,
+  "pixel_pct": 5.45,
+  "sample": [
+   "text: Text text changed | \"DjangoCon Africa 2025 organizers\" \u2192 \"Emma Delescolle\"",
+   "text: Text text changed | \"Sarah Boyce\" \u2192 \"Bhuvnesh Sharma\"",
+   "text: Link text changed | \"Call for Proposals for DjangoCon Africa 2025 is\u2026\" \u2192 \"Why, i",
+   "text: Link text changed | \"Django 5.2 beta 1 released\" \u2192 \"Our Google Summer of Code 20",
+   "text: Text text changed | \"Posted by on Feb. 24, 2025\" \u2192 \"Posted by on May 22, 2025\"",
+   "text: Text text changed | \"Posted by on Feb. 19, 2025\" \u2192 \"Posted by on May 16, 2025\"",
+   "image: Image changed | fundraising-heart.cd6bb84ffd33.svg \u2192 fundraising-heart.cd6bb",
+   "text: Link text changed | \"yedpodtrzitko donated to the Django Software Fo\u2026\" \u2192 \"Trey H",
+   "visual: Button looks different | pixels changed in a 352\u00d758 area",
+   "style: Heading style changed | text color #0c4b33 \u2192 #0c3c26, font size 18px \u2192 20px",
+   "style: Heading style changed | text color #0c4b33 \u2192 #0c3c26, font size 18px \u2192 20px",
+   "style: Heading style changed | text color #0c4b33 \u2192 #0c3c26, font size 18px \u2192 20px"
+  ]
+ },
+ {
+  "url": "https://tailwindcss.com/",
+  "from": "20250401",
+  "to": "20250601",
+  "secs": 134.7,
+  "changes": 52,
+  "groups": 32,
+  "kinds": {
+   "image": 31,
+   "text": 1,
+   "added": 3,
+   "removed": 6,
+   "moved": 8,
+   "visual": 3
+  },
+  "layout_shifts": 3,
+  "pixel_regions": 34,
+  "pixel_pct": 0.94,
+  "sample": [
+   "image: Image changed | dark-mode.light.288405b1.png \u2192 dark-mode.light.288405b1.png",
+   "image: Image changed | css-grid-3.45c4c3d5.png \u2192 css-grid-3.45c4c3d5.png",
+   "image: Image changed | css-grid-2.d645692f.png \u2192 css-grid-2.d645692f.png",
+   "image: Image changed | image \u2192 image",
+   "image: Image changed | image \u2192 image",
+   "image: Image changed | image \u2192 image",
+   "image: Image changed | image \u2192 image",
+   "image: Image changed | image \u2192 image",
+   "image: Image changed | image \u2192 image",
+   "image: Image changed | image \u2192 image",
+   "image: Image changed | image \u2192 image",
+   "image: Image changed | 3d-transforms.ebde7a6a.jpeg \u2192 3d-transforms.ebde7a6a.jpeg"
+  ]
+ },
+ {
+  "url": "https://linear.app/pricing",
+  "from": "20250301",
+  "to": "20250601",
+  "secs": 112.3,
+  "changes": 144,
+  "groups": 106,
+  "kinds": {
+   "text": 1,
+   "added": 73,
+   "removed": 70
+  },
+  "layout_shifts": 3,
+  "pixel_regions": 400,
+  "pixel_pct": 8.84,
+  "sample": [
+   "text: Link text changed | \"Blog\" \u2192 \"Contact\"",
+   "added: Element added | div.Comparison_table__jZfgy",
+   "added: Element added | div.Plans_root__iyHTa",
+   "added: Section added | section#business.Plans_card__SCfoV.Flex_root__DOQCW.Flex_col",
+   "added: Heading added | \"Pricing\"",
+   "added: Text added | \"Linear contributes 1% of your subscription to remove CO\u2082 fr",
+   "added: Paragraph added | \"Use Linear for free with your whole team. Upgrade to enable",
+   "added: Text added | \"Plan the present. Build the future.\"",
+   "added: Paragraph added | \"Powering the world\u2019s best product teams\"",
+   "added: Icon added | inline SVG",
+   "added: Icon added | inline SVG",
+   "added: Icon added | inline SVG"
+  ]
+ },
+ {
+  "url": "https://news.ycombinator.com/",
+  "from": "20250601",
+  "to": "20250602",
+  "secs": 98.0,
+  "changes": 212,
+  "groups": 209,
+  "kinds": {
+   "text": 69,
+   "image": 1,
+   "resized": 1,
+   "added": 70,
+   "removed": 71
+  },
+  "layout_shifts": 40,
+  "pixel_regions": 1,
+  "pixel_pct": 7.05,
+  "sample": [
+   "text: Text text changed | \"62 points\" \u2192 \"94 points\"",
+   "text: Text text changed | \"363 points\" \u2192 \"503 points\"",
+   "text: Text text changed | \"41 points\" \u2192 \"52 points\"",
+   "text: Text text changed | \"51 points\" \u2192 \"96 points\"",
+   "text: Text text changed | \"41 points\" \u2192 \"241 points\"",
+   "text: Text text changed | \"7 points\" \u2192 \"266 points\"",
+   "text: Text text changed | \"158 points\" \u2192 \"21 points\"",
+   "text: Text text changed | \"32 points\" \u2192 \"25 points\"",
+   "text: Text text changed | \"99 points\" \u2192 \"348 points\"",
+   "text: Text text changed | \"5 points\" \u2192 \"74 points\"",
+   "text: Text text changed | \"969 points\" \u2192 \"115 points\"",
+   "text: Text text changed | \"17 points\" \u2192 \"132 points\""
+  ]
+ },
+ {
+  "url": "https://en.wikipedia.org/wiki/Main_Page",
+  "from": "20250601",
+  "to": "20250602",
+  "secs": 129.3,
+  "changes": 158,
+  "groups": 153,
+  "kinds": {
+   "text": 85,
+   "image": 20,
+   "visual": 3,
+   "resized": 3,
+   "added": 19,
+   "removed": 28
+  },
+  "layout_shifts": 19,
+  "pixel_regions": 43,
+  "pixel_pct": 28.86,
+  "sample": [
+   "text: Link text changed | \"video game\" \u2192 \"Teochew\"",
+   "text: Link text changed | \"Masaya Nakamura\" \u2192 \"Christian mission school\"",
+   "text: Link text changed | \"video arcades\" \u2192 \"Hamilton College\"",
+   "text: Link text changed | \"arcade cabinets\" \u2192 \"Shanghai\"",
+   "text: Link text changed | \"electro-mechanical\" \u2192 \"Chinese Educational Mission\"",
+   "text: Link text changed | \"video game industry\" \u2192 \"Yung Wing\"",
+   "text: Link text changed | \"Atari\" \u2192 \"Chen Lanbin\"",
+   "text: Link text changed | \"golden age of arcade video games\" \u2192 \"Springfield, Massachus",
+   "text: Link text changed | \"multi-million-selling game franchises\" \u2192 \"coolie\"",
+   "text: Link text changed | \"Bandai\" \u2192 \"Li Hongzhang\"",
+   "text: List item text changed | \"\u2013 : The Swedish warship , one of the at the tim\u2026\" \u2192 \"\u2013 kill",
+   "text: List item text changed | \"\u2013 The , the first in Brazil, began in .\" \u2192 \"\u2013 : The followe"
+  ]
+ }
+]

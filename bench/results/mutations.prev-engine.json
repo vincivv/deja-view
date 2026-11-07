@@ -1,0 +1,4563 @@
+[
+ {
+  "site": "https://en.wikipedia.org/wiki/Visual_regression_testing",
+  "cases": [],
+  "error": "HTTP 404 for https://en.wikipedia.org/wiki/Visual_regression_testing"
+ },
+ {
+  "site": "https://www.python.org",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 49.9,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      1055,
+      1426,
+      1120,
+      1446
+     ],
+     "post": [
+      1055,
+      1426,
+      1120,
+      1446
+     ],
+     "tag": "a",
+     "text": "wxPython"
+    },
+    "secs": 29.5,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 3,
+    "hit_detail": [
+     "visual: List item looks different | pixels changed in a 532\u00d739 area",
+     "style: Link text color changed | text color #666666 \u2192 #e8590c",
+     "visual: Text looks different | pixels changed in a 408\u00d717 area"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      961,
+      1387,
+      1018,
+      1408
+     ],
+     "post": [
+      961,
+      1387,
+      1018,
+      1408
+     ],
+     "tag": "a",
+     "text": "Tornado"
+    },
+    "secs": 34.1,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 3,
+    "hit_detail": [
+     "visual: List item looks different | pixels changed in a 532\u00d739 area",
+     "style: Link background changed | background #e6e8ea \u2192 #ffe066",
+     "visual: Text looks different | pixels changed in a 389\u00d717 area"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      672,
+      780,
+      902,
+      811
+     ],
+     "post": [
+      672,
+      780,
+      902,
+      821
+     ],
+     "tag": "h2",
+     "text": "Docs"
+    },
+    "secs": 30.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading font size changed | font size 24.1501px \u2192 30.1876px"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 2,
+    "pixel_regions": 2,
+    "pixel_noise": 1
+   },
+   {
+    "op": "hide_image",
+    "skip": true
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      672,
+      1232,
+      707,
+      1249
+     ],
+     "post": [
+      672,
+      1232,
+      844,
+      1249
+     ],
+     "tag": "span",
+     "text": "Totally different words here"
+    },
+    "secs": 29.1,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text",
+     "visual"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "visual: Link looks different | pixels changed in a 135\u00d724 area",
+     "text: Text text changed | \"2026-\" \u2192 \"Totally different words here\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 28.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 116,
+    "pixel_noise": 115
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      64,
+      681,
+      1216,
+      1931
+     ],
+     "post": [
+      64,
+      721,
+      1216,
+      1971
+     ],
+     "tag": "section",
+     "text": "Security notice: the emSign root CA has "
+    },
+    "secs": 30.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "resized"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "resized: Element resized | 1280\u00d71314 \u2192 1280\u00d71354"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 94,
+    "pixel_noise": 70
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      672,
+      780,
+      902,
+      811
+     ],
+     "post": [
+      702,
+      780,
+      932,
+      811
+     ],
+     "tag": "h2",
+     "text": "Docs"
+    },
+    "secs": 31.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: Heading moved | moved 30px right"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      1055,
+      1426,
+      1120,
+      1446
+     ],
+     "post": null,
+     "tag": "a",
+     "text": "wxPython"
+    },
+    "secs": 26.4,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed",
+     "visual"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "visual: List item looks different | pixels changed in a 532\u00d739 area",
+     "removed: Link missing | \"wxPython\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   }
+  ]
+ },
+ {
+  "site": "https://developer.mozilla.org/en-US/",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 50.0,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      273,
+      1461,
+      615,
+      1507
+     ],
+     "post": [
+      273,
+      1461,
+      615,
+      1507
+     ],
+     "tag": "p",
+     "text": "Image compression involves countless tra"
+    },
+    "secs": 28.1,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Paragraph text color changed | text color #000000 \u2192 #e8590c"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      256,
+      2438,
+      789,
+      2516
+     ],
+     "post": [
+      256,
+      2438,
+      789,
+      2516
+     ],
+     "tag": "a",
+     "text": "Shrinivass Arunachalam Balasubramanian"
+    },
+    "secs": 33.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Link background changed | background #ffffff \u2192 #ffe066"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      273,
+      1026,
+      615,
+      1050
+     ],
+     "post": [
+      273,
+      1026,
+      615,
+      1056
+     ],
+     "tag": "h3",
+     "text": "Trusted Types API"
+    },
+    "secs": 26.4,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Link font size changed | font size 16px \u2192 20px"
+    ],
+    "false_alarms": 1,
+    "false_detail": [
+     "resized: Element resized | 376\u00d7139 \u2192 376\u00d7149 | article.featured-articles__article"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 35,
+    "pixel_noise": 34
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      821,
+      2484,
+      1024,
+      2612
+     ],
+     "post": null,
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 27.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Image missing | mdn_contributor.9e2a105f50828d5a.png"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      273,
+      1461,
+      615,
+      1507
+     ],
+     "post": [
+      273,
+      1461,
+      615,
+      1507
+     ],
+     "tag": "p",
+     "text": "Totally different words here"
+    },
+    "secs": 33.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "text: Paragraph text changed | \"Image compression involves countless trade-offs\u2026\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 31.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 76,
+    "pixel_noise": 75
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      256,
+      990,
+      632,
+      1129
+     ],
+     "post": [
+      256,
+      1038,
+      632,
+      1177
+     ],
+     "tag": "article",
+     "text": "Web APIs\n              \n                "
+    },
+    "secs": 30.8,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 1,
+    "false_detail": [
+     "resized: Element resized | 376\u00d7139 \u2192 376\u00d7187 | article.featured-articles__article"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 52,
+    "pixel_noise": 50
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      273,
+      1026,
+      615,
+      1050
+     ],
+     "post": [
+      303,
+      1026,
+      645,
+      1050
+     ],
+     "tag": "h3",
+     "text": "Trusted Types API"
+    },
+    "secs": 32.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: Link moved | moved 30px right"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      273,
+      1461,
+      615,
+      1507
+     ],
+     "post": null,
+     "tag": "p",
+     "text": "Image compression involves countless tra"
+    },
+    "secs": 25.5,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Paragraph missing | \"Image compression involves countless trade-offs b"
+    ],
+    "false_alarms": 1,
+    "false_detail": [
+     "resized: Link resized | 280\u00d720 \u2192 280\u00d735 | a.latest-news__source"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   }
+  ]
+ },
+ {
+  "site": "https://stripe.com",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 48.1,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 15,
+    "pixel_noise": 15
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      57,
+      1737,
+      341,
+      1795
+     ],
+     "post": [
+      57,
+      1737,
+      341,
+      1795
+     ],
+     "tag": "h3",
+     "text": "Monetize through agentic commerce"
+    },
+    "secs": 43.5,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading text color changed | text color #061b31 \u2192 #e8590c"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 21,
+    "pixel_noise": 20
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      847,
+      1021,
+      1251,
+      1703
+     ],
+     "post": [
+      847,
+      1021,
+      1251,
+      1703
+     ],
+     "tag": "div",
+     "text": "Pro PlanBilled monthlyTokens$0.01 per 1,"
+    },
+    "secs": 38.6,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 23,
+    "hit_detail": [
+     "visual: Text looks different | pixels changed in a 264\u00d718 area",
+     "visual: Text looks different | pixels changed in a 264\u00d718 area",
+     "visual: Text looks different | pixels changed in a 264\u00d718 area",
+     "visual: Text looks different | pixels changed in a 264\u00d718 area"
+    ],
+    "false_alarms": 14,
+    "false_detail": [
+     "text: Text text changed | \"2\" \u2192 \"3\" | span",
+     "text: Text text changed | \"2\" \u2192 \"3\" | span",
+     "added: Image added | platform-graphic-background_2x.png | img",
+     "added: Element added | div.browser-graphic__window | div.browser-graphic__window",
+     "added: Element added | div.platform-graphic-browser-sidebar | div.platform-graphic-browser-sidebar"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 60,
+    "pixel_noise": 59
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      57,
+      1051,
+      685,
+      1109
+     ],
+     "post": [
+      57,
+      1051,
+      685,
+      1123
+     ],
+     "tag": "h3",
+     "text": "Accept and optimize payments globally\u2014on"
+    },
+    "secs": 41.6,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading font size changed | font size 26px \u2192 32.5px"
+    ],
+    "false_alarms": 4,
+    "false_detail": [
+     "added: Text added | \"3\" | span",
+     "added: Text added | \"3\" | span",
+     "added: Text added | \"3\" | span",
+     "added: Text added | \"3\" | span"
+    ],
+    "layout_shifts": 0,
+    "pixel_regions": 17,
+    "pixel_noise": 16
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      46,
+      1181,
+      326,
+      1658
+     ],
+     "post": null,
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 35.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed",
+     "visual"
+    ],
+    "hits": 21,
+    "hit_detail": [
+     "visual: Text looks different | pixels changed in a 18\u00d712 area",
+     "visual: Text looks different | pixels changed in a 154\u00d724 area",
+     "visual: Text looks different | pixels changed in a 154\u00d724 area",
+     "visual: Text looks different | pixels changed in a 41\u00d712 area"
+    ],
+    "false_alarms": 14,
+    "false_detail": [
+     "text: Text text changed | \"2\" \u2192 \"3\" | span",
+     "text: Text text changed | \"2\" \u2192 \"3\" | span",
+     "added: Image added | platform-graphic-background_2x.png | img",
+     "added: Element added | div.browser-graphic__window | div.browser-graphic__window",
+     "added: Element added | div.platform-graphic-browser-sidebar | div.platform-graphic-browser-sidebar"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 60,
+    "pixel_noise": 59
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      272,
+      1996,
+      310,
+      2010
+     ],
+     "post": [
+      106,
+      1996,
+      304,
+      2025
+     ],
+     "tag": "span",
+     "text": "Totally different words here"
+    },
+    "secs": 41.9,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved",
+     "text"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "text: Text text changed | \"starting\" \u2192 \"Totally different words here\"",
+     "moved: Text moved | moved 98px right"
+    ],
+    "false_alarms": 16,
+    "false_detail": [
+     "added: Image added | platform-graphic-background_2x.png | img",
+     "added: Element added | div.browser-graphic__window | div.browser-graphic__window",
+     "added: Element added | div.platform-graphic-browser-sidebar | div.platform-graphic-browser-sidebar",
+     "added: Element added | div.platform-graphic__feature-card__container.plat | div.platform-graphic__feature-card__cont",
+     "added: Link added | \"Stripe for platforms\" | a.hds-button.hds-button--primary"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 61,
+    "pixel_noise": 57
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 40.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added",
+     "moved"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\"",
+     "moved: 545 elements moved | moved 64px down"
+    ],
+    "false_alarms": 14,
+    "false_detail": [
+     "text: Text text changed | \"2\" \u2192 \"4\" | span",
+     "text: Text text changed | \"2\" \u2192 \"4\" | span",
+     "added: Image added | platform-graphic-background_2x.png | img",
+     "added: Element added | div.browser-graphic__window | div.browser-graphic__window",
+     "added: Element added | div.platform-graphic-browser-sidebar | div.platform-graphic-browser-sidebar"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 132,
+    "pixel_noise": 131
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      0,
+      761,
+      1280,
+      2939
+     ],
+     "post": [
+      0,
+      809,
+      1280,
+      2987
+     ],
+     "tag": "section",
+     "text": "Flexible solutions for every business mo"
+    },
+    "secs": 41.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved",
+     "removed"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "removed: Element missing | div.agentic-commerce-graphic__products",
+     "moved: 646 elements moved | moved 48px down"
+    ],
+    "false_alarms": 2,
+    "false_detail": [
+     "text: Text text changed | \"2\" \u2192 \"4\" | span",
+     "text: Text text changed | \"2\" \u2192 \"4\" | span"
+    ],
+    "layout_shifts": 0,
+    "pixel_regions": 161,
+    "pixel_noise": 93
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      853,
+      1347,
+      933,
+      1433
+     ],
+     "post": [
+      883,
+      1347,
+      963,
+      1433
+     ],
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 30.5,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: Image moved | moved 30px right"
+    ],
+    "false_alarms": 2,
+    "false_detail": [
+     "text: Text text changed | \"2\" \u2192 \"4\" | span",
+     "text: Text text changed | \"2\" \u2192 \"4\" | span"
+    ],
+    "layout_shifts": 0,
+    "pixel_regions": 13,
+    "pixel_noise": 13
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      33,
+      854,
+      809,
+      964
+     ],
+     "post": null,
+     "tag": "p",
+     "text": "Grow your business with a comprehensive "
+    },
+    "secs": 26.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed",
+     "resized"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "resized: Heading resized | 593\u00d740 \u2192 587\u00d740",
+     "removed: Paragraph missing | \"Grow your business with a comprehensive set of pa"
+    ],
+    "false_alarms": 15,
+    "false_detail": [
+     "text: Text text changed | \"2\" \u2192 \"4\" | span",
+     "text: Text text changed | \"2\" \u2192 \"4\" | span",
+     "added: Image added | platform-graphic-background_2x.png | img",
+     "added: Element added | div.browser-graphic__window | div.browser-graphic__window",
+     "added: Element added | div.platform-graphic-browser-card-item__placeholde | div.platform-graphic-browser-card-item__"
+    ],
+    "layout_shifts": 3,
+    "pixel_regions": 98,
+    "pixel_noise": 97
+   }
+  ]
+ },
+ {
+  "site": "https://vercel.com",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 45.2,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      441,
+      1927,
+      1256,
+      2039
+     ],
+     "post": [
+      441,
+      1927,
+      1256,
+      2039
+     ],
+     "tag": "h2",
+     "text": "Ship apps that scale from zero to millio"
+    },
+    "secs": 33.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading text color changed | text color #171717 \u2192 #e8590c"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 7,
+    "pixel_noise": 0
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      24,
+      488,
+      148,
+      528
+     ],
+     "post": [
+      24,
+      488,
+      148,
+      528
+     ],
+     "tag": "a",
+     "text": "Deploy now"
+    },
+    "secs": 30.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "style: Link background changed | background #171717 \u2192 #ffe066",
+     "visual: Text looks different | pixels changed in a 100\u00d724 area"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      24,
+      1108,
+      697,
+      1220
+     ],
+     "post": [
+      24,
+      1108,
+      839,
+      1318
+     ],
+     "tag": "h2",
+     "text": "Build agents on infrastructure that thin"
+    },
+    "secs": 36.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading font size changed | font size 56px \u2192 70px"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 62,
+    "pixel_noise": 54
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      1126,
+      823,
+      1256,
+      853
+     ],
+     "post": null,
+     "tag": "svg",
+     "text": ""
+    },
+    "secs": 24.1,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Icon missing | inline SVG"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      900,
+      417,
+      1071,
+      438
+     ],
+     "post": [
+      900,
+      417,
+      1092,
+      438
+     ],
+     "tag": "span",
+     "text": "Totally different words here"
+    },
+    "secs": 27.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "text: Text text changed | \"To ship apps and agents\" \u2192 \"Totally different wor"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 31.4,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added",
+     "visual"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "visual: Icon looks different | pixels changed in a 14\u00d77 area",
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 91,
+    "pixel_noise": 90
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      24,
+      1108,
+      1256,
+      1220
+     ],
+     "post": [
+      24,
+      1156,
+      1256,
+      1268
+     ],
+     "tag": "section",
+     "text": "Build agents on infrastructure that thin"
+    },
+    "secs": 31.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: 182 elements moved | moved 48px down"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 55,
+    "pixel_noise": 54
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      24,
+      1264,
+      839,
+      1693
+     ],
+     "post": [
+      54,
+      1264,
+      869,
+      1693
+     ],
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 33.6,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: Image moved | moved 30px right"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 13,
+    "pixel_noise": 0
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      24,
+      2293,
+      317,
+      2313
+     ],
+     "post": null,
+     "tag": "li",
+     "text": "Features"
+    },
+    "secs": 32.0,
+    "detected": true,
+    "label_ok": false,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: List item moved | moved 836px down and 940px right"
+    ],
+    "false_alarms": 3,
+    "false_detail": [
+     "removed: List item missing | \"Features\" | li.font-normal",
+     "moved: 4 elements moved | moved 12px up | li",
+     "moved: Paragraph moved | moved 12px down | p.m-0.mt-10.@lg:mt-0"
+    ],
+    "layout_shifts": 0,
+    "pixel_regions": 2,
+    "pixel_noise": 1
+   }
+  ]
+ },
+ {
+  "site": "https://linear.app",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 45.1,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 3,
+    "pixel_noise": 3
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      42,
+      2056,
+      408,
+      2095
+     ],
+     "post": [
+      42,
+      2056,
+      408,
+      2095
+     ],
+     "tag": "p",
+     "text": "Linear is shaped by the practices and pr"
+    },
+    "secs": 32.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Paragraph text color changed | text color #8a8f98 \u2192 #e8590c"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 4,
+    "pixel_noise": 3
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      284,
+      2928,
+      584,
+      3024
+     ],
+     "post": [
+      284,
+      2928,
+      584,
+      3024
+     ],
+     "tag": "div",
+     "text": "ENG-2092Reduce startup delay caused by v"
+    },
+    "secs": 30.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 3,
+    "hit_detail": [
+     "visual: Icon looks different | pixels changed in a 14\u00d714 area",
+     "visual: Text looks different | pixels changed in a 259\u00d715 area",
+     "style: Element background changed | background #0f1011 \u2192 #ffe066"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 4,
+    "pixel_noise": 3
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      345,
+      666,
+      975,
+      693
+     ],
+     "post": [
+      345,
+      666,
+      975,
+      699
+     ],
+     "tag": "h3",
+     "text": "Faster app launch"
+    },
+    "secs": 36.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading font size changed | font size 20px \u2192 25px"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 2,
+    "pixel_regions": 12,
+    "pixel_noise": 11
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      487,
+      1739,
+      791,
+      2020
+     ],
+     "post": null,
+     "tag": "svg",
+     "text": ""
+    },
+    "secs": 37.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Icon missing | inline SVG"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 5,
+    "pixel_noise": 3
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      1019,
+      745,
+      1075,
+      763
+     ],
+     "post": [
+      1019,
+      745,
+      1171,
+      763
+     ],
+     "tag": "span",
+     "text": "Totally different words here"
+    },
+    "secs": 37.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text",
+     "visual"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "visual: Text looks different | pixels changed in a 72\u00d724 area",
+     "text: Text text changed | \"Opus 5.5\" \u2192 \"Totally different words here\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 4,
+    "pixel_noise": 3
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 36.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added",
+     "visual"
+    ],
+    "hits": 9,
+    "hit_detail": [
+     "visual: Link looks different | pixels changed in a 90\u00d732 area",
+     "visual: Link looks different | pixels changed in a 67\u00d732 area",
+     "visual: Link looks different | pixels changed in a 72\u00d732 area",
+     "visual: Button looks different | pixels changed in a 72\u00d732 area"
+    ],
+    "false_alarms": 2,
+    "false_detail": [
+     "removed: Link missing | a.Ey56KW_customerCard.Ey56KW_primary.I_mUeq_root | a.Ey56KW_customerCard.Ey56KW_primary.I_m",
+     "removed: Link missing | a.Ey56KW_customerCard.Ey56KW_secondary.I_mUeq_root | a.Ey56KW_customerCard.Ey56KW_secondary.I"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 393,
+    "pixel_noise": 392
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      10,
+      2265,
+      1270,
+      3491
+     ],
+     "post": [
+      10,
+      2313,
+      1270,
+      3539
+     ],
+     "tag": "section",
+     "text": "Intakeand integrationsAutomatically turn"
+    },
+    "secs": 37.5,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 2,
+    "false_detail": [
+     "removed: Link missing | a.Ey56KW_customerCard.Ey56KW_primary.I_mUeq_root | a.Ey56KW_customerCard.Ey56KW_primary.I_m",
+     "removed: Link missing | a.Ey56KW_customerCard.Ey56KW_secondary.I_mUeq_root | a.Ey56KW_customerCard.Ey56KW_secondary.I"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 344,
+    "pixel_noise": 243
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      48,
+      768,
+      256,
+      796
+     ],
+     "post": [
+      78,
+      768,
+      286,
+      796
+     ],
+     "tag": "button",
+     "text": "Initiatives"
+    },
+    "secs": 39.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "moved: Text moved | moved 30px right",
+     "moved: Icon moved | moved 30px right"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 4,
+    "pixel_noise": 3
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      42,
+      2056,
+      408,
+      2095
+     ],
+     "post": null,
+     "tag": "p",
+     "text": "Linear is shaped by the practices and pr"
+    },
+    "secs": 29.5,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Paragraph missing | \"Linear is shaped by the practices and principles "
+    ],
+    "false_alarms": 2,
+    "false_detail": [
+     "moved: Icon moved | moved 24px down | svg",
+     "moved: Text moved | moved 48px down | span.gPncVY"
+    ],
+    "layout_shifts": 0,
+    "pixel_regions": 6,
+    "pixel_noise": 5
+   }
+  ]
+ },
+ {
+  "site": "https://www.bbc.com",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 47.7,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 2,
+    "pixel_noise": 2
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      964,
+      974,
+      1264,
+      1018
+     ],
+     "post": [
+      964,
+      974,
+      1264,
+      1018
+     ],
+     "tag": "h2",
+     "text": "Tens of thousands of tents flooded after"
+    },
+    "secs": 38.9,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading text color changed | text color #202224 \u2192 #e8590c"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 4,
+    "pixel_noise": 3
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      16,
+      1947,
+      632,
+      2029
+     ],
+     "post": [
+      16,
+      1947,
+      632,
+      2029
+     ],
+     "tag": "div",
+     "text": "Where to get the best fish and chips in "
+    },
+    "secs": 35.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 3,
+    "hit_detail": [
+     "visual: Paragraph looks different | pixels changed in a 616\u00d736 area",
+     "style: Element background changed | background #ffffff \u2192 #ffe066",
+     "visual: Heading looks different | pixels changed in a 616\u00d722 area"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 4,
+    "pixel_noise": 3
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      16,
+      1959,
+      632,
+      1981
+     ],
+     "post": [
+      16,
+      1959,
+      632,
+      1981
+     ],
+     "tag": "h2",
+     "text": "Where to get the best fish and chips in "
+    },
+    "secs": 32.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading font size changed | font size 18px \u2192 22.5px"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 4,
+    "pixel_noise": 3
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      648,
+      1601,
+      1264,
+      1947
+     ],
+     "post": null,
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 32.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Image missing | p0plp91l.jpg.webp"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 5,
+    "pixel_noise": 4
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      964,
+      700,
+      1264,
+      754
+     ],
+     "post": [
+      964,
+      700,
+      1264,
+      718
+     ],
+     "tag": "p",
+     "text": "Totally different words here"
+    },
+    "secs": 32.6,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "text: Paragraph text changed | \"Donald Trump has repeatedly raised the prospect\u2026\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 2,
+    "pixel_regions": 8,
+    "pixel_noise": 7
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 34.1,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 1,
+    "false_detail": [
+     "text: Heading text changed | \"Gunman who killed six in Krakow believed to hav\u2026\" | h2.goCKSV"
+    ],
+    "layout_shifts": 3,
+    "pixel_regions": 78,
+    "pixel_noise": 77
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      0,
+      1547,
+      1280,
+      2045
+     ],
+     "post": [
+      0,
+      1595,
+      1280,
+      2093
+     ],
+     "tag": "section",
+     "text": "Weekend ReadsWhere to get the best fish "
+    },
+    "secs": 38.8,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 3,
+    "pixel_regions": 58,
+    "pixel_noise": 52
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      16,
+      1959,
+      632,
+      1981
+     ],
+     "post": [
+      46,
+      1959,
+      662,
+      1981
+     ],
+     "tag": "h2",
+     "text": "Where to get the best fish and chips in "
+    },
+    "secs": 37.9,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: Heading moved | moved 30px right"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 3,
+    "pixel_regions": 7,
+    "pixel_noise": 6
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      964,
+      515,
+      1264,
+      569
+     ],
+     "post": null,
+     "tag": "p",
+     "text": "The BBC has asked the White House and TK"
+    },
+    "secs": 29.4,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Paragraph missing | \"The BBC has asked the White House and TKO Holding"
+    ],
+    "false_alarms": 1,
+    "false_detail": [
+     "text: Heading text changed | \"Gunman who killed six in Krakow believed to hav\u2026\" | h2.goCKSV"
+    ],
+    "layout_shifts": 4,
+    "pixel_regions": 12,
+    "pixel_noise": 11
+   }
+  ]
+ },
+ {
+  "site": "https://www.theverge.com",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 50.9,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 3,
+    "false_detail": [
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 13,
+    "pixel_noise": 13
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      478,
+      2107,
+      710,
+      2169
+     ],
+     "post": [
+      478,
+      2107,
+      710,
+      2169
+     ],
+     "tag": "p",
+     "text": "One year later, the Bambu P2S Combo is t"
+    },
+    "secs": 51.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Paragraph text color changed | text color #4a4a4a \u2192 #e8590c"
+    ],
+    "false_alarms": 3,
+    "false_detail": [
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span"
+    ],
+    "layout_shifts": 4,
+    "pixel_regions": 55,
+    "pixel_noise": 55
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      201,
+      891,
+      681,
+      1131
+     ],
+     "post": [
+      201,
+      891,
+      681,
+      1131
+     ],
+     "tag": "div",
+     "text": "Good riddance, Cybertruck!We\u2019ll always h"
+    },
+    "secs": 46.6,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "text",
+     "visual"
+    ],
+    "hits": 8,
+    "hit_detail": [
+     "visual: Text looks different | pixels changed in a 128\u00d713 area",
+     "visual: Image looks different | pixels changed in a 680\u00d7544 area",
+     "style: Element background changed | background #ffffff \u2192 #ffe066",
+     "visual: Text looks different | pixels changed in a 80\u00d713 area"
+    ],
+    "false_alarms": 71,
+    "false_detail": [
+     "visual: Text looks different | pixels changed in a 80\u00d713 area | time",
+     "visual: Text looks different | pixels changed in a 39\u00d713 area | time",
+     "visual: Text looks different | pixels changed in a 485\u00d729 area | span.duet--article--dangerously-set-cms-",
+     "visual: Heading looks different | pixels changed in a 783\u00d727 area | h2.pnbklw1",
+     "visual: Icon looks different | pixels changed in a 12\u00d712 area | svg"
+    ],
+    "layout_shifts": 3,
+    "pixel_regions": 56,
+    "pixel_noise": 55
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      18,
+      2886,
+      801,
+      2939
+     ],
+     "post": [
+      18,
+      2886,
+      801,
+      2952
+     ],
+     "tag": "h2",
+     "text": "Hey! Listen / The Legend of Zelda: Ocari"
+    },
+    "secs": 47.3,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 7,
+    "false_detail": [
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "style: Text font size changed | font size 24px \u2192 30px | span.duet--article--dangerously-set-cms-",
+     "style: Text font size changed | font size 24px \u2192 30px | span",
+     "style: Text font size changed | font size 24px \u2192 30px | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span"
+    ],
+    "layout_shifts": 6,
+    "pixel_regions": 83,
+    "pixel_noise": 83
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      460,
+      1507,
+      535,
+      1582
+     ],
+     "post": null,
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 46.1,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Image missing | 268857_cutting_red_tape_to_build_more_p\u2026"
+    ],
+    "false_alarms": 4,
+    "false_detail": [
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"80\" \u2192 \"81\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span"
+    ],
+    "layout_shifts": 3,
+    "pixel_regions": 22,
+    "pixel_noise": 21
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      68,
+      2482,
+      448,
+      2554
+     ],
+     "post": [
+      68,
+      2482,
+      448,
+      2506
+     ],
+     "tag": "p",
+     "text": "Totally different words here"
+    },
+    "secs": 49.6,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 4,
+    "false_detail": [
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"80\" \u2192 \"81\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span"
+    ],
+    "layout_shifts": 4,
+    "pixel_regions": 25,
+    "pixel_noise": 25
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 46.1,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 6,
+    "false_detail": [
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "removed: Icon missing | inline SVG | svg.qftpdo0",
+     "removed: Button missing | \"Play video\" | button"
+    ],
+    "layout_shifts": 6,
+    "pixel_regions": 129,
+    "pixel_noise": 128
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      18,
+      1933,
+      801,
+      2745
+     ],
+     "post": [
+      18,
+      1981,
+      801,
+      2793
+     ],
+     "tag": "section",
+     "text": "Weekend reads / Catch up on our favorite"
+    },
+    "secs": 28.8,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 4,
+    "false_detail": [
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"80\" \u2192 \"82\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span"
+    ],
+    "layout_shifts": 5,
+    "pixel_regions": 97,
+    "pixel_noise": 88
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      68,
+      2090,
+      448,
+      2470
+     ],
+     "post": [
+      98,
+      2090,
+      478,
+      2470
+     ],
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 21.1,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 5,
+    "false_detail": [
+     "resized: Link resized | 346\u00d742 \u2192 159\u00d720 | a",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"80\" \u2192 \"82\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span"
+    ],
+    "layout_shifts": 5,
+    "pixel_regions": 159,
+    "pixel_noise": 153
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      478,
+      2107,
+      710,
+      2169
+     ],
+     "post": null,
+     "tag": "p",
+     "text": "One year later, the Bambu P2S Combo is t"
+    },
+    "secs": 20.1,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 5,
+    "false_detail": [
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "text: Text text changed | \"80\" \u2192 \"82\" | span",
+     "text: Text text changed | \"52\" \u2192 \"53\" | span",
+     "removed: Paragraph missing | \"One year later, the Bambu P2S Combo is the only 3 | p.duet--article--dangerously-set-cms-mar"
+    ],
+    "layout_shifts": 4,
+    "pixel_regions": 87,
+    "pixel_noise": 87
+   }
+  ]
+ },
+ {
+  "site": "https://www.airbnb.com",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 34.9,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 4,
+    "false_detail": [
+     "visual: Icon looks different | pixels changed in a 16\u00d716 area | svg",
+     "style: Element corner radius changed | corner radius 32px \u2192 0px | div.i1hf2lh8.atm_mk_stnw88.atm_tk_idpfg4",
+     "removed: Element missing | div.a1aiei06.atm_mk_stnw88.atm_tk_idpfg4 | div.a1aiei06.atm_mk_stnw88.atm_tk_idpfg4",
+     "removed: Element missing | div.whb0xmj.atm_mk_1if85x1.atm_tk_idpfg4 | div.whb0xmj.atm_mk_1if85x1.atm_tk_idpfg4"
+    ],
+    "layout_shifts": 3,
+    "pixel_regions": 73,
+    "pixel_noise": 73
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      294,
+      418,
+      394,
+      436
+     ],
+     "post": [
+      294,
+      418,
+      394,
+      436
+     ],
+     "tag": "button",
+     "text": "Mountains"
+    },
+    "secs": 31.5,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Button text color changed | text color #6c6c6c \u2192 #e8590c"
+    ],
+    "false_alarms": 4,
+    "false_detail": [
+     "removed: Text missing | \"Hotels\" | span.timi9jf.atm_7l_xeyu1p.atm_ti_1q9ccg",
+     "moved: Text moved | moved 62px right | span.timi9jf.atm_ti_1q9ccgz.atm_cs_1mexz",
+     "moved: Text moved | moved 62px right | span.timi9jf.atm_7l_xeyu1p.atm_ti_1q9ccg",
+     "moved: Text moved | moved 62px right | span.u4v6jzs.atm_mk_stnw88.atm_6i_8vkjn5"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 6,
+    "pixel_noise": 5
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      32,
+      447,
+      1248,
+      448
+     ],
+     "post": [
+      32,
+      447,
+      1248,
+      448
+     ],
+     "tag": "div",
+     "text": ""
+    },
+    "secs": 31.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Element background changed | background #dddddd \u2192 #ffe066"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      32,
+      716,
+      427,
+      734
+     ],
+     "post": [
+      32,
+      716,
+      427,
+      734
+     ],
+     "tag": "h3",
+     "text": "Support"
+    },
+    "secs": 31.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading font size changed | font size 14px \u2192 17.5px"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "hide_image",
+    "skip": true
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      440,
+      540,
+      636,
+      558
+     ],
+     "post": [
+      440,
+      540,
+      636,
+      558
+     ],
+     "tag": "span",
+     "text": "Totally different words here"
+    },
+    "secs": 28.4,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "text: Text text changed | \"Detroit\" \u2192 \"Totally different words here\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 31.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 1,
+    "false_detail": [
+     "removed: Text missing | \"Hotels\" | span.timi9jf.atm_7l_xeyu1p.atm_ti_1q9ccg"
+    ],
+    "layout_shifts": 3,
+    "pixel_regions": 73,
+    "pixel_noise": 72
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      32,
+      716,
+      427,
+      1202
+     ],
+     "post": [
+      32,
+      764,
+      427,
+      1202
+     ],
+     "tag": "section",
+     "text": "SupportHelp CenterGet help with a safety"
+    },
+    "secs": 29.6,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: 9 elements moved | moved 48px down"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 7,
+    "pixel_noise": 0
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      490,
+      418,
+      603,
+      436
+     ],
+     "post": [
+      520,
+      418,
+      633,
+      436
+     ],
+     "tag": "button",
+     "text": "Things to do"
+    },
+    "secs": 32.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved",
+     "visual"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "visual: Button looks different | pixels changed in a 185\u00d718 area",
+     "moved: Button moved | moved 30px right"
+    ],
+    "false_alarms": 4,
+    "false_detail": [
+     "removed: Text missing | \"Hotels\" | span.timi9jf.atm_7l_xeyu1p.atm_ti_1q9ccg",
+     "moved: Text moved | moved 62px right | span.timi9jf.atm_ti_1q9ccgz.atm_cs_1mexz",
+     "moved: Text moved | moved 62px right | span.timi9jf.atm_7l_xeyu1p.atm_ti_1q9ccg",
+     "moved: Text moved | moved 62px right | span.u4v6jzs.atm_mk_stnw88.atm_6i_8vkjn5"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 6,
+    "pixel_noise": 5
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      221,
+      418,
+      294,
+      436
+     ],
+     "post": null,
+     "tag": "button",
+     "text": "Beach"
+    },
+    "secs": 35.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Button missing | \"Beach\""
+    ],
+    "false_alarms": 4,
+    "false_detail": [
+     "removed: Text missing | \"Hotels\" | span.timi9jf.atm_7l_xeyu1p.atm_ti_1q9ccg",
+     "moved: Text moved | moved 62px right | span.timi9jf.atm_ti_1q9ccgz.atm_cs_1mexz",
+     "moved: Text moved | moved 62px right | span.timi9jf.atm_7l_xeyu1p.atm_ti_1q9ccg",
+     "moved: Text moved | moved 62px right | span.u4v6jzs.atm_mk_stnw88.atm_6i_8vkjn5"
+    ],
+    "layout_shifts": 2,
+    "pixel_regions": 6,
+    "pixel_noise": 5
+   }
+  ]
+ },
+ {
+  "site": "https://www.shopify.com",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 41.5,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 54,
+    "false_detail": [
+     "resized: Link resized | 266\u00d723 \u2192 276\u00d724 | a",
+     "resized: Link resized | 229\u00d723 \u2192 237\u00d724 | a",
+     "resized: Link resized | 82\u00d724 \u2192 88\u00d724 | a",
+     "resized: Link resized | 110\u00d724 \u2192 118\u00d724 | a",
+     "resized: Link resized | 220\u00d723 \u2192 229\u00d724 | a"
+    ],
+    "layout_shifts": 12,
+    "pixel_regions": 13,
+    "pixel_noise": 13
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      913,
+      1431,
+      1002,
+      1455
+     ],
+     "post": [
+      913,
+      1431,
+      1002,
+      1455
+     ],
+     "tag": "a",
+     "text": "glossier.com"
+    },
+    "secs": 40.6,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Link text color changed | text color #ffffff \u2192 #e8590c"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 13,
+    "pixel_noise": 13
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      134,
+      2879,
+      198,
+      2943
+     ],
+     "post": [
+      134,
+      2879,
+      198,
+      2943
+     ],
+     "tag": "div",
+     "text": ""
+    },
+    "secs": 41.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "resized",
+     "style"
+    ],
+    "hits": 3,
+    "hit_detail": [
+     "style: Element background changed | background oklab(0.999994 0.0000455678 0.000020086",
+     "resized: Link resized | 139\u00d716 \u2192 149\u00d717",
+     "resized: Heading resized | 263\u00d726 \u2192 263\u00d752"
+    ],
+    "false_alarms": 52,
+    "false_detail": [
+     "resized: Link resized | 266\u00d723 \u2192 276\u00d724 | a",
+     "resized: Link resized | 229\u00d723 \u2192 237\u00d724 | a",
+     "resized: Link resized | 82\u00d724 \u2192 88\u00d724 | a",
+     "resized: Link resized | 110\u00d724 \u2192 118\u00d724 | a",
+     "resized: Link resized | 220\u00d723 \u2192 229\u00d724 | a"
+    ],
+    "layout_shifts": 12,
+    "pixel_regions": 13,
+    "pixel_noise": 13
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      130,
+      1794,
+      600,
+      1915
+     ],
+     "post": [
+      130,
+      1794,
+      600,
+      1915
+     ],
+     "tag": "h2",
+     "text": "Your brand has entered the\u00a0chat"
+    },
+    "secs": 35.4,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading font size changed | font size 56px \u2192 70px"
+    ],
+    "false_alarms": 56,
+    "false_detail": [
+     "resized: Link resized | 266\u00d723 \u2192 276\u00d724 | a",
+     "resized: Link resized | 229\u00d723 \u2192 237\u00d724 | a",
+     "resized: Link resized | 82\u00d724 \u2192 88\u00d724 | a",
+     "resized: Link resized | 110\u00d724 \u2192 118\u00d724 | a",
+     "resized: Text resized | 502\u00d764 \u2192 474\u00d768 | span#ab-section-tab-3.cursor-pointer.tex"
+    ],
+    "layout_shifts": 12,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      742,
+      1140,
+      1174,
+      1471
+     ],
+     "post": null,
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 33.6,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed",
+     "resized"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "resized: Link resized | 89\u00d724 \u2192 96\u00d724",
+     "removed: Image missing | 4f34cdb8ec9c120b80b8be143d0791d7.jpg"
+    ],
+    "false_alarms": 55,
+    "false_detail": [
+     "resized: Link resized | 266\u00d723 \u2192 276\u00d724 | a",
+     "resized: Link resized | 229\u00d723 \u2192 237\u00d724 | a",
+     "resized: Link resized | 82\u00d724 \u2192 88\u00d724 | a",
+     "resized: Link resized | 110\u00d724 \u2192 118\u00d724 | a",
+     "resized: Text resized | 502\u00d764 \u2192 474\u00d768 | span#ab-section-tab-3.cursor-pointer.tex"
+    ],
+    "layout_shifts": 12,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      90,
+      2917,
+      239,
+      2934
+     ],
+     "post": [
+      90,
+      2917,
+      273,
+      2934
+     ],
+     "tag": "a",
+     "text": "Totally different words here"
+    },
+    "secs": 37.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "text: Link text changed | \"Build your online store\" \u2192 \"Totally different wor"
+    ],
+    "false_alarms": 60,
+    "false_detail": [
+     "resized: Link resized | 266\u00d723 \u2192 276\u00d724 | a",
+     "resized: Link resized | 229\u00d723 \u2192 237\u00d724 | a",
+     "resized: Link resized | 82\u00d724 \u2192 88\u00d724 | a",
+     "resized: Link resized | 110\u00d724 \u2192 118\u00d724 | a",
+     "resized: Text resized | 502\u00d764 \u2192 474\u00d768 | span#ab-section-tab-3.cursor-pointer.tex"
+    ],
+    "layout_shifts": 13,
+    "pixel_regions": 14,
+    "pixel_noise": 13
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 39.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added",
+     "moved",
+     "resized"
+    ],
+    "hits": 6,
+    "hit_detail": [
+     "resized: Label resized | 108\u00d772 \u2192 114\u00d772",
+     "resized: Label resized | 81\u00d772 \u2192 85\u00d772",
+     "resized: Link resized | 49\u00d772 \u2192 52\u00d772",
+     "resized: Link resized | 73\u00d772 \u2192 77\u00d772"
+    ],
+    "false_alarms": 54,
+    "false_detail": [
+     "resized: Link resized | 266\u00d723 \u2192 276\u00d724 | a",
+     "resized: Link resized | 229\u00d723 \u2192 237\u00d724 | a",
+     "resized: Link resized | 82\u00d724 \u2192 88\u00d724 | a",
+     "resized: Link resized | 110\u00d724 \u2192 118\u00d724 | a",
+     "resized: Text resized | 502\u00d764 \u2192 474\u00d768 | span#ab-section-tab-3.cursor-pointer.tex"
+    ],
+    "layout_shifts": 12,
+    "pixel_regions": 185,
+    "pixel_noise": 184
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      0,
+      908,
+      1280,
+      1551
+     ],
+     "post": [
+      0,
+      955,
+      1280,
+      1598
+     ],
+     "tag": "section",
+     "text": "Sell everywhere people shop. Online and "
+    },
+    "secs": 30.6,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "resized"
+    ],
+    "hits": 4,
+    "hit_detail": [
+     "resized: Link resized | 130\u00d724 \u2192 138\u00d724",
+     "resized: Link resized | 100\u00d724 \u2192 108\u00d724",
+     "resized: Link resized | 89\u00d724 \u2192 96\u00d724",
+     "resized: Text resized | 709\u00d764 \u2192 672\u00d768"
+    ],
+    "false_alarms": 49,
+    "false_detail": [
+     "resized: Link resized | 266\u00d723 \u2192 276\u00d724 | a",
+     "resized: Link resized | 229\u00d723 \u2192 237\u00d724 | a",
+     "resized: Link resized | 82\u00d724 \u2192 88\u00d724 | a",
+     "resized: Link resized | 110\u00d724 \u2192 118\u00d724 | a",
+     "resized: Link resized | 220\u00d723 \u2192 229\u00d724 | a"
+    ],
+    "layout_shifts": 13,
+    "pixel_regions": 109,
+    "pixel_noise": 102
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      954,
+      2296,
+      1002,
+      2344
+     ],
+     "post": [
+      984,
+      2296,
+      1032,
+      2344
+     ],
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 29.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: Image moved | moved 30px right"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      578,
+      1430,
+      686,
+      1454
+     ],
+     "post": null,
+     "tag": "a",
+     "text": "ornotbike.com"
+    },
+    "secs": 27.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Link missing | \"ornotbike.com\""
+    ],
+    "false_alarms": 55,
+    "false_detail": [
+     "resized: Link resized | 266\u00d723 \u2192 276\u00d724 | a",
+     "resized: Link resized | 229\u00d723 \u2192 237\u00d724 | a",
+     "resized: Link resized | 82\u00d724 \u2192 88\u00d724 | a",
+     "resized: Link resized | 110\u00d724 \u2192 118\u00d724 | a",
+     "resized: Text resized | 502\u00d764 \u2192 474\u00d768 | span#ab-section-tab-3.cursor-pointer.tex"
+    ],
+    "layout_shifts": 12,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   }
+  ]
+ },
+ {
+  "site": "https://www.figma.com",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 39.2,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      243,
+      1789,
+      1037,
+      1825
+     ],
+     "post": [
+      243,
+      1789,
+      1037,
+      1825
+     ],
+     "tag": "h2",
+     "text": "One workspace for your entire product de"
+    },
+    "secs": 44.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading text color changed | text color #000000 \u2192 #e8590c"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      779,
+      1589,
+      827,
+      1637
+     ],
+     "post": [
+      779,
+      1589,
+      827,
+      1637
+     ],
+     "tag": "div",
+     "text": ""
+    },
+    "secs": 43.6,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 2,
+    "false_detail": [
+     "removed: Icon missing | inline SVG | svg.fig-gjw6ce",
+     "removed: Icon missing | inline SVG | svg.fig-gjw6ce"
+    ],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 1
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      243,
+      1789,
+      1037,
+      1825
+     ],
+     "post": [
+      243,
+      1789,
+      1037,
+      1879
+     ],
+     "tag": "h2",
+     "text": "One workspace for your entire product de"
+    },
+    "secs": 40.5,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading font size changed | font size 30px \u2192 37.5px"
+    ],
+    "false_alarms": 4,
+    "false_detail": [
+     "added: Element added | div.fig-e3oo29 | div.fig-e3oo29",
+     "removed: Text missing | \"Modern slavery statement\" | span.fig-bpov6r",
+     "removed: Heading missing | \"Plans\" | h2#e0cfc0ae9d68.fig-1gg9t03",
+     "removed: Icon missing | inline SVG | svg.fig-gjw6ce"
+    ],
+    "layout_shifts": 3,
+    "pixel_regions": 106,
+    "pixel_noise": 104
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      0,
+      2891,
+      308,
+      3274
+     ],
+     "post": null,
+     "tag": "img",
+     "text": ""
+    },
+    "secs": 39.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Image missing | b82592e52a6cc84b26ac68a8fd0fd5f2d05e0a3\u2026"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 4,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      851,
+      1354,
+      1008,
+      1372
+     ],
+     "post": [
+      851,
+      1354,
+      1049,
+      1372
+     ],
+     "tag": "span",
+     "text": "Totally different words here"
+    },
+    "secs": 39.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "text: Button text changed | \"Explore Figma's agent\" \u2192 \"Totally different words"
+    ],
+    "false_alarms": 2,
+    "false_detail": [
+     "removed: Icon missing | inline SVG | svg.fig-gjw6ce",
+     "removed: Icon missing | inline SVG | svg.fig-gjw6ce"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 1,
+    "pixel_noise": 1
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 38.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 2,
+    "false_detail": [
+     "removed: Text missing | \"Modern slavery statement\" | span.fig-bpov6r",
+     "removed: Heading missing | \"Plans\" | h2#e0cfc0ae9d68.fig-1gg9t03"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 173,
+    "pixel_noise": 173
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      851,
+      1214,
+      1240,
+      1376
+     ],
+     "post": [
+      851,
+      1246,
+      1240,
+      1408
+     ],
+     "tag": "article",
+     "text": "Your built-in creative collaboratorAsk F"
+    },
+    "secs": 35.1,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: 5 elements moved | moved 32px down"
+    ],
+    "false_alarms": 2,
+    "false_detail": [
+     "added: Element added | div.fig-e3oo29 | div.fig-e3oo29",
+     "removed: Icon missing | inline SVG | svg.fig-gjw6ce"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 6,
+    "pixel_noise": 6
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      243,
+      1789,
+      1037,
+      1825
+     ],
+     "post": [
+      273,
+      1789,
+      1067,
+      1825
+     ],
+     "tag": "h2",
+     "text": "One workspace for your entire product de"
+    },
+    "secs": 31.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: Heading moved | moved 30px right"
+    ],
+    "false_alarms": 2,
+    "false_detail": [
+     "added: Element added | div.fig-e3oo29 | div.fig-e3oo29",
+     "removed: Icon missing | inline SVG | svg.fig-gjw6ce"
+    ],
+    "layout_shifts": 2,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      851,
+      1246,
+      1216,
+      1268
+     ],
+     "post": null,
+     "tag": "p",
+     "text": "Your built-in creative collaborator"
+    },
+    "secs": 17.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Paragraph missing | \"Your built-in creative collaborator\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 2,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   }
+  ]
+ },
+ {
+  "site": "https://tailwindcss.com",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 33.9,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 13,
+    "false_detail": [
+     "resized: Text resized | 246\u00d724 \u2192 190\u00d724 | span.transition-[font-size].dark:text-wh",
+     "resized: Image resized | 334\u00d7332 \u2192 328\u00d7328 | img.absolute.inset-0.size-82",
+     "visual: Text looks different | pixels changed in a 148\u00d717 area | span",
+     "resized: Text resized | 246\u00d724 \u2192 190\u00d724 | span.transition-colors.dark:text-white",
+     "removed: Element missing | div.size-(--size).bg-white/15.backdrop-blur-sm | div.size-(--size).bg-white/15.backdrop-b"
+    ],
+    "layout_shifts": 3,
+    "pixel_regions": 42,
+    "pixel_noise": 42
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      40,
+      1317,
+      552,
+      1357
+     ],
+     "post": [
+      40,
+      1317,
+      552,
+      1357
+     ],
+     "tag": "h2",
+     "text": "Supported by the best."
+    },
+    "secs": 37.9,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading text color changed | text color lab(1.90334 0.278696 -5.48866) \u2192 #e8590"
+    ],
+    "false_alarms": 20,
+    "false_detail": [
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "visual: Text looks different | pixels changed in a 110\u00d728 area | div.font-mono.text-[13px]/7.dark:text-wh"
+    ],
+    "layout_shifts": 20,
+    "pixel_regions": 42,
+    "pixel_noise": 41
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      47,
+      721,
+      833,
+      1117
+     ],
+     "post": [
+      47,
+      721,
+      833,
+      1117
+     ],
+     "tag": "div",
+     "text": "<div class=\"flex flex-col items-center p"
+    },
+    "secs": 38.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 81,
+    "hit_detail": [
+     "visual: Text looks different | pixels changed in a 8\u00d717 area",
+     "visual: Text looks different | pixels changed in a 23\u00d717 area",
+     "visual: Text looks different | pixels changed in a 39\u00d717 area",
+     "visual: Text looks different | pixels changed in a 8\u00d717 area"
+    ],
+    "false_alarms": 33,
+    "false_detail": [
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80"
+    ],
+    "layout_shifts": 18,
+    "pixel_regions": 54,
+    "pixel_noise": 53
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      40,
+      1317,
+      552,
+      1357
+     ],
+     "post": [
+      40,
+      1317,
+      552,
+      1357
+     ],
+     "tag": "h2",
+     "text": "Supported by the best."
+    },
+    "secs": 31.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "style: Heading font size changed | font size 40px \u2192 50px",
+     "visual: Text looks different | pixels changed in a 1200\u00d740 area"
+    ],
+    "false_alarms": 31,
+    "false_detail": [
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80"
+    ],
+    "layout_shifts": 18,
+    "pixel_regions": 52,
+    "pixel_noise": 51
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      668,
+      1909,
+      922,
+      1986
+     ],
+     "post": null,
+     "tag": "svg",
+     "text": ""
+    },
+    "secs": 32.5,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 37,
+    "false_detail": [
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80"
+    ],
+    "layout_shifts": 13,
+    "pixel_regions": 52,
+    "pixel_noise": 51
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      177,
+      888,
+      278,
+      905
+     ],
+     "post": [
+      177,
+      888,
+      395,
+      905
+     ],
+     "tag": "span",
+     "text": "Totally different words here"
+    },
+    "secs": 33.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "text: Text text changed | \"Class Warfare\" \u2192 \"Totally different words here\""
+    ],
+    "false_alarms": 20,
+    "false_detail": [
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80"
+    ],
+    "layout_shifts": 15,
+    "pixel_regions": 40,
+    "pixel_noise": 39
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 32.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added",
+     "visual"
+    ],
+    "hits": 17,
+    "hit_detail": [
+     "visual: Link looks different | pixels changed in a 34\u00d724 area",
+     "visual: Link looks different | pixels changed in a 29\u00d724 area",
+     "visual: Link looks different | pixels changed in a 30\u00d724 area",
+     "visual: Link looks different | pixels changed in a 68\u00d724 area"
+    ],
+    "false_alarms": 34,
+    "false_detail": [
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "resized: Text resized | 246\u00d724 \u2192 190\u00d724 | span.transition-[font-size].dark:text-wh",
+     "resized: Image resized | 334\u00d7332 \u2192 328\u00d7328 | img.absolute.inset-0.size-82"
+    ],
+    "layout_shifts": 26,
+    "pixel_regions": 280,
+    "pixel_noise": 279
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      40,
+      1597,
+      1240,
+      2891
+     ],
+     "post": [
+      40,
+      1597,
+      1240,
+      2891
+     ],
+     "tag": "section",
+     "text": ""
+    },
+    "secs": 37.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added",
+     "image",
+     "moved",
+     "removed"
+    ],
+    "hits": 14,
+    "hit_detail": [
+     "image: Image changed | inline SVG \u2192 inline SVG",
+     "image: Image changed | inline SVG \u2192 inline SVG",
+     "image: Image changed | inline SVG \u2192 inline SVG",
+     "added: Icon added | inline SVG"
+    ],
+    "false_alarms": 7,
+    "false_detail": [
+     "visual: Text looks different | pixels changed in a 110\u00d728 area | div.font-mono.text-[13px]/7.dark:text-wh",
+     "resized: Image resized | 334\u00d7332 \u2192 328\u00d7328 | img.absolute.inset-0.size-82",
+     "visual: Text looks different | pixels changed in a 148\u00d717 area | span",
+     "moved: Element moved | moved 332px left | div.absolute.size-8.rounded-lg",
+     "moved: Element moved | moved 332px left | div.absolute.size-8.rounded-lg"
+    ],
+    "layout_shifts": 19,
+    "pixel_regions": 45,
+    "pixel_noise": 9
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      172,
+      577,
+      492,
+      617
+     ],
+     "post": [
+      202,
+      577,
+      522,
+      617
+     ],
+     "tag": "button",
+     "text": "Quick search\u2318KCtrl\u00a0K"
+    },
+    "secs": 40.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: Button moved | moved 30px right"
+    ],
+    "false_alarms": 23,
+    "false_detail": [
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "visual: Image looks different | pixels changed in a 256\u00d7256 area | img.size-64.inset-ring"
+    ],
+    "layout_shifts": 20,
+    "pixel_regions": 42,
+    "pixel_noise": 40
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      40,
+      1397,
+      808,
+      1453
+     ],
+     "post": null,
+     "tag": "p",
+     "text": "Tailwind is supported by incredible part"
+    },
+    "secs": 29.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed",
+     "resized"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "resized: Element resized | 40\u00d710214 \u2192 40\u00d710158",
+     "removed: Paragraph missing | \"Tailwind is supported by incredible partners and "
+    ],
+    "false_alarms": 32,
+    "false_detail": [
+     "resized: Element resized | 40\u00d710214 \u2192 40\u00d710158 | div.row-span-full.row-start-1.hidden",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80",
+     "image: Image changed | inline SVG \u2192 inline SVG | svg.w-full.max-w-80"
+    ],
+    "layout_shifts": 26,
+    "pixel_regions": 252,
+    "pixel_noise": 251
+   }
+  ]
+ },
+ {
+  "site": "https://docs.python.org/3/",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 29.7,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      771,
+      561,
+      892,
+      585
+     ],
+     "post": [
+      771,
+      561,
+      892,
+      585
+     ],
+     "tag": "a",
+     "text": "Deprecations"
+    },
+    "secs": 32.4,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Link text color changed | text color #0072aa \u2192 #e8590c"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      16,
+      1361,
+      1264,
+      1407
+     ],
+     "post": [
+      16,
+      1361,
+      1264,
+      1407
+     ],
+     "tag": "div",
+     "text": "Navigation\n      \n        \n          ind"
+    },
+    "secs": 29.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 15,
+    "hit_detail": [
+     "visual: Link looks different | pixels changed in a 142\u00d717 area",
+     "visual: Link looks different | pixels changed in a 35\u00d717 area",
+     "visual: Link looks different | pixels changed in a 56\u00d717 area",
+     "visual: List item looks different | pixels changed in a 155\u00d717 area"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "font_size",
+    "skip": true
+   },
+   {
+    "op": "hide_image",
+    "skip": true
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      771,
+      452,
+      875,
+      474
+     ],
+     "post": [
+      771,
+      452,
+      952,
+      474
+     ],
+     "tag": "span",
+     "text": "Totally different words here"
+    },
+    "secs": 27.4,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "text: Text text changed | \"C API reference\" \u2192 \"Totally different words here\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      16,
+      0,
+      1264,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 30.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 1,
+    "pixel_regions": 40,
+    "pixel_noise": 39
+   },
+   {
+    "op": "spacing",
+    "skip": true
+   },
+   {
+    "op": "move",
+    "skip": true
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      771,
+      561,
+      892,
+      585
+     ],
+     "post": null,
+     "tag": "a",
+     "text": "Deprecations"
+    },
+    "secs": 36.7,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Link missing | \"Deprecations\""
+    ],
+    "false_alarms": 1,
+    "false_detail": [
+     "visual: Text looks different | pixels changed in a 1238\u00d7180 area | div.footer"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 2,
+    "pixel_noise": 1
+   }
+  ]
+ },
+ {
+  "site": "https://news.ycombinator.com",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 29.1,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      254,
+      481,
+      315,
+      492
+     ],
+     "post": [
+      254,
+      481,
+      315,
+      492
+     ],
+     "tag": "a",
+     "text": "21 hours ago"
+    },
+    "secs": 29.6,
+    "detected": true,
+    "label_ok": false,
+    "hit_kinds": [
+     "resized"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "resized: Text resized | 83\u00d713 \u2192 88\u00d713"
+    ],
+    "false_alarms": 34,
+    "false_detail": [
+     "resized: Text resized | 83\u00d713 \u2192 65\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 65\u00d713 \u2192 83\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 88\u00d713 \u2192 83\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 131\u00d713 \u2192 95\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 95\u00d713 \u2192 88\u00d713 | span.sitebit.comhead"
+    ],
+    "layout_shifts": 3,
+    "pixel_regions": 13,
+    "pixel_noise": 12
+   },
+   {
+    "op": "bg_color",
+    "skip": true
+   },
+   {
+    "op": "font_size",
+    "skip": true
+   },
+   {
+    "op": "hide_image",
+    "skip": true
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      139,
+      464,
+      235,
+      480
+     ],
+     "post": [
+      139,
+      464,
+      323,
+      480
+     ],
+     "tag": "a",
+     "text": "Totally different words here"
+    },
+    "secs": 26.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added",
+     "resized",
+     "text"
+    ],
+    "hits": 3,
+    "hit_detail": [
+     "resized: Text resized | 83\u00d713 \u2192 88\u00d713",
+     "text: Text text changed | \"46 points\" \u2192 \"978 points\"",
+     "added: Link added | \"Totally different words here\""
+    ],
+    "false_alarms": 52,
+    "false_detail": [
+     "resized: Text resized | 83\u00d713 \u2192 65\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 65\u00d713 \u2192 83\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 88\u00d713 \u2192 83\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 148\u00d713 \u2192 57\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 131\u00d713 \u2192 148\u00d713 | span.sitebit.comhead"
+    ],
+    "layout_shifts": 7,
+    "pixel_regions": 26,
+    "pixel_noise": 25
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      8,
+      8,
+      1272,
+      72
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 29.8,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 53,
+    "false_detail": [
+     "resized: Text resized | 83\u00d713 \u2192 65\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 65\u00d713 \u2192 83\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 88\u00d713 \u2192 83\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 83\u00d713 \u2192 88\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 148\u00d713 \u2192 57\u00d713 | span.sitebit.comhead"
+    ],
+    "layout_shifts": 7,
+    "pixel_regions": 4,
+    "pixel_noise": 3
+   },
+   {
+    "op": "spacing",
+    "skip": true
+   },
+   {
+    "op": "move",
+    "skip": true
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      254,
+      446,
+      315,
+      457
+     ],
+     "post": null,
+     "tag": "a",
+     "text": "21 hours ago"
+    },
+    "secs": 28.1,
+    "detected": false,
+    "label_ok": false,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 65,
+    "false_detail": [
+     "resized: Text resized | 83\u00d713 \u2192 65\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 65\u00d713 \u2192 83\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 138\u00d713 \u2192 152\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 152\u00d713 \u2192 57\u00d713 | span.sitebit.comhead",
+     "resized: Text resized | 57\u00d713 \u2192 83\u00d713 | span.sitebit.comhead"
+    ],
+    "layout_shifts": 9,
+    "pixel_regions": 15,
+    "pixel_noise": 14
+   }
+  ]
+ },
+ {
+  "site": "https://github.com/pricing",
+  "cases": [
+   {
+    "op": "none",
+    "target": {
+     "op": "none",
+     "none": true
+    },
+    "secs": 39.6,
+    "detected": null,
+    "label_ok": null,
+    "hit_kinds": [],
+    "hits": 0,
+    "hit_detail": [],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 0,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_color",
+    "target": {
+     "op": "text_color",
+     "pre": [
+      888,
+      596,
+      1021,
+      633
+     ],
+     "post": [
+      888,
+      596,
+      1021,
+      633
+     ],
+     "tag": "h2",
+     "text": "Enterprise"
+    },
+    "secs": 35.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "style: Heading text color changed | text color #000000 \u2192 #e8590c"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "bg_color",
+    "target": {
+     "op": "bg_color",
+     "pre": [
+      888,
+      909,
+      1255,
+      977
+     ],
+     "post": [
+      888,
+      909,
+      1255,
+      977
+     ],
+     "tag": "div",
+     "text": "GitHub Enterprise now includes access to"
+    },
+    "secs": 44.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style",
+     "visual"
+    ],
+    "hits": 4,
+    "hit_detail": [
+     "style: Element background changed | background color(srgb 0.188235 0.580392 1 / 0.1) \u2192",
+     "visual: Paragraph looks different | pixels changed in a 315\u00d742 area",
+     "visual: Icon looks different | pixels changed in a 16\u00d716 area",
+     "visual: Link looks different | pixels changed in a 75\u00d719 area"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "font_size",
+    "target": {
+     "op": "font_size",
+     "pre": [
+      888,
+      1029,
+      1255,
+      1053
+     ],
+     "post": [
+      888,
+      1029,
+      1255,
+      1059
+     ],
+     "tag": "h3",
+     "text": "Everything from Team, plus:"
+    },
+    "secs": 42.3,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "style"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "style: Text font size changed | font size 16px \u2192 20px",
+     "style: Icon font size changed | font size 16px \u2192 20px"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 2,
+    "pixel_regions": 184,
+    "pixel_noise": 182
+   },
+   {
+    "op": "hide_image",
+    "target": {
+     "op": "hide_image",
+     "pre": [
+      589,
+      3232,
+      707,
+      3264
+     ],
+     "post": null,
+     "tag": "svg",
+     "text": "OpenAI"
+    },
+    "secs": 39.2,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "removed: Icon missing | inline SVG"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "text_change",
+    "target": {
+     "op": "text_change",
+     "pre": [
+      484,
+      1131,
+      742,
+      1155
+     ],
+     "post": [
+      484,
+      1131,
+      691,
+      1155
+     ],
+     "tag": "span",
+     "text": "Totally different words here"
+    },
+    "secs": 41.9,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "text"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "text: Text text changed | \"Multiple reviewers in pull requests\" \u2192 \"Totally d"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   },
+   {
+    "op": "banner",
+    "target": {
+     "op": "banner",
+     "pre": null,
+     "post": [
+      0,
+      0,
+      1280,
+      64
+     ],
+     "tag": "div",
+     "text": "Black Friday: 30% off everything"
+    },
+    "secs": 36.9,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "added"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "added: Text added | \"Black Friday: 30% off everything\""
+    ],
+    "false_alarms": 4,
+    "false_detail": [
+     "removed: Paragraph missing | \"Track progress on groups of issues or pull reques | p.Primer_Brand__Text-module__Text___XeGJ",
+     "removed: Text missing | span.Primer_Brand__FeatureComparisonTable-module__ | span.Primer_Brand__FeatureComparisonTabl",
+     "removed: Text missing | span.Primer_Brand__FeatureComparisonTable-module__ | span.Primer_Brand__FeatureComparisonTabl",
+     "removed: Text missing | span.Primer_Brand__FeatureComparisonTable-module__ | span.Primer_Brand__FeatureComparisonTabl"
+    ],
+    "layout_shifts": 1,
+    "pixel_regions": 183,
+    "pixel_noise": 182
+   },
+   {
+    "op": "spacing",
+    "target": {
+     "op": "spacing",
+     "pre": [
+      25,
+      1047,
+      392,
+      1408
+     ],
+     "post": [
+      25,
+      1087,
+      392,
+      1448
+     ],
+     "tag": "section",
+     "text": "Unlimited public/private repositoriesDep"
+    },
+    "secs": 32.5,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved"
+    ],
+    "hits": 1,
+    "hit_detail": [
+     "moved: 17 elements moved | moved 40px down"
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 11,
+    "pixel_noise": 0
+   },
+   {
+    "op": "move",
+    "target": {
+     "op": "move",
+     "pre": [
+      888,
+      1029,
+      1255,
+      1053
+     ],
+     "post": [
+      918,
+      1029,
+      1285,
+      1053
+     ],
+     "tag": "h3",
+     "text": "Everything from Team, plus:"
+    },
+    "secs": 36.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "moved",
+     "resized"
+    ],
+    "hits": 3,
+    "hit_detail": [
+     "moved: Text moved | moved 30px right",
+     "moved: Icon moved | moved 30px right",
+     "resized: Page width changed | 1280px \u2192 1285px (content overflows horizontally)"
+    ],
+    "false_alarms": 1,
+    "false_detail": [
+     "visual: Icon looks different | pixels changed in a 121\u00d732 area | svg"
+    ],
+    "layout_shifts": 0,
+    "pixel_regions": 3,
+    "pixel_noise": 0
+   },
+   {
+    "op": "remove",
+    "target": {
+     "op": "remove",
+     "pre": [
+      1036,
+      944,
+      1111,
+      963
+     ],
+     "post": null,
+     "tag": "a",
+     "text": "Learn more"
+    },
+    "secs": 10.0,
+    "detected": true,
+    "label_ok": true,
+    "hit_kinds": [
+     "removed",
+     "visual"
+    ],
+    "hits": 2,
+    "hit_detail": [
+     "visual: Paragraph looks different | pixels changed in a 315\u00d742 area",
+     "removed: Link missing | \"Learn more\""
+    ],
+    "false_alarms": 0,
+    "false_detail": [],
+    "layout_shifts": 0,
+    "pixel_regions": 1,
+    "pixel_noise": 0
+   }
+  ]
+ }
+]

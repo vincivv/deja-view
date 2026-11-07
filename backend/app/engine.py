@@ -246,6 +246,8 @@ def noun(e):
     return NOUNS.get(e["tag"], "Element" if not e["text"] else "Text")
 
 
+# bare counters ("52" -> "53", "1.2K"): live view/like/comment counts tick between builds
+COUNTER = re.compile(r"^[\d][\d,.\s]{0,8}[KkMm+]?$")
 _RGB = re.compile(r"rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)")
 
 
@@ -301,7 +303,12 @@ def compare(base_img, base_dom, base_vol, cand_loads, cand_vol=None, cand_noise=
 
     def add_change(kind, e_b, e_c, title, detail, before=None, after=None, sig_extra=""):
         e = e_c or e_b
-        key = f"{kind}|{sig_extra}" if sig_extra.endswith("|style") else f"{kind}|{e['sel']}|{sig_extra or detail}"
+        if sig_extra.endswith("|style"):
+            key = f"{kind}|{sig_extra}"
+        elif kind in ("text", "image", "added", "removed"):
+            key = f"{kind}|{e['k']}"          # repeated structure (lists, cards) collapses into one reviewable group
+        else:
+            key = f"{kind}|{e['sel']}|{sig_extra or detail}"
         sig = hashlib.md5(key.encode()).hexdigest()[:16]
         changes.append({"kind": kind, "title": title, "detail": detail, "selector": e["sel"],
                         "bbox": e_c["r"] if e_c else None, "base_bbox": e_b["r"] if e_b else None,
@@ -322,10 +329,19 @@ def compare(base_img, base_dom, base_vol, cand_loads, cand_vol=None, cand_noise=
         props = [p for p in b["st"] if fmt_val(b["st"].get(p, "")) != fmt_val(c["st"].get(p, ""))]
         n = noun(c)
         found = []
-        if b["text"] != c["text"]:
+        counter = b["text"] != c["text"] and bool(COUNTER.fullmatch(b["text"])) and bool(COUNTER.fullmatch(c["text"]))
+        if counter:
+            noise_rects.append(c["r"])
+            if not props:
+                if resized:
+                    noisy_geo.append({"base_bbox": b["r"], "bbox": c["r"], "_noise": True})
+                continue
+        if b["text"] != c["text"] and not counter:
             found.append(add_change("text", b, c, f"{n} text changed", f'"{short(b["text"])}" → "{short(c["text"])}"',
                                     b["text"], c["text"]))
-        if b["src"] != c["src"] or b["bgi"] != c["bgi"]:
+        same_box = (b["r"][2] - b["r"][0], b["r"][3] - b["r"][1]) == (c["r"][2] - c["r"][0], c["r"][3] - c["r"][1])
+        if (b["src"] != c["src"] or b["bgi"] != c["bgi"]) and not (same_box and not crops_differ(base_img, b["r"], cand_img, c["r"], frac=0.01)):
+            # a new URL with identical pixels (cache-busting hash, CDN rewrite) is not a visual change
             bs, cs = (b["src"], c["src"]) if b["src"] != c["src"] else (b["bgi"], c["bgi"])
             found.append(add_change("image", b, c, f"{'Image' if n in ('Image', 'Icon') else n} changed",
                                     f"{src_name(bs)} → {src_name(cs)}", bs, cs))
@@ -338,7 +354,10 @@ def compare(base_img, base_dom, base_vol, cand_loads, cand_vol=None, cand_noise=
                                     ", ".join(fmt_val(b["st"].get(p, "")) for p in props[:3]),
                                     ", ".join(fmt_val(c["st"].get(p, "")) for p in props[:3]),
                                     sig_extra=f"{c['tag']}|{detail}|style"))
-        if resized and not found and (c.get("op") or any(contains(c["r"], vr) for vr in vol_rects_c if vr is not c["r"])):
+        # same text, same style, a few px wider: font-metric/hinting variance between sessions, not a regression
+        metric_jitter = (resized and b["text"] and b["text"] == c["text"] and not props and abs(dh) <= 2
+                         and abs(dw) <= max(10, 0.08 * (b["r"][2] - b["r"][0])))
+        if resized and not found and (metric_jitter or c.get("op") or any(contains(c["r"], vr) for vr in vol_rects_c if vr is not c["r"])):
             noisy_geo.append({"base_bbox": b["r"], "bbox": c["r"], "_noise": True})
             continue
         if resized and not found:
@@ -383,6 +402,9 @@ def compare(base_img, base_dom, base_vol, cand_loads, cand_vol=None, cand_noise=
         ri = inner["bbox"] or inner["base_bbox"]
         return outer is not inner and contains(ro, ri)
     changes = [ch for ch in changes if not (ch["kind"] == "resized" and any(explains(ch, o) for o in changes))]
+    # drop pixel-only findings that sit inside an explained change (a new background repaints the text on it)
+    explained = [ch for ch in changes if ch["kind"] in ("style", "image", "added", "text")]
+    changes = [ch for ch in changes if not (ch["kind"] == "visual" and any(explains(o, ch) for o in explained))]
 
     # ---- layout shifts: movers sharing a displacement vector are explained by one upstream geometric change
     clusters = defaultdict(list)

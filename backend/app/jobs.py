@@ -294,7 +294,9 @@ def run_detail(rid):
     for g in groups:
         chs = by_group.get(g["id"], [])
         sids = list(dict.fromkeys(c["snapshot_id"] for c in chs))
-        out_groups.append({"id": g["id"], "run_id": rid, "kind": g["kind"], "title": g["title"], "detail": g["detail"],
+        details = list(dict.fromkeys(c["detail"] for c in chs))
+        detail = g["detail"] if len(details) <= 1 else f'{details[0]}  (+{len(details) - 1} similar)'
+        out_groups.append({"id": g["id"], "run_id": rid, "kind": g["kind"], "title": g["title"], "detail": detail,
                            "selector": g["selector"], "change_ids": [c["id"] for c in chs], "snapshot_ids": sids,
                            "count": len(chs), "review": g["review"]})
     sort_order = {s["id"]: i for i, s in enumerate(snaps)}

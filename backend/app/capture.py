@@ -121,7 +121,7 @@ class Capturer:
         if self._pw:
             await self._pw.stop()
 
-    async def capture(self, url: str, width: int, loads: int):
+    async def capture(self, url: str, width: int, loads: int, inject: str | None = None, meta: dict | None = None):
         """Load `url` `loads` times in one context. Returns [(rgb uint8 array, dom dict)]."""
         browser = await self.browser()
         async with self.sem:
@@ -142,6 +142,11 @@ class Capturer:
                         pass
                     await page.add_style_tag(content=FREEZE_CSS)
                     await page.evaluate(SETTLE_JS, MAX_HEIGHT)
+                    if inject:   # test hook: mutate the page after it settles (used by the benchmark)
+                        info = await page.evaluate(inject)
+                        if meta is not None:
+                            meta.setdefault("inject", []).append(info)
+                        await page.wait_for_timeout(250)
                     dom = await page.evaluate(DOM_JS, MAX_HEIGHT)
                     png = await page.screenshot(full_page=True, animations="disabled", caret="hide")
                     img = np.asarray(Image.open(io.BytesIO(png)).convert("RGB"))[:MAX_HEIGHT]
