@@ -121,6 +121,25 @@ def _owned_run(rid, user):
     return r
 
 
+# Showcase: projects every signed-in visitor (guests from "Try the demo" included) can VIEW, read-only.
+# Writes (runs, reviews, edits) still go through _project/_owned_run, so only the owner can change them.
+PUBLIC_PROJECTS = {p.strip() for p in os.environ.get("DEJAVIEW_PUBLIC_PROJECTS", "p_4ae6d6e53452").split(",") if p.strip()}
+
+
+def _readable_project(pid, user):
+    p = db.one("select * from projects where id=?", (pid,))
+    if not p or (p["owner_id"] != user["id"] and pid not in PUBLIC_PROJECTS):
+        raise HTTPException(404, "Project not found")
+    return p
+
+
+def _readable_run(rid, user):
+    r = db.one("select r.*, p.owner_id as _owner from runs r join projects p on p.id=r.project_id where r.id=?", (rid,))
+    if not r or (r["_owner"] != user["id"] and r["project_id"] not in PUBLIC_PROJECTS):
+        raise HTTPException(404, "Build not found")
+    return r
+
+
 class SignupIn(BaseModel):
     email: str
     password: str
@@ -220,6 +239,11 @@ def list_projects(user=Depends(auth.current_user)):
                 continue
             seen_demo = True
         rows.append(jobs.project_json(p))
+    # then the read-only showcase projects (a real store), for everyone signed in, guests included
+    for pid in sorted(PUBLIC_PROJECTS):
+        p = db.one("select * from projects where id=? and owner_id!=?", (pid, user["id"]))
+        if p:
+            rows.append(jobs.project_json(p))
     return rows
 
 
@@ -234,7 +258,7 @@ def create_project(body: ProjectIn, user=Depends(auth.current_user)):
 
 @app.get("/api/projects/{pid}")
 def get_project(pid: str, user=Depends(auth.current_user)):
-    return jobs.project_json(_project(pid, user))
+    return jobs.project_json(_readable_project(pid, user))
 
 
 @app.patch("/api/projects/{pid}")
@@ -275,7 +299,7 @@ def delete_project(pid: str, user=Depends(auth.current_user)):
 
 @app.get("/api/projects/{pid}/runs")
 def list_runs(pid: str, user=Depends(auth.current_user)):
-    _project(pid, user)
+    _readable_project(pid, user)
     return [jobs.run_summary(r) for r in db.q("select * from runs where project_id=? order by number desc limit 100", (pid,))]
 
 
@@ -289,7 +313,7 @@ async def start_run(pid: str, body: RunIn, user=Depends(auth.current_user)):
 
 @app.get("/api/projects/{pid}/baselines")
 def baselines(pid: str, user=Depends(auth.current_user)):
-    p = _project(pid, user)
+    p = _readable_project(pid, user)
     names = {x["path"]: x["name"] for x in db.uj(p["paths"])}
     rows = db.q("select b.*, s.run_id from baselines b join snapshots s on s.id=b.snapshot_id where b.project_id=? "
                 "order by b.path, b.viewport desc", (pid,))
@@ -301,7 +325,7 @@ def baselines(pid: str, user=Depends(auth.current_user)):
 # ---------------------------------------------------------------- builds and review
 @app.get("/api/runs/{rid}")
 def get_run(rid: str, user=Depends(auth.current_user)):
-    _owned_run(rid, user)
+    _readable_run(rid, user)
     return jobs.run_detail(rid)
 
 
