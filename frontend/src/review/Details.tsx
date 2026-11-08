@@ -24,7 +24,7 @@ export function Details({
   busy: boolean;
 }) {
   return (
-    <aside className="flex h-full min-h-0 flex-col border-l border-zinc-800 bg-zinc-950" data-testid="details-panel">
+    <aside className="flex h-full min-h-0 flex-col border-l border-zinc-800 bg-zinc-900" data-testid="details-panel">
       <div className="flex items-center gap-2 border-b border-zinc-800 px-3 py-2">
         <div className="min-w-0 flex-1">
           <div className="truncate text-[13px] font-semibold text-zinc-100">{snap.name}</div>
@@ -71,15 +71,15 @@ export function Details({
                   data-testid="change-card"
                   data-change-id={c.id}
                   className={cn(
-                    "w-full rounded-lg border p-2.5 text-left transition-colors",
-                    on ? "border-accent-500/50 bg-accent-500/[0.07]" : hover ? "border-zinc-700 bg-zinc-900" : "border-zinc-800/70 bg-zinc-900/30",
+                    "w-full rounded-[3px] border p-2.5 text-left transition-colors",
+                    on ? "border-zinc-50 bg-zinc-950 shadow-[2px_2px_0_0_var(--color-zinc-50)]" : hover ? "border-zinc-600 bg-zinc-950" : "border-zinc-800 bg-zinc-900",
                   )}
                 >
                   <div className="flex items-center gap-2">
                     <span className={cn("flex h-4 min-w-4 items-center justify-center rounded-[3px] px-1 font-mono text-[10px] font-bold text-white", c.kind === "removed" ? "bg-red-500" : "bg-accent-500")}>
                       {changeNumber.get(c.id)}
                     </span>
-                    <span className="truncate text-[12.5px] font-medium text-zinc-100">{c.title}</span>
+                    <span className="text-[13px] font-semibold leading-snug text-zinc-50">{c.title}</span>
                   </div>
                   {c.before || c.after ? <BeforeAfter c={c} /> : <div className="mt-1.5 text-[11.5px] text-zinc-400">{c.detail}</div>}
                   <div className="mt-2 truncate font-mono text-[10.5px] text-zinc-500" title={c.selector}>
@@ -107,8 +107,8 @@ function BeforeAfter({ c }: { c: Change }) {
   }
   return (
     <div className="mt-2 space-y-1 text-[11px] leading-snug">
-      {c.before && <div className="break-words rounded bg-red-500/[0.08] px-1.5 py-1 text-red-200/80 line-through decoration-red-400/40">{c.before}</div>}
-      {c.after ? <div className="break-words rounded bg-emerald-500/[0.08] px-1.5 py-1 text-emerald-200/90">{c.after}</div> : <div className="rounded bg-zinc-800/60 px-1.5 py-1 italic text-zinc-500">removed</div>}
+      {c.before && <div className="break-words rounded bg-red-500/[0.08] px-1.5 py-1 text-red-300 line-through decoration-red-400/50">{c.before}</div>}
+      {c.after ? <div className="break-words rounded bg-emerald-500/[0.08] px-1.5 py-1 text-emerald-300">{c.after}</div> : <div className="rounded bg-zinc-800/60 px-1.5 py-1 italic text-zinc-500">removed</div>}
     </div>
   );
 }
@@ -117,7 +117,7 @@ function Swatch({ v }: { v: string | null }) {
   if (!v) return <span className="text-zinc-600">none</span>;
   return (
     <span className="inline-flex items-center gap-1.5 rounded border border-zinc-800 bg-zinc-950 py-0.5 pl-0.5 pr-1.5 text-zinc-300">
-      <span className="size-3.5 rounded-sm border border-white/10" style={{ background: v }} />
+      <span className="size-3.5 rounded-sm border border-zinc-700" style={{ background: v }} />
       {v}
     </span>
   );

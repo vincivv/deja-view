@@ -222,54 +222,64 @@ export function BuildPage() {
 
   return (
     <div className="flex h-full min-h-0 flex-col" data-testid="build-page" data-result={r.result}>
-      {/* header: title, status, one summary, primary actions */}
-      <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-2 border-b border-zinc-800 bg-zinc-950 px-4 py-2.5">
-        <h1 className="flex min-w-0 items-baseline gap-2 text-[16px] font-semibold tracking-tight text-zinc-50" data-testid="build-title">
-          <span className="shrink-0">Build #{r.number}</span>
-          {r.label && <span className="max-w-[280px] truncate text-[13px] font-normal text-zinc-500">{r.label}</span>}
-        </h1>
-        <ResultBadge result={r.result} baseline={r.is_baseline_build} />
-        {running ? (
-          <div className="flex items-center gap-2" data-testid="build-progress" title={STATUS_LABEL[r.status]}>
-            <ProgressBar done={r.progress.done} total={r.progress.total} className="w-32" />
-            <span className="font-mono text-[11.5px] text-sky-300">
-              {r.progress.done}/{r.progress.total}
-            </span>
+      {/* header: title, status, one big summary, primary actions */}
+      <div className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3 border-b border-zinc-800 bg-zinc-900 px-4 py-3 sm:px-5">
+        <div className="w-full min-w-0 sm:w-auto sm:flex-1">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            <h1 className="flex min-w-0 items-baseline gap-2 text-[13px] font-semibold text-zinc-50" data-testid="build-title">
+              <span className="shrink-0 font-mono">Build #{r.number}</span>
+              {r.label && <span className="max-w-[320px] truncate font-normal text-zinc-500">{r.label}</span>}
+            </h1>
+            <ResultBadge result={r.result} baseline={r.is_baseline_build} />
+            <BuildInfo r={r} />
           </div>
-        ) : r.status === "failed" ? (
-          <span className="max-w-md truncate font-mono text-xs text-red-300" title={r.error ?? undefined}>
-            {r.error ?? "Build failed"}
-          </span>
-        ) : r.is_baseline_build ? (
-          <span
-            className="inline-flex items-center gap-1.5 rounded-full bg-sky-500/10 px-2 py-0.5 text-[12px] text-sky-200"
-            data-testid="baseline-banner"
-            title="The first build is accepted automatically. Future builds are compared with these screenshots."
-          >
-            <ShieldCheck className="size-3.5" />
-            {r.counts.snapshots} baselines saved
-          </span>
-        ) : (
-          <span
-            className={cn("text-[13px] font-medium", r.groups.length === 0 ? "text-emerald-300" : pending ? "text-zinc-200" : "text-zinc-400")}
-            data-testid="summary-chips"
-          >
-            {r.groups.length === 0 ? "No changes" : plural(r.groups.length, "change")}
-            {pending > 0 && pending < r.groups.length && <span className="ml-1.5 font-normal text-zinc-500">· {pending} left</span>}
-            {r.counts.failed > 0 && <span className="ml-1.5 font-normal text-red-300">· {r.counts.failed} failed</span>}
-          </span>
-        )}
-        <BuildInfo r={r} />
-        <div className="ml-auto flex items-center gap-1.5">
-          <IconButton label="Keyboard shortcuts (?)" onClick={() => setHelp(true)} data-testid="shortcuts-button">
+          <div className="mt-1.5 flex min-h-8 items-center">
+            {running ? (
+              <div className="flex items-center gap-3" data-testid="build-progress" title={STATUS_LABEL[r.status]}>
+                <span className="font-pixel text-[24px] font-semibold leading-none text-zinc-50">Capturing</span>
+                <ProgressBar done={r.progress.done} total={r.progress.total} className="w-40" />
+                <span className="font-mono text-[12px] text-sky-300">
+                  {r.progress.done}/{r.progress.total}
+                </span>
+              </div>
+            ) : r.status === "failed" ? (
+              <span className="max-w-xl truncate font-mono text-[13px] text-red-300" title={r.error ?? undefined}>
+                {r.error ?? "Build failed"}
+              </span>
+            ) : r.is_baseline_build ? (
+              <span
+                className="font-pixel inline-flex items-center gap-2 text-[24px] font-semibold leading-none text-zinc-50"
+                data-testid="baseline-banner"
+                title="The first build is accepted automatically. Future builds are compared with these screenshots."
+              >
+                <ShieldCheck className="size-5 text-sky-400" />
+                {r.counts.snapshots} baselines saved
+              </span>
+            ) : (
+              <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1" data-testid="summary-chips">
+                <span className={cn("font-pixel text-[20px] font-semibold leading-none sm:text-[26px]", r.groups.length === 0 ? "text-emerald-400" : pending ? "text-zinc-50" : "text-zinc-400")}>
+                  {r.groups.length === 0
+                    ? "No changes"
+                    : pending
+                      ? `${pending} ${pending === 1 ? "change needs" : "changes need"} review`
+                      : `${plural(r.groups.length, "change")} reviewed`}
+                </span>
+                {pending > 0 && pending < r.groups.length && <span className="font-mono text-[12px] text-zinc-500">of {r.groups.length}</span>}
+                {r.counts.failed > 0 && <span className="font-mono text-[12px] text-red-300">{r.counts.failed} failed</span>}
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <IconButton label="Keyboard shortcuts (?)" onClick={() => setHelp(true)} data-testid="shortcuts-button" className="size-9">
             <Keyboard className="size-4" />
           </IconButton>
           {!r.is_baseline_build && r.groups.length > 0 && (
             <>
-              <Button size="sm" variant="danger" icon={<X className="size-3.5" />} disabled={!pending || busy !== null} onClick={() => reviewAll("rejected")} data-testid="reject-all">
+              <Button variant="danger" className="h-10 px-4 text-[14px]" icon={<X className="size-4" />} disabled={!pending || busy !== null} onClick={() => reviewAll("rejected")} data-testid="reject-all">
                 Reject
               </Button>
-              <Button size="sm" variant="success" icon={<Check className="size-3.5" strokeWidth={3} />} disabled={!pending || busy !== null} loading={busy === "run"} onClick={() => reviewAll("approved")} data-testid="approve-all">
+              <Button variant="success" className="h-10 px-5 text-[14px]" icon={<Check className="size-4" strokeWidth={3} />} disabled={!pending || busy !== null} loading={busy === "run"} onClick={() => reviewAll("approved")} data-testid="approve-all">
                 Approve all
               </Button>
             </>
@@ -280,8 +290,8 @@ export function BuildPage() {
       {/* body */}
       <div
         className={cn(
-          "grid min-h-0 flex-1",
-          detailsOpen ? "grid-cols-[260px_minmax(0,1fr)_280px] xl:grid-cols-[288px_minmax(0,1fr)_300px]" : "grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[288px_minmax(0,1fr)]",
+          "grid min-h-0 flex-1 max-md:flex max-md:flex-col max-md:overflow-y-auto",
+          detailsOpen ? "grid-cols-[280px_minmax(0,1fr)_280px] xl:grid-cols-[320px_minmax(0,1fr)_300px]" : "grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[320px_minmax(0,1fr)]",
         )}
       >
         <Sidebar
@@ -296,9 +306,9 @@ export function BuildPage() {
           busyGroupId={busy}
         />
 
-        <section className="flex min-h-0 min-w-0 flex-col bg-zinc-900/30">
+        <section className="app-grid flex min-h-0 min-w-0 flex-col max-md:min-h-[78vh] max-md:shrink-0">
           {/* viewer toolbar */}
-          <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-zinc-800 bg-zinc-950 px-3 py-1.5">
+          <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-zinc-800 bg-zinc-900 px-3 py-1.5">
             <Segmented<ViewMode>
               value={canCompare ? mode : "single"}
               onChange={setMode}
@@ -337,13 +347,13 @@ export function BuildPage() {
               </>
             )}
             {showPixel && snap && canCompare && (
-              <span className="rounded-full bg-red-500/10 px-2 py-0.5 font-mono text-[11px] text-red-200" data-testid="pixel-diff-chip" title={`${snap.pixel_diff.pct}% of pixels differ`}>
+              <span className="rounded-[3px] border border-red-500/30 bg-red-500/10 px-2 py-0.5 font-mono text-[11px] text-red-200" data-testid="pixel-diff-chip" title={`${snap.pixel_diff.pct}% of pixels differ`}>
                 {snap.pixel_diff.regions.length} px regions → {snap.changes.length}
               </span>
             )}
             {shift && !showPixel && (
               <span
-                className="inline-flex items-center gap-1 rounded-full bg-sky-500/10 px-2 py-0.5 font-mono text-[11px] text-sky-200"
+                className="inline-flex items-center gap-1 rounded-[3px] border border-sky-500/30 bg-sky-500/10 px-2 py-0.5 font-mono text-[11px] text-sky-200"
                 data-testid="layout-shift-banner"
                 title={`${plural(shift.elements, "element")} below y=${shift.from_y} moved ${Math.abs(shift.dy)}px ${shift.dy > 0 ? "down" : "up"} together. Counted as one layout shift, not reviewed separately.`}
               >
@@ -352,7 +362,7 @@ export function BuildPage() {
               </span>
             )}
             {snap && !canCompare && snap.status !== "failed" && (
-              <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-[11px] text-sky-200" data-testid="new-snapshot-chip" title="No baseline to compare with yet. This snapshot becomes the baseline.">
+              <span className="rounded-[3px] border border-sky-500/30 bg-sky-500/10 px-2 py-0.5 text-[11px] font-medium text-sky-200" data-testid="new-snapshot-chip" title="No baseline to compare with yet. This snapshot becomes the baseline.">
                 New
               </span>
             )}
@@ -371,7 +381,7 @@ export function BuildPage() {
                 onClick={() => setShowDetails((v) => !v)}
                 data-testid="toggle-details"
                 aria-pressed={showDetails}
-                className={showDetails ? "bg-zinc-800 text-zinc-100" : ""}
+                className={showDetails ? "bg-zinc-800 text-zinc-50" : ""}
               >
                 <PanelRight className="size-4" />
               </IconButton>
@@ -512,7 +522,7 @@ function IconToggle({
       data-testid={testId}
       onClick={() => onChange(!on)}
       className={cn(
-        "inline-flex h-7 items-center gap-1 rounded-md border px-2 text-[11px] font-medium transition-colors",
+        "inline-flex h-7 items-center gap-1 rounded-[3px] border px-2 text-[11px] font-medium transition-colors",
         on ? onCls : "border-zinc-800 bg-zinc-900 text-zinc-500 hover:text-zinc-200",
       )}
     >

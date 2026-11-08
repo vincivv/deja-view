@@ -20,9 +20,9 @@ export function ProjectsPage() {
   const hasDemo = !!data?.some((p) => p.is_demo);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <h1 className="text-xl font-semibold tracking-tight text-zinc-50">Projects</h1>
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mb-8 flex items-end justify-between gap-4 border-b border-zinc-800 pb-5">
+        <h1 className="font-pixel text-[26px] font-semibold leading-none text-zinc-50 sm:text-[32px]">Projects</h1>
         <div className="flex gap-2">
           {data && data.length > 0 && !hasDemo && (
             <Button variant="ghost" icon={<Sparkles className="size-3.5 text-accent-400" />} onClick={start} loading={busy} data-testid="try-demo">
@@ -40,7 +40,7 @@ export function ProjectsPage() {
       {!data && !projects?.error && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }, (_, i) => (
-            <Skeleton key={i} className="h-[232px] rounded-xl" />
+            <Skeleton key={i} className="h-[232px] rounded-[3px]" />
           ))}
         </div>
       )}
@@ -124,11 +124,11 @@ function ProjectCard({ p }: { p: Project }) {
       ref={ref}
       to={`/projects/${p.id}`}
       data-testid="project-card"
-      className="group flex flex-col overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/50 transition-colors hover:border-zinc-600"
+      className="group flex flex-col overflow-hidden rounded-[3px] border border-zinc-800 bg-zinc-900 transition-[border-color,box-shadow] hover:border-zinc-50 hover:shadow-[3px_3px_0_0_var(--color-zinc-50)]"
     >
       <div className="relative h-36 overflow-hidden border-b border-zinc-800 bg-zinc-900">
         {thumb ? (
-          <img src={thumb} alt="" loading="lazy" className="w-full object-cover object-top opacity-90 transition-[opacity,transform] duration-300 group-hover:scale-[1.02] group-hover:opacity-100" />
+          <img src={thumb} alt="" loading="lazy" className="w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100" />
         ) : thumb === undefined && p.baseline_count ? (
           <Skeleton className="h-full rounded-none" />
         ) : (
@@ -137,16 +137,16 @@ function ProjectCard({ p }: { p: Project }) {
           </div>
         )}
         {r && (
-          <span className="absolute right-2.5 top-2.5 rounded-full bg-zinc-950 shadow-lg shadow-black/40">
+          <span className="absolute right-2.5 top-2.5 bg-zinc-900">
             <ResultBadge result={r.result} baseline={r.is_baseline_build} />
           </span>
         )}
       </div>
-      <div className="flex items-center gap-2 px-4 pb-1 pt-3">
-        <h3 className="truncate text-[14px] font-semibold text-zinc-100">{p.name}</h3>
-        {p.is_demo && <span className="rounded border border-accent-500/30 bg-accent-500/10 px-1.5 py-px text-[10px] font-semibold uppercase tracking-wide text-accent-300">Demo</span>}
+      <div className="flex items-center gap-2 px-4 pb-1 pt-3.5">
+        <h3 className="truncate text-[14.5px] font-semibold text-zinc-50">{p.name}</h3>
+        {p.is_demo && <span className="rounded-[2px] border border-accent-500/50 bg-accent-500/10 px-1.5 py-px font-mono text-[10px] font-semibold uppercase tracking-wider text-accent-400">Demo</span>}
       </div>
-      <div className="flex items-center justify-between gap-3 px-4 pb-3 text-xs text-zinc-500">
+      <div className="flex items-center justify-between gap-3 px-4 pb-3.5 text-xs text-zinc-500">
         <span className="truncate font-mono text-[11.5px]">{shortUrl(p.base_url)}</span>
         <span className="shrink-0">{r ? (isActive(r.status) ? `${r.progress.done}/${r.progress.total}` : `#${r.number} · ${timeAgo(r.created_at)}`) : "No builds"}</span>
       </div>

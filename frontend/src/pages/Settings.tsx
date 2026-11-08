@@ -20,13 +20,13 @@ export function SettingsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-4 py-8 sm:px-6">
-      <h1 className="text-xl font-semibold tracking-tight text-zinc-50">Settings</h1>
+    <div className="mx-auto max-w-3xl space-y-9 px-4 py-8 sm:px-6 sm:py-10">
+      <h1 className="font-pixel border-b border-zinc-800 pb-5 text-[26px] font-semibold leading-none text-zinc-50 sm:text-[32px]">Settings</h1>
 
       <Section title="Account">
         {user && (
-          <div className="flex flex-wrap items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-900/40 p-4" data-testid="account-card">
-            <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-fuchsia-500 text-xs font-semibold text-white">{initials(user)}</span>
+          <div className="flex flex-wrap items-center gap-3 rounded-[3px] border border-zinc-800 bg-zinc-900 p-4" data-testid="account-card">
+            <span className="flex size-9 items-center justify-center rounded-[3px] bg-zinc-50 font-mono text-xs font-semibold text-white">{initials(user)}</span>
             <div className="min-w-0 flex-1">
               <div className="truncate text-[13.5px] font-medium text-zinc-100">{user.is_guest ? "Guest" : user.name}</div>
               <div className="truncate text-xs text-zinc-500" data-testid="account-email">
@@ -55,7 +55,7 @@ function Section({ title, aside, children }: { title: string; aside?: ReactNode;
   return (
     <section>
       <div className="mb-3 flex items-center justify-between gap-3">
-        <h2 className="text-[13px] font-semibold text-zinc-200">{title}</h2>
+        <h2 className="app-eyebrow">{title}</h2>
         {aside}
       </div>
       {children}
@@ -115,7 +115,7 @@ function TokensSection() {
 
       {created && <NewTokenReveal token={created} onDone={() => setCreated(null)} />}
 
-      <div className="mt-3 overflow-hidden rounded-xl border border-zinc-800">
+      <div className="mt-3 overflow-hidden rounded-[3px] border border-zinc-800">
         {tokens.error && (
           <div className="p-3">
             <ErrorBox message={tokens.error} onRetry={tokens.reload} />
@@ -135,7 +135,7 @@ function TokensSection() {
         )}
         {tokens.data && tokens.data.length > 0 && (
           <table className="w-full text-left text-[13px]" data-testid="tokens-table">
-            <thead className="border-b border-zinc-800 bg-zinc-900/60 text-[11px] text-zinc-500">
+            <thead className="border-b border-zinc-800 bg-zinc-900 text-[11px] text-zinc-500">
               <tr>
                 <th className="px-4 py-2 font-medium">Name</th>
                 <th className="px-4 py-2 font-medium">Token</th>
@@ -182,13 +182,13 @@ function TokensSection() {
 function NewTokenReveal({ token, onDone }: { token: CreatedApiToken; onDone: () => void }) {
   const [copied, setCopied] = useState(false);
   return (
-    <div className="mt-3 rounded-xl border border-amber-400/30 bg-amber-400/[0.06] p-4" data-testid="new-token">
+    <div className="mt-3 rounded-[3px] border border-amber-400/30 bg-amber-400/[0.06] p-4" data-testid="new-token">
       <div className="flex items-center gap-2 text-[13px] font-medium text-amber-200">
         <AlertTriangle className="size-4" />
         Copy it now. You won't see it again.
       </div>
       <div className="mt-3 flex items-center gap-2">
-        <code className="min-w-0 flex-1 truncate rounded-md border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-[12.5px] text-zinc-100" data-testid="new-token-value">
+        <code className="min-w-0 flex-1 truncate rounded-[3px] border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-[12.5px] text-zinc-100" data-testid="new-token-value">
           {token.token}
         </code>
         <Button
@@ -213,7 +213,7 @@ function CiSnippet() {
   const [copied, setCopied] = useState(false);
   const origin = window.location.origin;
   const snippet = `curl -s -X POST "${origin}/api/projects/$PROJECT_ID/runs" \\
-  -H "Authorization: Bearer $SIGHTLINE_TOKEN" \\
+  -H "Authorization: Bearer $DEJAVIEW_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{"base_url": "https://pr-123.preview.example.com", "label": "PR #123"}'`;
   return (
@@ -225,7 +225,7 @@ function CiSnippet() {
         </Button>
       }
     >
-      <pre className="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950 p-4 font-mono text-[12px] leading-relaxed text-zinc-300" data-testid="ci-snippet">
+      <pre className="overflow-x-auto rounded-[3px] border border-zinc-800 bg-zinc-950 p-4 font-mono text-[12px] leading-relaxed text-zinc-300" data-testid="ci-snippet">
         {snippet}
       </pre>
       <p className="mt-2 text-xs text-zinc-500">

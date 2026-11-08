@@ -46,7 +46,7 @@ export function Viewer(props: ViewerProps) {
   if (snap.status === "failed") {
     return (
       <div className="flex h-full items-center justify-center p-8">
-        <div className="max-w-xl rounded-xl border border-red-500/30 bg-red-500/5 p-5" data-testid="snapshot-error">
+        <div className="max-w-xl rounded-[3px] border border-red-500/30 bg-red-500/5 p-5" data-testid="snapshot-error">
           <div className="mb-2 flex items-center gap-2 text-[13px] font-semibold text-red-200">
             <AlertTriangle className="size-4" />
             Snapshot failed
@@ -138,7 +138,7 @@ function PaneFrame({ label, tone, children }: { label: string; tone: "base" | "n
     <div className="relative min-h-0">
       <div
         className={cn(
-          "pointer-events-none absolute left-3 top-2 z-20 rounded-md border px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wider backdrop-blur",
+          "pointer-events-none absolute left-3 top-2 z-20 rounded-[3px] border px-2 py-0.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider backdrop-blur",
           tone === "base" ? "border-zinc-700 bg-zinc-900/85 text-zinc-400" : "border-accent-500/40 bg-zinc-900/85 text-accent-300",
         )}
       >
@@ -192,12 +192,12 @@ function SinglePane(p: ViewerProps & { mode: ViewMode }) {
   return (
     <div className="relative h-full min-h-0">
       {label && (
-        <div className="pointer-events-none absolute left-3 top-2 z-20 rounded-md border border-accent-500/40 bg-zinc-900/85 px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wider text-accent-300 backdrop-blur">
+        <div className="pointer-events-none absolute left-3 top-2 z-20 rounded-[3px] border border-accent-500/40 bg-zinc-900/85 px-2 py-0.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider text-accent-300 backdrop-blur">
           {label}
         </div>
       )}
       {mode === "overlay" && (
-        <div className="absolute right-4 top-2 z-30 flex items-center gap-2.5 rounded-lg border border-zinc-700 bg-zinc-900/90 px-3 py-1.5 text-[11px] text-zinc-400 shadow-lg backdrop-blur" data-testid="overlay-opacity">
+        <div className="absolute right-4 top-2 z-30 flex items-center gap-2.5 rounded-[3px] border border-zinc-700 bg-zinc-900/90 px-3 py-1.5 text-[11px] text-zinc-400 shadow-lg backdrop-blur" data-testid="overlay-opacity">
           <span>Baseline</span>
           <input type="range" min={0} max={100} value={Math.round(opacity * 100)} onChange={(e) => setOpacity(+e.target.value / 100)} className="slider w-32" aria-label="New image opacity" />
           <span className="text-accent-300">New</span>
@@ -206,10 +206,10 @@ function SinglePane(p: ViewerProps & { mode: ViewMode }) {
       )}
       {mode === "swipe" && (
         <>
-          <div className="pointer-events-none absolute left-3 top-2 z-20 rounded-md border border-zinc-700 bg-zinc-900/85 px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wider text-zinc-400 backdrop-blur">
+          <div className="pointer-events-none absolute left-3 top-2 z-20 rounded-[3px] border border-zinc-700 bg-zinc-900/85 px-2 py-0.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider text-zinc-400 backdrop-blur">
             ← {p.baselineLabel}
           </div>
-          <div className="pointer-events-none absolute right-4 top-2 z-20 rounded-md border border-accent-500/40 bg-zinc-900/85 px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wider text-accent-300 backdrop-blur">
+          <div className="pointer-events-none absolute right-4 top-2 z-20 rounded-[3px] border border-accent-500/40 bg-zinc-900/85 px-2 py-0.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider text-accent-300 backdrop-blur">
             {p.newLabel} →
           </div>
         </>

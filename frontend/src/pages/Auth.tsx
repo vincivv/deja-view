@@ -62,14 +62,14 @@ export function AuthPage({ mode }: { mode: Mode }) {
   const qs = params.get("next") ? `?next=${encodeURIComponent(next)}` : "";
 
   return (
-    <div className="flex min-h-full items-center justify-center bg-zinc-950 px-4 py-10" data-testid={`${mode}-page`}>
+    <div className="app-grid flex min-h-full items-center justify-center px-4 py-10" data-testid={`${mode}-page`}>
       <div className="w-full max-w-[360px]">
-        <Link to="/" className="mb-6 flex items-center justify-center gap-2 text-[15px] font-semibold tracking-tight text-zinc-100">
+        <Link to="/" className="font-pixel mb-6 flex items-center justify-center gap-2.5 text-[22px] font-semibold text-zinc-50">
           <Logo className="size-7" />
           Deja View
         </Link>
-        <form onSubmit={submit} className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-2xl shadow-black/40" noValidate>
-          <h1 className="text-center text-lg font-semibold tracking-tight text-zinc-50">{title}</h1>
+        <form onSubmit={submit} className="rounded-[3px] border border-zinc-50 bg-zinc-900 p-6 shadow-[4px_4px_0_0_var(--color-zinc-50)]" noValidate>
+          <h1 className="font-pixel text-center text-[24px] font-semibold leading-tight text-zinc-50">{title}</h1>
           {upgrading && <p className="mt-1 text-center text-[13px] text-zinc-500">Your demo projects come with you.</p>}
           <div className="mt-5 space-y-3.5">
             {mode === "signup" && (
@@ -90,7 +90,7 @@ export function AuthPage({ mode }: { mode: Mode }) {
               />
             </Field>
             {err && (
-              <div className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-200" role="alert" data-testid="auth-error">
+              <div className="rounded-[3px] border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-200" role="alert" data-testid="auth-error">
                 {err}
               </div>
             )}

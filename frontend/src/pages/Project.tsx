@@ -54,7 +54,7 @@ export function ProjectPage() {
           {p ? (
             <>
               <div className="flex items-center gap-2.5">
-                <h1 className="truncate text-xl font-semibold tracking-tight text-zinc-50" data-testid="project-title">
+                <h1 className="font-pixel truncate text-[24px] sm:text-[30px] font-semibold leading-tight text-zinc-50" data-testid="project-title">
                   {p.name}
                 </h1>
                 {p.is_demo && <span className="rounded border border-accent-500/30 bg-accent-500/10 px-1.5 py-px text-[10px] font-semibold uppercase tracking-wide text-accent-300">Demo</span>}
@@ -162,9 +162,9 @@ function BuildsTable({ runs, loading, error, onRun }: { runs: RunSummary[] | nul
       </EmptyState>
     );
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-800">
+    <div className="overflow-x-auto rounded-[3px] border border-zinc-800 bg-zinc-900">
       <table className="w-full text-left text-[13px]" data-testid="builds-table">
-        <tbody className="divide-y divide-zinc-800/80">
+        <tbody className="divide-y divide-zinc-800">
           {runs.map((r) => {
             const active = isActive(r.status);
             return (
@@ -173,16 +173,16 @@ function BuildsTable({ runs, loading, error, onRun }: { runs: RunSummary[] | nul
                 data-testid="build-row"
                 data-build-number={r.number}
                 onClick={() => navigate(`/builds/${r.id}`)}
-                className="cursor-pointer bg-zinc-950 transition-colors hover:bg-zinc-900/70"
+                className="cursor-pointer bg-zinc-900 transition-colors hover:bg-zinc-950"
                 title={`${shortUrl(r.base_url)}${r.duration_ms != null ? ` · ${duration(r.duration_ms)}` : ""}`}
               >
-                <td className="w-16 py-3 pl-4 font-mono text-zinc-500">#{r.number}</td>
-                <td className="max-w-[360px] px-2 py-3">
-                  <Link to={`/builds/${r.id}`} className="block truncate font-medium text-zinc-100" onClick={(e) => e.stopPropagation()}>
+                <td className="w-14 py-3.5 pl-4 font-mono text-zinc-500">#{r.number}</td>
+                <td className="max-w-[150px] px-2 py-3.5 sm:max-w-[360px]">
+                  <Link to={`/builds/${r.id}`} className="block truncate font-medium text-zinc-50 hover:underline" onClick={(e) => e.stopPropagation()}>
                     {r.label || (r.is_baseline_build ? "Baseline build" : "Build")}
                   </Link>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-3 py-3.5 sm:px-4">
                   {active ? (
                     <div className="flex w-40 items-center gap-2">
                       <ProgressBar done={r.progress.done} total={r.progress.total} />
@@ -194,15 +194,15 @@ function BuildsTable({ runs, loading, error, onRun }: { runs: RunSummary[] | nul
                     <ResultBadge result={r.result} baseline={r.is_baseline_build} />
                   )}
                 </td>
-                <td className="hidden px-4 py-3 sm:table-cell">
+                <td className="hidden px-4 py-3.5 sm:table-cell">
                   {!r.is_baseline_build && r.counts.groups > 0 && (
-                    <span className="rounded-full bg-zinc-800 px-2 py-0.5 font-mono text-[11px] text-zinc-300" title={`${r.counts.changes} occurrences`}>
+                    <span className="rounded-[2px] border border-zinc-800 bg-zinc-950 px-2 py-0.5 font-mono text-[11px] text-zinc-300" title={`${r.counts.changes} occurrences`}>
                       {r.counts.groups} {r.counts.groups === 1 ? "change" : "changes"}
                     </span>
                   )}
-                  {r.counts.failed > 0 && <span className="ml-2 rounded-full bg-red-500/10 px-2 py-0.5 font-mono text-[11px] text-red-300">{r.counts.failed} failed</span>}
+                  {r.counts.failed > 0 && <span className="ml-2 rounded-[2px] border border-red-500/30 bg-red-500/10 px-2 py-0.5 font-mono text-[11px] text-red-300">{r.counts.failed} failed</span>}
                 </td>
-                <td className="px-4 py-3 text-right text-xs text-zinc-500" title={new Date(r.created_at).toLocaleString()}>
+                <td className="hidden px-4 py-3.5 text-right font-mono text-[11.5px] text-zinc-500 sm:table-cell" title={new Date(r.created_at).toLocaleString()}>
                   {timeAgo(r.created_at)}
                 </td>
               </tr>
@@ -263,7 +263,7 @@ function RunBuildDialog({ open, onClose, project }: { open: boolean; onClose: ()
                   data-testid={`demo-url-${i}`}
                   onClick={() => setUrl(d.url)}
                   className={cn(
-                    "inline-flex h-7 items-center gap-1.5 rounded-md border px-2.5 text-xs transition-colors",
+                    "inline-flex h-7 items-center gap-1.5 rounded-[3px] border px-2.5 text-xs transition-colors",
                     url === d.url ? "border-accent-500/60 bg-accent-500/15 text-accent-200" : "border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200",
                   )}
                 >
@@ -277,7 +277,7 @@ function RunBuildDialog({ open, onClose, project }: { open: boolean; onClose: ()
         <Field label="Label" hint="optional">
           <Input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="feat: new pricing page (#512)" data-testid="run-label" />
         </Field>
-        {err && <div className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-200">{err}</div>}
+        {err && <div className="rounded-[3px] border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-200">{err}</div>}
         <div className="flex justify-end gap-2 border-t border-zinc-800 pt-4">
           <Button type="button" variant="ghost" onClick={onClose}>
             Cancel
@@ -299,7 +299,7 @@ function BaselinesGrid({ project, runs }: { project: Project; runs: RunSummary[]
     return (
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {Array.from({ length: 8 }, (_, i) => (
-          <Skeleton key={i} className="h-56 rounded-lg" />
+          <Skeleton key={i} className="h-56 rounded-[3px]" />
         ))}
       </div>
     );
@@ -326,7 +326,7 @@ function BaselinesGrid({ project, runs }: { project: Project; runs: RunSummary[]
                 to={`/builds/${b.run_id}`}
                 data-testid="baseline-card"
                 data-run-id={b.run_id}
-                className="group w-[200px] overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition-colors hover:border-zinc-600"
+                className="group w-[200px] overflow-hidden rounded-[3px] border border-zinc-800 bg-zinc-900 transition-[border-color,box-shadow] hover:border-zinc-50 hover:shadow-[3px_3px_0_0_var(--color-zinc-50)]"
               >
                 <div className="h-[220px] overflow-hidden bg-white">
                   <img src={b.image_url} alt={`${b.name} at ${b.viewport}px`} loading="lazy" className="w-full object-cover object-top" />
@@ -373,7 +373,7 @@ function SettingsForm({ project, onSaved }: { project: Project; onSaved: (p: Pro
 
   return (
     <div className="max-w-2xl space-y-6">
-      <form onSubmit={save} className="space-y-4 rounded-xl border border-zinc-800 bg-zinc-900/40 p-5">
+      <form onSubmit={save} className="space-y-4 rounded-[3px] border border-zinc-800 bg-zinc-900 p-5">
         <Field label="Name">
           <Input value={name} onChange={(e) => setName(e.target.value)} />
         </Field>
@@ -392,7 +392,7 @@ function SettingsForm({ project, onSaved }: { project: Project; onSaved: (p: Pro
           </Button>
         </div>
       </form>
-      <div className="flex items-center justify-between gap-4 rounded-xl border border-red-500/25 bg-red-500/5 p-5">
+      <div className="flex items-center justify-between gap-4 rounded-[3px] border border-red-500/25 bg-red-500/5 p-5">
         <div>
           <div className="text-[13px] font-semibold text-red-200">Delete project</div>
           <div className="mt-0.5 text-xs text-zinc-500">This removes all builds, snapshots and baselines. It can't be undone.</div>

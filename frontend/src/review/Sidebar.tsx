@@ -46,12 +46,12 @@ export function Sidebar({
   }, [run.snapshots]);
 
   return (
-    <aside className="flex h-full min-h-0 flex-col border-r border-zinc-800 bg-zinc-950" data-testid="review-sidebar">
+    <aside className="flex h-full min-h-0 flex-col border-r border-zinc-800 bg-zinc-900 max-md:h-auto max-md:max-h-[46vh] max-md:shrink-0 max-md:border-b max-md:border-r-0" data-testid="review-sidebar">
       <div className="min-h-0 flex-1 overflow-y-auto">
         {/* change groups */}
         {!run.is_baseline_build && (
-          <section className="border-b border-zinc-800 p-2">
-            <h2 className="flex items-center gap-1.5 px-2 pb-1.5 pt-1 text-[11px] font-medium text-zinc-500">
+          <section className="border-b border-zinc-800 p-2.5">
+            <h2 className="app-eyebrow flex items-center gap-1.5 px-2 pb-2 pt-1.5">
               Changes
               {run.groups.length > 0 && <span className="font-mono text-zinc-600">{run.groups.length}</span>}
             </h2>
@@ -62,12 +62,12 @@ export function Sidebar({
               </div>
             )}
             {!running && run.groups.length === 0 && (
-              <div className="flex items-center gap-2 rounded-lg px-2 py-2 text-[13px] text-emerald-200" data-testid="no-changes">
+              <div className="flex items-center gap-2 rounded-[3px] px-2 py-2 text-[13px] text-emerald-200" data-testid="no-changes">
                 <CheckCircle2 className="size-4 text-emerald-400" />
                 No visual changes
               </div>
             )}
-            <div className="space-y-0.5">
+            <div className="space-y-1">
               {run.groups.map((g) => (
                 <GroupRow
                   key={g.id}
@@ -85,9 +85,9 @@ export function Sidebar({
         )}
 
         {/* snapshots */}
-        <section className="p-2">
+        <section className="p-2.5">
           <div className="flex items-center justify-between px-2 pb-1.5 pt-1">
-            <h2 className="flex items-center gap-1.5 text-[11px] font-medium text-zinc-500">
+            <h2 className="app-eyebrow flex items-center gap-1.5">
               Snapshots <span className="font-mono text-zinc-600">{run.progress.total}</span>
             </h2>
             {!run.is_baseline_build && !running && (
@@ -111,7 +111,7 @@ export function Sidebar({
             <div className="mt-1">
               <button
                 onClick={() => setShowUnchanged((v) => !v)}
-                className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-xs text-zinc-500 hover:bg-zinc-900 hover:text-zinc-300"
+                className="flex w-full items-center gap-1.5 rounded-[3px] px-2 py-1.5 text-xs text-zinc-500 hover:bg-zinc-950 hover:text-zinc-300"
                 data-testid="toggle-unchanged"
               >
                 <ChevronRight className={cn("size-3.5 transition-transform", showUnchanged && "rotate-90")} />
@@ -176,7 +176,7 @@ function Swatch({ v }: { v: string | null }) {
   if (!v) return <span className="text-zinc-600">none</span>;
   return (
     <span className="inline-flex min-w-0 items-center gap-1">
-      <span className="size-3 shrink-0 rounded-[3px] border border-white/15" style={{ background: v }} />
+      <span className="size-3 shrink-0 rounded-[3px] border border-zinc-700" style={{ background: v }} />
       <span className="truncate">{v}</span>
     </span>
   );
@@ -217,36 +217,36 @@ function GroupRow({
       data-group-id={g.id}
       data-review={g.review}
       className={cn(
-        "group/card relative flex cursor-pointer items-center gap-2.5 rounded-lg border px-2 py-1.5 outline-none transition-colors",
-        selected ? "border-accent-500/50 bg-accent-500/[0.08]" : "border-transparent hover:bg-zinc-900",
+        "group/card relative flex cursor-pointer items-center gap-3 rounded-[3px] border px-2.5 py-2 outline-none transition-colors focus-visible:border-accent-500",
+        selected ? "border-zinc-50 bg-zinc-950 shadow-[2px_2px_0_0_var(--color-zinc-50)]" : "border-transparent hover:border-zinc-800 hover:bg-zinc-950",
         approved && !selected && "bg-emerald-500/[0.04]",
         rejected && !selected && "bg-red-500/[0.05]",
       )}
     >
       {approved ? (
-        <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-md border border-emerald-500/30 bg-emerald-500/15 text-emerald-300" title="Approved">
+        <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-[3px] border border-emerald-500/30 bg-emerald-500/15 text-emerald-300" title="Approved">
           <Check className="size-3.5" strokeWidth={3} />
         </span>
       ) : rejected ? (
-        <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-md border border-red-500/30 bg-red-500/15 text-red-300" title="Rejected">
+        <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-[3px] border border-red-500/30 bg-red-500/15 text-red-300" title="Rejected">
           <X className="size-3.5" strokeWidth={3} />
         </span>
       ) : (
         <KindIcon kind={g.kind} />
       )}
       <div className="min-w-0 flex-1">
-        <div className={cn("truncate text-[13px] font-medium", approved || rejected ? "text-zinc-400" : "text-zinc-100")}>{g.title}</div>
+        <div className={cn("line-clamp-2 text-[13.5px] font-semibold leading-snug", approved || rejected ? "text-zinc-500" : "text-zinc-50")}>{g.title}</div>
         <ValuePreview c={sample} fallback={g.detail} />
       </div>
       <div className="flex shrink-0 items-center gap-1">
         <span
-          className={cn("rounded-full bg-zinc-800 px-1.5 py-px font-mono text-[10px] text-zinc-400", selected ? "hidden" : "group-hover/card:hidden group-focus-visible/card:hidden")}
+          className={cn("rounded-[2px] border border-zinc-800 bg-zinc-950 px-1.5 py-px font-mono text-[10.5px] text-zinc-500", selected ? "hidden" : "group-hover/card:hidden group-focus-visible/card:hidden")}
           title={scope}
           data-testid="group-count"
         >
           ×{g.count}
         </span>
-        <div className={cn("items-center gap-0.5", selected ? "flex" : "hidden group-hover/card:flex group-focus-visible/card:flex")}>
+        <div className={cn("items-center gap-1", selected ? "flex" : "hidden group-hover/card:flex group-focus-visible/card:flex")}>
           <ReviewIconButton kind="rejected" active={rejected} disabled={busy} onClick={() => onReview("rejected")} />
           <ReviewIconButton kind="approved" active={approved} disabled={busy} onClick={() => onReview("approved")} />
         </div>
@@ -270,14 +270,14 @@ function ReviewIconButton({ kind, active, disabled, onClick }: { kind: ReviewSta
       aria-pressed={active}
       title={approve ? "Approve (A)" : "Reject (R)"}
       className={cn(
-        "inline-flex size-6 items-center justify-center rounded-md border transition-colors disabled:opacity-50",
+        "inline-flex size-7 items-center justify-center rounded-[3px] border transition-colors disabled:opacity-50",
         approve
           ? active
-            ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-200"
-            : "border-zinc-700 bg-zinc-900 text-zinc-400 hover:border-emerald-500/50 hover:bg-emerald-500/15 hover:text-emerald-200"
+            ? "border-emerald-500 bg-emerald-500 text-white"
+            : "border-zinc-700 bg-zinc-900 text-zinc-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white"
           : active
-            ? "border-red-500/50 bg-red-500/20 text-red-200"
-            : "border-zinc-700 bg-zinc-900 text-zinc-400 hover:border-red-500/50 hover:bg-red-500/15 hover:text-red-200",
+            ? "border-red-500 bg-red-500 text-white"
+            : "border-zinc-700 bg-zinc-900 text-zinc-500 hover:border-red-500 hover:bg-red-500/10 hover:text-red-300",
       )}
     >
       {approve ? <Check className="size-3.5" strokeWidth={2.5} /> : <X className="size-3.5" strokeWidth={2.5} />}
@@ -300,15 +300,15 @@ function SnapRow({ s, selected, inGroup, onClick }: { s: Snapshot; selected: boo
         data-status={s.status}
         title={s.path}
         className={cn(
-          "flex w-full items-center gap-2.5 rounded-md px-2 py-1 text-left transition-colors animate-fade-in",
-          selected ? "bg-zinc-800/80 text-zinc-100" : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200",
+          "flex w-full items-center gap-2.5 rounded-[3px] px-2 py-1.5 text-left transition-colors animate-fade-in",
+          selected ? "bg-zinc-950 text-zinc-50 shadow-[inset_2px_0_0_var(--color-accent-500)]" : "text-zinc-400 hover:bg-zinc-950 hover:text-zinc-100",
         )}
       >
         <span className={cn("relative h-7 w-9 shrink-0 overflow-hidden rounded border", s.status === "failed" ? "bg-red-500/10" : "bg-white", selected ? "border-zinc-500" : "border-zinc-800", inGroup && !selected && "ring-2 ring-accent-500/40")}>
           {s.status !== "failed" && <img src={s.image_url} alt="" loading="lazy" className="w-full object-cover object-top" />}
           <span className={cn("absolute bottom-0.5 right-0.5 size-1.5 rounded-full ring-1 ring-black/40", snapshotDot(s.status, s.review))} />
         </span>
-        <span className="min-w-0 flex-1 truncate text-[12.5px] font-medium">{s.name}</span>
+        <span className="min-w-0 flex-1 truncate text-[13px] font-medium">{s.name}</span>
         {s.changes.length > 0 && <span className="font-mono text-[10px] text-zinc-500">{s.changes.length}</span>}
         <span className="font-mono text-[10px] text-zinc-600">{s.viewport}</span>
       </button>
