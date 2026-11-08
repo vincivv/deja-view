@@ -49,7 +49,7 @@ export function NewProjectDialog({ open, onClose }: { open: boolean; onClose: ()
 
   const nPaths = parsePaths(paths).length;
   return (
-    <Dialog open={open} onClose={onClose} title="New project" description="Sightline will screenshot every page at every viewport." testId="new-project-dialog">
+    <Dialog open={open} onClose={onClose} title="New project" description="Deja View will screenshot every page at every viewport." testId="new-project-dialog">
       <form onSubmit={submit} className="space-y-4 px-5 py-4">
         <Field label="Name">
           <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Marketing site" data-testid="project-name" />

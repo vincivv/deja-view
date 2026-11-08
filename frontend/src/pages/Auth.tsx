@@ -22,9 +22,9 @@ export function AuthPage({ mode }: { mode: Mode }) {
   const upgrading = mode === "signup" && !!user?.is_guest;
 
   useEffect(() => {
-    document.title = mode === "login" ? "Sign in · Sightline" : "Sign up · Sightline";
+    document.title = mode === "login" ? "Sign in · Deja View" : "Sign up · Deja View";
     return () => {
-      document.title = "Sightline";
+      document.title = "Deja View";
     };
   }, [mode]);
 
@@ -66,7 +66,7 @@ export function AuthPage({ mode }: { mode: Mode }) {
       <div className="w-full max-w-[360px]">
         <Link to="/" className="mb-6 flex items-center justify-center gap-2 text-[15px] font-semibold tracking-tight text-zinc-100">
           <Logo className="size-7" />
-          Sightline
+          Deja View
         </Link>
         <form onSubmit={submit} className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-2xl shadow-black/40" noValidate>
           <h1 className="text-center text-lg font-semibold tracking-tight text-zinc-50">{title}</h1>

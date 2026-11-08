@@ -273,7 +273,7 @@ function SidebarContent({
         {!collapsed && (
           <Link to="/projects" className="flex min-w-0 items-center gap-2 text-[14px] font-semibold tracking-tight text-zinc-100" data-testid="nav-home">
             <Logo />
-            Sightline
+            Deja View
           </Link>
         )}
         <IconButton
