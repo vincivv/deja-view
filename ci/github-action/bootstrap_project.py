@@ -21,7 +21,7 @@ def main():
     a = argparse.ArgumentParser()
     a.add_argument("--url", default=os.environ.get("SIGHTLINE_URL", "http://127.0.0.1:8000"))
     a.add_argument("--name", required=True)
-    a.add_argument("--paths", nargs="+", default=["/"])
+    a.add_argument("--paths", nargs="+", default=["/"], help='page paths, optionally "path::Name"')
     a.add_argument("--viewports", nargs="+", type=int, default=[1280, 390])
     a.add_argument("--baseline-url", help="capture this URL now as the first (baseline) build")
     args = a.parse_args()
@@ -29,8 +29,10 @@ def main():
     if not token:
         sys.exit("set SIGHTLINE_TOKEN (create one in Sightline > Settings > API tokens)")
     sl = Sightline(args.url, token)
+    # a path can carry a display name: "/en/shop::Shop"
+    paths = [{"path": x.split("::", 1)[0], "name": x.split("::", 1)[1]} if "::" in x else x for x in args.paths]
     p = sl.call("POST", "/api/projects", {"name": args.name, "base_url": args.baseline_url or "https://example.com",
-                                          "paths": args.paths, "viewports": args.viewports})
+                                          "paths": paths, "viewports": args.viewports})
     print(f"project {p['id']} created", file=sys.stderr)
     if args.baseline_url:
         r = sl.start_run(p["id"], args.baseline_url, "Baseline · main")

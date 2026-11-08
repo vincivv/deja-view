@@ -291,7 +291,9 @@ def parse_args(argv=None):
     a.add_argument("--context", default=env("SIGHTLINE_STATUS_CONTEXT", "Sightline"))
     a.add_argument("--dry-run", action="store_true", default=env("SIGHTLINE_DRY_RUN", "").lower() in ("1", "true"))
     a.add_argument("--comment-out", default=env("SIGHTLINE_COMMENT_OUT"), help="also write each comment version here")
-    a.add_argument("--pr", default=None, help="PR number (default: from the GitHub event)")
+    a.add_argument("--pr", default=env("SIGHTLINE_PR") or None, help="PR number (default: from the GitHub event)")
+    a.add_argument("--sha", default=env("SIGHTLINE_SHA") or None,
+                   help="commit to set the status on (default: the PR head, or GITHUB_SHA)")
     return a.parse_args(argv)
 
 
@@ -312,6 +314,7 @@ def main(argv=None) -> int:
             return 2
     pr, sha = event_context()
     pr = int(args.pr) if args.pr else pr
+    sha = args.sha or sha
     label = args.label or (f"PR #{pr}" if pr else (os.environ.get("GITHUB_REF_NAME") or "CI build"))
     gh = GitHub(os.environ.get("GITHUB_TOKEN"), os.environ.get("GITHUB_REPOSITORY"),
                 os.environ.get("GITHUB_API_URL", "https://api.github.com"), args.dry_run)

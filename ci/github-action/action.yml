@@ -54,6 +54,14 @@ inputs:
     description: Token with pull-requests:write and statuses:write
     required: false
     default: ${{ github.token }}
+  pr_number:
+    description: PR to comment on. Defaults to the pull_request event's PR (set it for deployment_status runs).
+    required: false
+    default: ""
+  sha:
+    description: Commit for the status. Defaults to the PR head (or GITHUB_SHA).
+    required: false
+    default: ""
   dry_run:
     description: Print the GitHub API calls instead of making them
     required: false
@@ -99,6 +107,8 @@ runs:
         SIGHTLINE_TIMEOUT_MINUTES: ${{ inputs.timeout_minutes }}
         SIGHTLINE_STATUS_CONTEXT: ${{ inputs.status_context }}
         SIGHTLINE_DRY_RUN: ${{ inputs.dry_run }}
+        SIGHTLINE_PR: ${{ inputs.pr_number }}
+        SIGHTLINE_SHA: ${{ inputs.sha }}
         GITHUB_TOKEN: ${{ inputs.github_token }}
       run: python "$GITHUB_ACTION_PATH/sightline_check.py"
     - name: Upload the routed Wren test file
