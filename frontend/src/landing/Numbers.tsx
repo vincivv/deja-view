@@ -38,7 +38,8 @@ export function Numbers() {
       <SectionHead index="05" label="Measured"
         title={<><span className="dv-num">115</span> planted bugs. <span className="dv-num">15</span> live sites.</>}
         sub="Stripe, GitHub, Airbnb, BBC, Wikipedia and 10 more." />
-      <LogoRow className="-mt-4 mb-10" />
+      <LogoRow className="-mt-4" />
+      <p className="mb-10 mt-3 text-[11.5px] text-[var(--dv-mute)]">Public pages only. Not affiliated with or endorsed by these companies.</p>
 
       <div ref={ref} className="grid gap-px border border-[var(--dv-line)] bg-[var(--dv-line)] md:grid-cols-2">
         <Tile k="A" title="Items to review" note="average per page with one planted bug">

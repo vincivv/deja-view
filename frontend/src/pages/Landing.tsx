@@ -10,7 +10,6 @@ import { Pipeline } from "../landing/Pipeline";
 import { PrComment } from "../landing/PrComment";
 import { Wren } from "../landing/Wren";
 import { Numbers, Proof } from "../landing/Numbers";
-import { BenchmarkLogos } from "../landing/Logos";
 
 /* Deja View landing page. Dark, dithered, pixel-type. One call to action: "Open dashboard" → /projects
    (which sends signed-out visitors to the login page, where the guest demo lives). */
@@ -83,7 +82,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      <BenchmarkLogos />
 
       <Problem />
       <Pipeline />
