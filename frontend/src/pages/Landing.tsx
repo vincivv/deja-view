@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useStartDemo } from "../components/Layout";
 import "../landing/landing.css";
 import { DitherField } from "../landing/DitherField";
 import { PixelMark } from "../landing/kit";
@@ -16,6 +17,7 @@ import { Numbers, Proof } from "../landing/Numbers";
 export const REPO_URL = "https://github.com/vincivv/sightline";
 
 export function LandingPage() {
+  const { start, busy } = useStartDemo();
   useEffect(() => {
     const prev = document.title;
     document.title = "Deja View · visual review that tells you what changed";
@@ -60,7 +62,10 @@ export function LandingPage() {
             <Link to="/projects" className="dv-cta" data-testid="open-dashboard">
               Open dashboard <ArrowRight className="dv-arrow size-[18px]" strokeWidth={2.5} />
             </Link>
-            <a href="#problem" className="text-[15px] font-medium text-[var(--dv-ink)] underline decoration-dotted underline-offset-4">See how it works</a>
+            <button type="button" onClick={start} disabled={busy} data-testid="try-demo"
+              className="text-[15px] font-medium text-[var(--dv-ink)] underline decoration-dotted underline-offset-4 disabled:opacity-60">
+              {busy ? "Starting…" : "Try the demo"}
+            </button>
           </div>
           <dl className="mt-16 grid max-w-2xl grid-cols-3 gap-[2px] border-2 border-[var(--dv-ink)] bg-[var(--dv-ink)]">
             {[
