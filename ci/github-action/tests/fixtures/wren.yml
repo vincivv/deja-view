@@ -1,0 +1,19 @@
+# Change-aware Wren routing for Sightline.
+# Each Wren case id from seldon.yml -> the page paths its flow visits. On a pull request, Sightline finds
+# the pages that changed and recommends (or runs) only the cases that go through them.
+seldon: seldon.yml        # relative to the repo root
+unmapped: run             # cases not listed below: run (safe default) or skip
+price_per_run: 3          # USD per Wren run, for the cost line in the PR comment
+cases:
+  home-bestsellers:
+    pages: ["/"]
+  nav-links:
+    pages: ["/", "/pricing"]
+  pricing-plans:
+    pages: ["/pricing"]
+  join-acme-plus:
+    pages: ["/", "/pricing"]
+  product-add-to-cart:
+    pages: ["/", "/product", "/cart"]
+  cart-checkout:
+    pages: ["/cart"]

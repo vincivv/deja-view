@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start Sightline on :8000 and (optionally) expose it publicly with a Cloudflare quick tunnel.
+# Start Deja View on :8000 and (optionally) expose it publicly with a Cloudflare quick tunnel.
 #   ./run.sh           local only  -> http://127.0.0.1:8000
 #   ./run.sh --public  also prints a https://*.trycloudflare.com URL (for Wren / judges)
 set -euo pipefail

@@ -10,10 +10,10 @@ pct = lambda xs: f"{100 * sum(xs) / len(xs):.0f}%" if xs else "-"
 print(f"sites {len(d)} | mutation cases {len(muts)} | controls {len(ctrl)} | skipped {sum(1 for s in d for c in s['cases'] if c.get('skip'))} | errors {sum(1 for s in d for c in s['cases'] if c.get('error'))}")
 print(f"DETECTED {pct([c['detected'] for c in muts])} | LABEL RIGHT {pct([c['label_ok'] for c in muts])} | "
       f"cases with 0 false alarms {pct([c['false_alarms'] == 0 for c in muts])} | mean false alarms/case {st.mean(c['false_alarms'] for c in muts):.2f}")
-print(f"controls (no change): Sightline false alarms mean {st.mean(c['false_alarms'] for c in ctrl):.2f}, clean {pct([c['false_alarms'] == 0 for c in ctrl])} | "
+print(f"controls (no change): Deja View false alarms mean {st.mean(c['false_alarms'] for c in ctrl):.2f}, clean {pct([c['false_alarms'] == 0 for c in ctrl])} | "
       f"pixel-diff regions mean {st.mean(c['pixel_regions'] for c in ctrl):.1f}, clean {pct([c['pixel_regions'] == 0 for c in ctrl])}")
 print(f"pixel diff on mutation cases: mean regions {st.mean(c['pixel_regions'] for c in muts):.1f}, mean regions outside the change {st.mean(c['pixel_noise'] for c in muts):.1f}; "
-      f"Sightline items reported mean {st.mean(c['hits'] + c['false_alarms'] for c in muts):.2f}")
+      f"Deja View items reported mean {st.mean(c['hits'] + c['false_alarms'] for c in muts):.2f}")
 print(f"\n{'operator':12} {'n':>3} {'found':>6} {'label':>6} {'0 FA':>5} {'FA/case':>8} {'px regions':>10} {'our items':>9}")
 by = defaultdict(list)
 for c in muts:

@@ -1,6 +1,7 @@
-"""Sightline API server."""
+"""Deja View API server."""
 import logging
 import os
+import re
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -27,7 +28,7 @@ async def lifespan(app):
     await jobs.capturer.close()
 
 
-app = FastAPI(title="Sightline", lifespan=lifespan)
+app = FastAPI(title="Deja View", lifespan=lifespan)
 app.add_middleware(GZipMiddleware, minimum_size=1024)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 app.include_router(demo_router)
@@ -66,6 +67,7 @@ class ProjectPatch(BaseModel):
 class RunIn(BaseModel):
     base_url: str | None = None
     label: str | None = None
+    headers: dict[str, str] | None = None   # extra capture headers for this build only (not stored)
 
 
 class ReviewIn(BaseModel):
@@ -280,7 +282,8 @@ def list_runs(pid: str, user=Depends(auth.current_user)):
 @app.post("/api/projects/{pid}/runs")
 async def start_run(pid: str, body: RunIn, user=Depends(auth.current_user)):
     _project(pid, user)
-    rid = jobs.create_run(pid, _norm_url(body.base_url) if body.base_url else None, (body.label or "").strip() or None)
+    rid = jobs.create_run(pid, _norm_url(body.base_url) if body.base_url else None, (body.label or "").strip() or None,
+                          _check_headers(body.headers))
     return jobs.run_summary(db.one("select * from runs where id=?", (rid,)))
 
 
@@ -315,6 +318,17 @@ def _origin(request: Request):
     proto = request.headers.get("x-forwarded-proto", request.url.scheme)
     host = request.headers.get("x-forwarded-host") or request.headers.get("host") or request.url.netloc
     return f"{proto}://{host}"
+
+
+def _check_headers(h):
+    if not h:
+        return None
+    if len(h) > 10 or any(not re.fullmatch(r"[A-Za-z0-9-]{1,64}", k) or len(v) > 1024 or "\n" in v or "\r" in v
+                          for k, v in h.items()):
+        raise HTTPException(422, "headers: up to 10 headers, names of letters, digits and dashes, values up to 1024 chars")
+    if any(k.lower() in ("host", "cookie", "content-length") for k in h):
+        raise HTTPException(422, "headers: host, cookie and content-length can't be set")
+    return h
 
 
 def _check_status(s):

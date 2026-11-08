@@ -1,0 +1,18 @@
+{
+ "id": "r_a8b07de7626d",
+ "number": 3,
+ "status": "done",
+ "result": "changes",
+ "counts": {
+  "snapshots": 8,
+  "unchanged": 4,
+  "changed": 4,
+  "new": 0,
+  "failed": 0,
+  "changes": 9,
+  "groups": 5,
+  "noise_ignored": 50,
+  "pixel_regions": 58
+ },
+ "url": "http://127.0.0.1:8000/builds/r_a8b07de7626d"
+}
