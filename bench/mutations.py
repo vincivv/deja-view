@@ -2,7 +2,7 @@
 
 For each site: capture a baseline (3 loads), an unmodified control (2 loads), then one candidate per mutation
 operator (2 loads each, the same mutation applied after the page settles). Ground truth is the mutated element,
-so we can score Sightline's report: was the change found, was it labelled right, and how many unrelated changes
+so we can score Deja View's report: was the change found, was it labelled right, and how many unrelated changes
 (false alarms) were reported. Plain pixel diff is scored on the same pages for comparison.
 
 Run:  backend/.venv/bin/python bench/mutations.py [site ...]

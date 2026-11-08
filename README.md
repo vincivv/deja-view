@@ -1,10 +1,10 @@
-# Sightline
+# Deja View
 
 Visual regression testing that understands the page: you review real changes, not rendering noise.
 It's a replacement for Percy, Chromatic and Applitools, built at the Seldon "Ship Happens" hackathon (Nov 7, 2026).
 
 Plain pixel diff flags everything that moved: a new banner turns the whole page red, and so do clocks, ads and rotating content.
-Sightline matches DOM elements between the baseline and the new build, so it reports changes like these:
+Deja View matches DOM elements between the baseline and the new build, so it reports changes like these:
 
 - *Button background changed #4c6ef5 → #d9480f* on 8 snapshots, reviewed once
 - *Banner added*, with the 17 elements it pushed down counted as **one layout shift** rather than 17 changes
@@ -12,7 +12,7 @@ Sightline matches DOM elements between the baseline and the new build, so it rep
 
 ## Measured
 
-| | Plain pixel diff | Sightline |
+| | Plain pixel diff | Deja View |
 |---|---|---|
 | Built-in demo, v1 → v2 (5 planted regressions, 8 snapshots) | 80 regions | **6 groups: all 5 regressions, 0 false** |
 | Demo v2 rebuilt against itself (live clock, random counters, rotating quotes) | 24 regions | **0** |
@@ -28,7 +28,7 @@ This uses the method from WUICC-bench: load a real site, inject one bug, and see
 The sites were Stripe, Vercel, Linear, GitHub pricing, MDN, BBC, The Verge, Airbnb, Shopify, Figma, Tailwind, python.org, the Python docs, HN and Wikipedia.
 There were 115 bug cases across 9 bug types, plus 14 no-change controls.
 
-| | Plain pixel diff | Sightline |
+| | Plain pixel diff | Deja View |
 |---|---|---|
 | Bug found at the right spot | n/a (flags everything) | **87%**, labelled right 86% |
 | No-change controls: noise per page | 5.7 regions, 64% of pages clean | **1.7 items, 79% clean** |
@@ -44,7 +44,7 @@ The full rerun on the latest engine was blocked by archive.org rate limits. `ben
 ### Edge cases: content that changes between builds
 
 Some content stays the same between one build's loads but changes by the next build, such as countdowns, dates, clock times, "3 hours ago", greetings, viewer and stock counts, and A/B variants remembered in a cookie.
-`backend/edgecases.py` checks 26 cases like these plus 9 real changes. Sightline ignores 25 of the 26 noise cases and reports all 9 real changes.
+`backend/edgecases.py` checks 26 cases like these plus 9 real changes. Deja View ignores 25 of the 26 noise cases and reports all 9 real changes.
 The miss is a random A/B test stored in a cookie: with 3 loads, the same variant can come up every time by chance.
 
 ## How it works

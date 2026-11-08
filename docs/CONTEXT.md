@@ -1,4 +1,4 @@
-# Sightline: project context
+# Deja View: project context
 
 A handoff for a person or an AI agent picking this up. The status below is as of Nov 7, 2026.
 
@@ -12,7 +12,7 @@ A handoff for a person or an AI agent picking this up. The status below is as of
 
 ## The idea
 
-Sightline replaces **Percy, Chromatic and Applitools**, which are paid visual regression testing tools.
+Deja View replaces **Percy, Chromatic and Applitools**, which are paid visual regression testing tools.
 They screenshot your site on every build and diff it against an approved baseline.
 
 **The problem:** plain pixel diffing flags everything that moves.
@@ -20,7 +20,7 @@ They screenshot your site on every build and diff it against an approved baselin
 - Clocks, ads, counters and A/B slots fail every build.
 - Teams end up approving diffs blindly.
 
-**What Sightline does differently:** it diffs the **DOM as well as the pixels**, so it reports what actually changed in plain words:
+**What Deja View does differently:** it diffs the **DOM as well as the pixels**, so it reports what actually changed in plain words:
 - "Button background #4c6ef5 → #d9480f", grouped across 8 snapshots and reviewed once.
 - "Banner added", with the 545 elements it pushed down counted as **one layout shift**, not 545 changes.
 - "Image missing", "Button text changed", "Button moved 36px right", "Page width changed (content overflows)".
@@ -76,7 +76,7 @@ backend/.venv/bin/python bench/mutations.py && python3 bench/summarize.py -v
 
 **Self-rebuilds** (a page diffed against itself; anything reported is noise):
 
-| Page | Plain pixel diff | Sightline |
+| Page | Plain pixel diff | Deja View |
 |---|---|---|
 | Demo v2 (live clock, random counters, rotating quotes) | 24 regions | **0** |
 | The Verge | 13 regions | **0** |
@@ -85,7 +85,7 @@ backend/.venv/bin/python bench/mutations.py && python3 bench/summarize.py -v
 **Seeded-bug benchmark** (the WUICC-bench method):
 - **Setup:** 15 live sites (Stripe, Vercel, Linear, GitHub, MDN, BBC, The Verge, Airbnb, Shopify, Figma, Tailwind, python.org, Python docs, HN, Wikipedia). 115 bug cases across 9 bug types, plus 14 no-change controls.
 
-| | Plain pixel diff | Sightline |
+| | Plain pixel diff | Deja View |
 |---|---|---|
 | Bug found at the right spot | n/a | **87%** (labelled right 86%) |
 | No-change page: false alarms | 5.7 regions, 64% of pages clean | **1.7, 79% clean** |
@@ -118,5 +118,5 @@ backend/.venv/bin/python bench/mutations.py && python3 bench/summarize.py -v
 
 ## Repo
 
-- **GitHub:** private repo `vincivv/sightline`.
+- **GitHub:** private repo `vincivv/deja-view`.
 - **About 4.2k lines** across the backend and the frontend.
