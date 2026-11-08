@@ -1,4 +1,4 @@
-name: Sightline visual check
+name: Deja View visual check
 description: >-
   Capture a preview with Sightline, post one sticky PR comment that says in plain English what changed,
   set a commit status that follows the human review in Sightline, and route Wren tests to the flows that changed.
@@ -49,7 +49,7 @@ inputs:
   status_context:
     description: Name of the commit status
     required: false
-    default: Sightline
+    default: Deja View
   github_token:
     description: Token with pull-requests:write and statuses:write
     required: false
@@ -91,7 +91,7 @@ runs:
       shell: bash
       run: python -m pip install --quiet --disable-pip-version-check pyyaml==6.0.2
     - id: check
-      name: Sightline check
+      name: Deja View check
       shell: bash
       env:
         SIGHTLINE_URL: ${{ inputs.sightline_url }}

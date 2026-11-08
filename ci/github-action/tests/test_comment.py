@@ -35,11 +35,11 @@ class RenderTests(unittest.TestCase):
                "command": "cd sightline-wren && seldon run --url https://p.dev"}
         md = C.render(STATUS, RUN, routing_for(RUN), None, cfg, waiting=True)
         self.assertTrue(md.startswith(C.MARKER))
-        self.assertIn("❌ Sightline: 5 visual changes need review", md)
+        self.assertIn("❌ Deja View: 5 visual changes need review", md)
         self.assertIn("**Button background changed**: `background #4c6ef5 → #d9480f`", md)
         self.assertIn("| Cart · 1280px + 390px |", md)
         self.assertIn("**Image missing**", md)
-        self.assertIn("[Review in Sightline →](http://127.0.0.1:8000/builds/", md)
+        self.assertIn("[Review in Deja View →](http://127.0.0.1:8000/builds/", md)
         self.assertIn("Wren: run 2 of 3 tests", md)
         self.assertIn("About $6 of Wren runs instead of $9", md)
         self.assertIn("seldon run --url https://p.dev", md)
@@ -58,7 +58,7 @@ class RenderTests(unittest.TestCase):
             g["review"] = "approved"
         st = dict(STATUS, result="approved")
         md = C.render(st, run)
-        self.assertIn("✅ Sightline: 5 visual changes approved", md)
+        self.assertIn("✅ Deja View: 5 visual changes approved", md)
         self.assertNotIn("⏳", md)
         self.assertEqual(C.status_for("approved", st["counts"])[0], "success")
         self.assertEqual(C.status_for("rejected", st["counts"])[0], "failure")
@@ -68,14 +68,14 @@ class RenderTests(unittest.TestCase):
               "counts": {"snapshots": 8, "unchanged": 8, "changes": 0, "groups": 0, "noise_ignored": 12}}
         run = {"result": "passed", "snapshots": [], "groups": []}
         md = C.render(st, run, W.route([{"id": "a", "name": "a"}], {"cases": {"a": {"pages": ["/"]}}}, [], "passed"))
-        self.assertIn("✅ Sightline: no visual changes", md)
+        self.assertIn("✅ Deja View: no visual changes", md)
         self.assertIn("Wren: no tests needed (0 of 1)", md)
         self.assertEqual(C.status_for("passed", st["counts"]), ("success", "No visual changes across 8 snapshots"))
 
     def test_unreachable(self):
         md = C.render(None, None, result_override="unreachable", error="Could not reach Sightline: refused",
                       cfg={"sightline_url": "https://gone.trycloudflare.com"})
-        self.assertIn("⚠️ Sightline: server unreachable", md)
+        self.assertIn("⚠️ Deja View: server unreachable", md)
         self.assertIn("gone.trycloudflare.com", md)
         self.assertEqual(C.status_for("unreachable", None)[0], "error")
 
@@ -86,7 +86,7 @@ class RenderTests(unittest.TestCase):
             {"id": "s1", "name": "Home", "path": "/", "viewport": 1280, "status": "failed",
              "error": "HTTP 530 for https://x/", "changes": [], "layout_shifts": []}]}
         md = C.render(st, run)
-        self.assertIn("Sightline: build failed", md)
+        self.assertIn("Deja View: build failed", md)
         self.assertIn("Could not capture:** Home 1280px (HTTP 530", md)
 
     def test_table_cells_are_escaped(self):
@@ -185,7 +185,7 @@ class MainTests(unittest.TestCase):
         finally:
             fake.close()
         self.assertEqual(fake.started["label"], "PR #7")
-        self.assertIn("✅ Sightline: 5 visual changes approved", self.out.read_text())
+        self.assertIn("✅ Deja View: 5 visual changes approved", self.out.read_text())
 
     def test_rejected_after_review(self):
         fake = FakeSightline(final_result="rejected", review_after=3)
@@ -193,7 +193,7 @@ class MainTests(unittest.TestCase):
             self.assertEqual(self.main(fake.url), 1)
         finally:
             fake.close()
-        self.assertIn("❌ Sightline: visual changes rejected", self.out.read_text())
+        self.assertIn("❌ Deja View: visual changes rejected", self.out.read_text())
 
     def test_review_timeout_fails(self):
         fake = FakeSightline()

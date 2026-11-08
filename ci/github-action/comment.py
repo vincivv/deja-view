@@ -50,18 +50,18 @@ def headline(result: str, counts: dict | None, waiting: bool = False, error: str
     c = counts or {}
     g = c.get("groups", 0)
     if result == "passed":
-        return "✅", "Sightline: no visual changes"
+        return "✅", "Deja View: no visual changes"
     if result == "approved":
-        return "✅", f"Sightline: {_plural(g, 'visual change')} approved"
+        return "✅", f"Deja View: {_plural(g, 'visual change')} approved"
     if result == "rejected":
-        return "❌", f"Sightline: visual changes rejected"
+        return "❌", f"Deja View: visual changes rejected"
     if result == "changes":
-        return "❌", f"Sightline: {_need_review(g, pending)}"
+        return "❌", f"Deja View: {_need_review(g, pending)}"
     if result == "unreachable":
-        return "⚠️", "Sightline: server unreachable"
+        return "⚠️", "Deja View: server unreachable"
     if result == "timeout":
-        return "⚠️", "Sightline: build did not finish in time"
-    return "❌", "Sightline: build failed" + (f" ({error})" if error else "")
+        return "⚠️", "Deja View: build did not finish in time"
+    return "❌", "Deja View: build failed" + (f" ({error})" if error else "")
 
 
 def status_for(result: str, counts: dict | None, error: str | None = None, pending: int | None = None) -> tuple[str, str]:
@@ -70,14 +70,14 @@ def status_for(result: str, counts: dict | None, error: str | None = None, pendi
     g, snaps = c.get("groups", 0), c.get("snapshots", 0)
     table = {
         "passed": ("success", f"No visual changes across {_plural(snaps, 'snapshot')}"),
-        "approved": ("success", f"{_plural(g, 'visual change')} approved in Sightline"),
-        "rejected": ("failure", "Visual changes rejected in Sightline"),
-        "changes": ("failure", f"{_need_review(g, pending)} in Sightline"),
-        "unreachable": ("error", "Sightline server unreachable"),
-        "timeout": ("error", "Sightline build did not finish in time"),
+        "approved": ("success", f"{_plural(g, 'visual change')} approved in Deja View"),
+        "rejected": ("failure", "Visual changes rejected in Deja View"),
+        "changes": ("failure", f"{_need_review(g, pending)} in Deja View"),
+        "unreachable": ("error", "Deja View server unreachable"),
+        "timeout": ("error", "Deja View build did not finish in time"),
         "running": ("pending", "Capturing and diffing pages…"),
     }
-    state, desc = table.get(result, ("failure", f"Sightline build failed{': ' + error if error else ''}"))
+    state, desc = table.get(result, ("failure", f"Deja View build failed{': ' + error if error else ''}"))
     return state, desc[:140]
 
 
@@ -188,10 +188,10 @@ def render(status: dict | None, run: dict | None, routing: dict | None = None, w
 
     if url:
         if result == "changes":
-            lines += [f"**[Review in Sightline →]({url})** Approving or rejecting there updates this check"
+            lines += [f"**[Review in Deja View →]({url})** Approving or rejecting there updates this check"
                       + (" while it waits." if waiting else "."), ""]
         else:
-            lines += [f"[Open build in Sightline →]({url})", ""]
+            lines += [f"[Open build in Deja View →]({url})", ""]
     lines += render_wren(routing, wren, cfg)
     lines += [_footer(cfg)]
     return "\n".join(lines)
@@ -199,4 +199,4 @@ def render(status: dict | None, run: dict | None, routing: dict | None = None, w
 
 def _footer(cfg: dict) -> str:
     sha = (cfg.get("sha") or "")[:7]
-    return f"<sub>Sightline visual check{' for ' + sha if sha else ''}. This comment is updated in place.</sub>"
+    return f"<sub>Deja View visual check{' for ' + sha if sha else ''}. This comment is updated in place.</sub>"
