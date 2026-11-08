@@ -1,5 +1,6 @@
 import { Check, CircleX, GitPullRequest } from "lucide-react";
 import { Section, SectionHead, Ticker, useInView } from "./kit";
+import { LogoRow } from "./Logos";
 
 /* Benchmark numbers (docs/CONTEXT.md) as dithered bars and pixel grids, plus the real-store proof. */
 
@@ -37,6 +38,7 @@ export function Numbers() {
       <SectionHead index="05" label="Measured"
         title={<><span className="dv-num">115</span> planted bugs. <span className="dv-num">15</span> live sites.</>}
         sub="Stripe, GitHub, Airbnb, BBC, Wikipedia and 10 more." />
+      <LogoRow className="-mt-4 mb-10" />
 
       <div ref={ref} className="grid gap-px border border-[var(--dv-line)] bg-[var(--dv-line)] md:grid-cols-2">
         <Tile k="A" title="Items to review" note="average per page with one planted bug">

@@ -19,6 +19,22 @@ const LOGOS: [string, string][] = [
 ];
 const TEXT_ONLY = ["BBC", "The Verge"];
 
+/** Compact row of the marks only (used under the "Measured" heading). */
+export function LogoRow({ className = "" }: { className?: string }) {
+  return (
+    <ul className={`flex flex-wrap items-center gap-x-6 gap-y-3 ${className}`} aria-label="Benchmarked on these public sites">
+      {LOGOS.map(([name, svg]) => (
+        <li key={name} title={name} className="text-[var(--dv-ink)] opacity-60 transition-opacity hover:opacity-100">
+          <span className="block size-7 [&_svg]:size-full [&_svg]:fill-current" role="img" aria-label={name} dangerouslySetInnerHTML={{ __html: svg }} />
+        </li>
+      ))}
+      {TEXT_ONLY.map((name) => (
+        <li key={name} className="text-[15px] font-bold tracking-tight text-[var(--dv-ink)] opacity-60">{name}</li>
+      ))}
+    </ul>
+  );
+}
+
 export function BenchmarkLogos() {
   return (
     <section aria-label="Benchmark sites" className="relative border-y-2 border-[var(--dv-ink)] bg-[var(--dv-panel)]">
