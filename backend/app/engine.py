@@ -1,4 +1,4 @@
-"""Sightline diff engine.
+"""Deja View diff engine.
 
 Compares a candidate capture against a baseline by matching DOM elements rather than raw pixels:
   * volatility learning: elements whose content or pixels differ between repeated loads are dynamic (clocks,

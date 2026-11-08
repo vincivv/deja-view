@@ -1,4 +1,4 @@
-# Sightline as a GitHub CI check: handoff
+# Deja View as a GitHub CI check: handoff
 
 Built by Akmal and Claude on Nov 7, 2026, on branch `ci-github-check`. This is everything another agent needs to know.
 
@@ -8,8 +8,8 @@ Built by Akmal and Claude on Nov 7, 2026, on branch `ci-github-check`. This is e
   - **`sightline_check.py`:**
     - starts a build with `POST /api/projects/{id}/runs {base_url, label}` and polls `/api/runs/{id}/status`
     - fetches the groups and renders **one sticky PR comment** (hidden marker `<!-- sightline-check -->`), updated in place
-    - sets a commit status with context `Sightline`
-    - if the build has changes, it keeps polling (`timeout_minutes`, default 15), so **Approve/Reject in the Sightline UI flips the GitHub check live**
+    - sets a commit status with context `Deja View`
+    - if the build has changes, it keeps polling (`timeout_minutes`, default 15), so **Approve/Reject in the Deja View UI flips the GitHub check live**
     - exit code: 0 for passed or approved; 1 for rejected, failed, unreachable, or a review timeout
     - `--dry-run` prints the GitHub calls instead of making them
   - **`wren_routing.py`** holds pure functions. A map file `.sightline/wren.yml` lists, for each Wren case, the page globs it touches. Changed or failed pages give the subset of cases to run ("3 of 6, about $9 instead of $18"). The script writes a filtered `seldon.yml` artifact. It runs `seldon run` only if a `seldon` binary is on PATH; otherwise it only recommends.
@@ -38,12 +38,12 @@ Built by Akmal and Claude on Nov 7, 2026, on branch `ci-github-check`. This is e
     - noise from the live countdown "17 hrs 3 mins" (fixed on master in `f39b768`; rerun to confirm)
     - the button color shows as `lab(...)`, because the site's CSS uses lab colors. Converting lab to hex in the labels would be a nice polish.
   - Wren routing picked 3 of 6 cases: product-details, add-to-cart, cart-page.
-- **To rerun the check on #102:** `gh workflow run Sightline -R Akmalchan/GEARGO -f pr=102`. It takes about 75 s once the preview exists, and a fresh PR needs about 1–3 min for the Vercel build first.
-- **Timing:** Vercel build about 1–3 min, then Sightline about 75 s for 5 pages at 2 viewports.
+- **To rerun the check on #102:** `gh workflow run Deja View -R Akmalchan/GEARGO -f pr=102`. It takes about 75 s once the preview exists, and a fresh PR needs about 1–3 min for the Vercel build first.
+- **Timing:** Vercel build about 1–3 min, then Deja View about 75 s for 5 pages at 2 viewports.
 
 ## Pitch (full script in Akmal's notes)
 
-"Wren tells you if your release broke. Sightline tells you what it changed, on every PR for about free, and tells Wren which tests to run (3 of 6)." Seldon is an ally: we make Wren affordable to run on every PR.
+"Wren tells you if your release broke. Deja View tells you what it changed, on every PR for about free, and tells Wren which tests to run (3 of 6)." Seldon is an ally: we make Wren affordable to run on every PR.
 
 ## Open items
 

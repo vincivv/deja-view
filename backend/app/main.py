@@ -1,4 +1,4 @@
-"""Sightline API server."""
+"""Deja View API server."""
 import logging
 import os
 import re
@@ -28,7 +28,7 @@ async def lifespan(app):
     await jobs.capturer.close()
 
 
-app = FastAPI(title="Sightline", lifespan=lifespan)
+app = FastAPI(title="Deja View", lifespan=lifespan)
 app.add_middleware(GZipMiddleware, minimum_size=1024)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 app.include_router(demo_router)

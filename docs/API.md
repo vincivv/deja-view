@@ -1,4 +1,4 @@
-# Sightline API contract
+# Deja View API contract
 
 The backend is FastAPI on `http://127.0.0.1:8000`. All JSON lives under `/api`, and images are served under `/files/...`.
 In production the backend also serves the built frontend (`frontend/dist`) at `/`.
