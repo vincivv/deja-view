@@ -1,0 +1,64 @@
+# Wren (Seldon) end-to-end tests for the Acme Supply shop.
+#   seldon validate
+#   seldon run --url http://localhost:4173      (serve the site first: python3 -m http.server 4173 --directory site)
+# On pull requests, Sightline routes only the cases whose pages changed (see .sightline/wren.yml).
+version: 1
+name: acme-shop
+run:
+  url: "http://localhost:4173"
+  credentials: none
+testCases:
+  - name: Home page shows the bestsellers
+    id: home-bestsellers
+    steps:
+      - go to the home page
+      - scroll to the "Bestsellers" section
+    criteria: >-
+      the hero says "Gear that keeps up with you." and the Bestsellers section lists Trail Pack 22L ($129),
+      Insulated Bottle ($34) and Desk Lamp Mini ($58), each with a product picture
+
+  - name: The main navigation reaches every page
+    id: nav-links
+    steps:
+      - go to the home page
+      - click "Pricing" in the top navigation
+      - click the "Acme Supply" logo
+    criteria: >-
+      each click opens the matching page (Simple membership, then the home page) without errors
+
+  - name: Pricing lists the three membership plans
+    id: pricing-plans
+    steps:
+      - go to the pricing page
+    criteria: >-
+      the page shows Basic ($0), Acme+ ($9, highlighted) and Teams ($49), and Acme+ has a "Start free trial" button
+
+  - name: Joining Acme+ from the home page
+    id: join-acme-plus
+    steps:
+      - go to the home page
+      - click "Join Acme+"
+      - click "Start free trial" on the Acme+ plan
+    criteria: >-
+      the pricing page opens from the home page and the Acme+ trial button is visible and clickable
+
+  - name: A shopper can view a product and add it to the cart
+    id: product-add-to-cart
+    steps:
+      - go to the home page
+      - click "Shop bestsellers"
+      - look at the product photo, price and specs
+      - click "Add to cart"
+    criteria: >-
+      the product page shows a photo of the Trail Pack 22L, the price $129 and its specs, and "Add to cart"
+      opens the cart with Trail Pack 22L in it
+
+  - name: The cart totals add up and checkout is reachable
+    id: cart-checkout
+    steps:
+      - go to the cart page
+      - check the line items, subtotal and total
+      - click "Checkout"
+    criteria: >-
+      the cart lists Trail Pack 22L ($129.00) and Insulated Bottle ($34.00), the total is $163.00, and the
+      Checkout button is aligned with the summary card and uses the same blue as the other primary buttons
