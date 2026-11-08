@@ -1,0 +1,136 @@
+/* Deja View landing: dithered / pixel / film-grain look. Scoped under .dv so the app shell is untouched. */
+.dv {
+  --dv-bg: #f3f0e8;
+  --dv-bg2: #ebe7dd;
+  --dv-panel: #fbfaf6;
+  --dv-ink: #0d0d0c;
+  --dv-mute: #4f4c45;
+  --dv-dim: #8c887e;
+  --dv-line: #cfc9bc;
+  --dv-hot: #ff4a14;
+  --dv-hot-ink: #d23a06;
+  --dv-lime: #c6f432;
+  --dv-ok: #237a1c;
+  --dv-pixel: "Pixelify Sans", "Silkscreen", ui-monospace, monospace;
+  --dv-silk: "Silkscreen", "Pixelify Sans", ui-monospace, monospace;
+  background: var(--dv-bg);
+  color: var(--dv-ink);
+  color-scheme: light;
+}
+.dv ::selection { background: var(--dv-hot); color: #000; }
+
+.dv-pixel { font-family: var(--dv-pixel); letter-spacing: -0.01em; }
+.dv-silk { font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.dv-num { font-family: "Inter", ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.035em; }
+
+/* film grain over the whole page */
+.dv-grain {
+  pointer-events: none;
+  position: fixed;
+  inset: -50%;
+  z-index: 0; /* behind every positioned section, so grain never sits on top of text */
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.4 -0.3'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: dv-grain 0.9s steps(6) infinite;
+  mix-blend-mode: multiply;
+}
+@keyframes dv-grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -4%); }
+  60% { transform: translate(-4%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* scanline-ish pixel grid used behind sections */
+.dv-grid {
+  background-image:
+    linear-gradient(to right, rgba(13, 13, 12, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(13, 13, 12, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* dither fills: 50% checker and 25% dot screen, coloured by currentColor */
+.dv-checker {
+  background-image: conic-gradient(currentColor 25%, transparent 0 50%, currentColor 0 75%, transparent 0);
+  background-size: 4px 4px;
+}
+.dv-dots {
+  background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
+  background-size: 4px 4px;
+}
+.dv-dots-sparse {
+  background-image: radial-gradient(currentColor 0.8px, transparent 1px);
+  background-size: 6px 6px;
+}
+
+/* stepped (pixel) corners */
+.dv-notch {
+  clip-path: polygon(0 6px, 6px 6px, 6px 0, calc(100% - 6px) 0, calc(100% - 6px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 6px), 0 calc(100% - 6px));
+}
+
+.dv-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 52px;
+  padding: 0 22px;
+  background: var(--dv-hot);
+  color: #fff;
+  font-family: var(--dv-pixel);
+  font-weight: 600;
+  font-size: 20px;
+  height: 58px;
+  border: 2px solid var(--dv-ink);
+  box-shadow: 5px 5px 0 0 var(--dv-ink);
+  transition: transform 120ms steps(2), box-shadow 120ms steps(2);
+}
+.dv-cta:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 0 var(--dv-ink); }
+.dv-cta:active { transform: translate(5px, 5px); box-shadow: 0 0 0 0 var(--dv-ink); }
+.dv-cta:focus-visible { outline: 2px dashed var(--dv-ink); outline-offset: 6px; }
+.dv-cta .dv-arrow { transition: transform 160ms steps(3); }
+.dv-cta:hover .dv-arrow { transform: translateX(4px); }
+
+.dv-card {
+  background: var(--dv-panel);
+  border: 1px solid var(--dv-line);
+}
+
+.dv-blink { animation: dv-blink 1s steps(1) infinite; }
+@keyframes dv-blink { 50% { opacity: 0; } }
+
+.dv-rise { opacity: 0; transform: translateY(12px); transition: opacity 400ms steps(4), transform 400ms steps(4); }
+.dv-in .dv-rise, .dv-rise.dv-in { opacity: 1; transform: none; }
+
+/* problem section boxes */
+.dv-box {
+  position: absolute;
+  border: 1px solid var(--dv-hot);
+  color: var(--dv-hot);
+  transition-property: left, top, width, height, opacity;
+  transition-timing-function: steps(7, end);
+}
+.dv-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.45;
+  background-image: conic-gradient(currentColor 25%, transparent 0 50%, currentColor 0 75%, transparent 0);
+  background-size: 3px 3px;
+}
+.dv-callout {
+  position: absolute;
+  border: 2px solid var(--dv-ink);
+  box-shadow: 0 0 0 3px rgba(198, 244, 50, 0.7);
+  transition: opacity 300ms steps(3);
+}
+
+.dv-packet { transition: left 700ms steps(8), top 700ms steps(8); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dv-grain, .dv-blink { animation: none; }
+  .dv *, .dv *::before, .dv *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+  .dv-rise { opacity: 1; transform: none; }
+}
