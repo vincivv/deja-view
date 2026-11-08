@@ -4,10 +4,49 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --color-accent-300: #c4b5fd;
-  --color-accent-400: #a78bfa;
-  --color-accent-500: #8b5cf6;
-  --color-accent-600: #7c3aed;
+  /* Deja View app palette: light "paper" theme matching the landing (.dv tokens in landing/landing.css).
+     The zinc scale is inverted on purpose so every existing zinc-* utility in the app reads correctly on paper:
+     950 = page, 900 = card, 800 = hairline, 500 = secondary text, 100/50 = ink. The landing uses none of these. */
+  --color-zinc-50: #0d0d0c;
+  --color-zinc-100: #151412;
+  --color-zinc-200: #22201d;
+  --color-zinc-300: #36332e;
+  --color-zinc-400: #4f4c45;
+  --color-zinc-500: #6c685f;
+  --color-zinc-600: #8c887e;
+  --color-zinc-700: #b9b2a4;
+  --color-zinc-800: #d9d3c6;
+  --color-zinc-900: #fbfaf6;
+  --color-zinc-950: #f3f0e8;
+
+  /* one hot accent (landing --dv-hot / --dv-hot-ink) */
+  --color-accent-200: #8f2a04;
+  --color-accent-300: #b23205;
+  --color-accent-400: #d23a06;
+  --color-accent-500: #ff4a14;
+  --color-accent-600: #e63e0c;
+
+  /* status hues, darkened so 200-400 text stays legible on paper */
+  --color-emerald-200: #17591a;
+  --color-emerald-300: #1d6b1f;
+  --color-emerald-400: #237a1c;
+  --color-emerald-500: #2a8a22;
+  --color-red-200: #8a1b10;
+  --color-red-300: #a82416;
+  --color-red-400: #c12e1d;
+  --color-red-500: #d63a2a;
+  --color-amber-200: #6e4300;
+  --color-amber-300: #855200;
+  --color-amber-400: #b77400;
+  --color-amber-500: #d08a00;
+  --color-sky-200: #0e4a7e;
+  --color-sky-300: #135892;
+  --color-sky-400: #1f6fb5;
+  --color-sky-500: #2a7fcc;
+  --color-fuchsia-300: #962483;
+  --color-fuchsia-500: #b8399f;
+
+  --font-pixel: "Pixelify Sans", "Silkscreen", ui-monospace, monospace;
 
   --animate-shimmer: shimmer 1.6s linear infinite;
   --animate-toast-in: toast-in 160ms ease-out;
@@ -33,7 +72,7 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html, body, #root {
@@ -44,6 +83,44 @@ body {
   @apply bg-zinc-950 text-zinc-200 antialiased;
   font-feature-settings: "cv11", "ss01", "ss03";
   font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Deja View app shell (logged-in pages) ---------- */
+.app-grid {
+  background-color: var(--color-zinc-950);
+  background-image:
+    linear-gradient(to right, rgba(13, 13, 12, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(13, 13, 12, 0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.app-grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.4 -0.3'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.font-pixel { font-family: var(--font-pixel); letter-spacing: -0.01em; }
+.app-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-zinc-500);
+}
+.app-btn-primary {
+  box-shadow: 2px 2px 0 0 var(--color-zinc-50);
+  transition: transform 100ms steps(2), box-shadow 100ms steps(2), background-color 120ms;
+}
+.app-btn-primary:hover { transform: translate(1px, 1px); box-shadow: 1px 1px 0 0 var(--color-zinc-50); }
+.app-btn-primary:active { transform: translate(2px, 2px); box-shadow: 0 0 0 0 var(--color-zinc-50); }
+@media (prefers-reduced-motion: reduce) {
+  .app-btn-primary, .app-btn-primary:hover, .app-btn-primary:active { transition: none; transform: none; }
+  .animate-fade-in, .animate-pop, .animate-toast-in, .skeleton { animation: none !important; }
 }
 
 ::selection {
@@ -53,14 +130,14 @@ body {
 /* thin dark scrollbars */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3f3f46 transparent;
+  scrollbar-color: #c4bdaf transparent;
 }
 *::-webkit-scrollbar { width: 10px; height: 10px; }
-*::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-thumb { background: #c4bdaf; border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
 *::-webkit-scrollbar-track { background: transparent; }
 
 .skeleton {
-  background: linear-gradient(90deg, #18181b 0%, #27272a 50%, #18181b 100%);
+  background: linear-gradient(90deg, #ebe7dd 0%, #f6f3ec 50%, #ebe7dd 100%);
   background-size: 800px 100%;
   animation: var(--animate-shimmer);
 }
@@ -75,12 +152,12 @@ body {
 }
 
 .checker {
-  background-color: #18181b;
+  background-color: #efebe2;
   background-image:
-    linear-gradient(45deg, #1f1f23 25%, transparent 25%),
-    linear-gradient(-45deg, #1f1f23 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #1f1f23 75%),
-    linear-gradient(-45deg, transparent 75%, #1f1f23 75%);
+    linear-gradient(45deg, #e4dfd4 25%, transparent 25%),
+    linear-gradient(-45deg, #e4dfd4 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e4dfd4 75%),
+    linear-gradient(-45deg, transparent 75%, #e4dfd4 75%);
   background-size: 16px 16px;
   background-position: 0 0, 0 8px, 8px -8px, -8px 0;
 }
@@ -90,15 +167,15 @@ input[type="range"].slider {
   appearance: none;
   height: 4px;
   border-radius: 4px;
-  background: #3f3f46;
+  background: #d9d3c6;
 }
 input[type="range"].slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #fafafa;
-  border: 2px solid var(--color-accent-500);
+  background: #fbfaf6;
+  border: 2px solid var(--color-zinc-50);
 }
 
 /* landing: amber hatching for learned noise */

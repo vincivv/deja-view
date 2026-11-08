@@ -63,7 +63,7 @@ export function NewProjectDialog({ open, onClose }: { open: boolean; onClose: ()
         <Field label="Viewports" hint={`${nPaths * viewports.length} snapshots per build`}>
           <ViewportChips value={viewports} onChange={setViewports} />
         </Field>
-        {err && <div className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-200">{err}</div>}
+        {err && <div className="rounded-[3px] border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-200">{err}</div>}
         <div className="flex justify-end gap-2 border-t border-zinc-800 pt-4">
           <Button type="button" variant="ghost" onClick={onClose}>
             Cancel

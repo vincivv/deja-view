@@ -45,7 +45,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               key={t.id}
               role="status"
               data-testid="toast"
-              className="pointer-events-auto flex items-start gap-3 rounded-lg border border-zinc-800 bg-zinc-900/95 px-3.5 py-3 shadow-xl shadow-black/40 backdrop-blur animate-toast-in"
+              className="pointer-events-auto flex items-start gap-3 rounded-[3px] border border-zinc-50 bg-zinc-900 px-3.5 py-3 shadow-[3px_3px_0_0_var(--color-zinc-50)] animate-toast-in"
             >
               <Icon
                 className={cn(

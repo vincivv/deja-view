@@ -48,7 +48,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
       body: body === undefined ? undefined : JSON.stringify(body),
     });
   } catch {
-    throw new ApiError(0, "Can't reach the Sightline backend. Is it running on :8000?");
+    throw new ApiError(0, "Can't reach the Deja View backend. Is it running on :8000?");
   }
   const text = await res.text();
   let data: unknown = null;

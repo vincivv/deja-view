@@ -6,15 +6,15 @@ type Variant = "primary" | "secondary" | "ghost" | "danger" | "success";
 type Size = "sm" | "md";
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-accent-500 text-white hover:bg-accent-400 border-accent-400/40 shadow-[0_0_0_1px_rgba(139,92,246,0.3),0_1px_8px_-2px_rgba(139,92,246,0.6)]",
-  secondary: "bg-zinc-900 text-zinc-100 hover:bg-zinc-800 border-zinc-700/80",
-  ghost: "bg-transparent text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/70 border-transparent",
-  danger: "bg-zinc-900 text-red-300 hover:bg-red-500/15 hover:text-red-200 border-red-500/30",
-  success: "bg-emerald-500 text-zinc-950 hover:bg-emerald-400 border-emerald-300/40 font-semibold",
+  primary: "app-btn-primary bg-accent-500 text-white hover:bg-accent-600 border-zinc-50 font-semibold",
+  secondary: "bg-zinc-900 text-zinc-100 hover:bg-zinc-950 border-zinc-700",
+  ghost: "bg-transparent text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60 border-transparent",
+  danger: "bg-zinc-900 text-red-300 hover:bg-red-500/10 hover:text-red-200 border-red-500/45",
+  success: "app-btn-primary bg-emerald-500 text-white hover:bg-emerald-400 border-zinc-50 font-semibold",
 };
 const SIZES: Record<Size, string> = {
-  sm: "h-7 px-2.5 text-xs gap-1.5 rounded-md",
-  md: "h-8 px-3 text-[13px] gap-2 rounded-md",
+  sm: "h-7 px-2.5 text-xs gap-1.5 rounded-[3px]",
+  md: "h-9 px-3.5 text-[13px] gap-2 rounded-[3px]",
 };
 
 export function Button({
@@ -52,7 +52,7 @@ export function IconButton({ className, label, ...rest }: ButtonHTMLAttributes<H
       title={label}
       {...rest}
       className={cn(
-        "inline-flex size-7 items-center justify-center rounded-md text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100 transition-colors disabled:opacity-40",
+        "inline-flex size-7 items-center justify-center rounded-[3px] text-zinc-500 hover:bg-zinc-800/70 hover:text-zinc-100 transition-colors disabled:opacity-40",
         className,
       )}
     />
@@ -73,7 +73,7 @@ export function Kbd({ children, className }: { children: ReactNode; className?: 
 }
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn("skeleton rounded-md", className)} />;
+  return <div className={cn("skeleton rounded-[3px]", className)} />;
 }
 
 export function Spinner({ className }: { className?: string }) {
@@ -94,8 +94,8 @@ export function Input({ className, ...rest }: InputHTMLAttributes<HTMLInputEleme
     <input
       {...rest}
       className={cn(
-        "h-9 w-full rounded-md border border-zinc-800 bg-zinc-950 px-3 text-[13px] text-zinc-100 placeholder:text-zinc-600",
-        "focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/25",
+        "h-9 w-full rounded-[3px] border border-zinc-700 bg-zinc-900 px-3 text-[13px] text-zinc-100 placeholder:text-zinc-600",
+        "focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20",
         className,
       )}
     />
@@ -107,8 +107,8 @@ export function Textarea({ className, ...rest }: TextareaHTMLAttributes<HTMLText
     <textarea
       {...rest}
       className={cn(
-        "w-full rounded-md border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-[12.5px] leading-relaxed text-zinc-100 placeholder:text-zinc-600",
-        "focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/25",
+        "w-full rounded-[3px] border border-zinc-700 bg-zinc-900 px-3 py-2 font-mono text-[12.5px] leading-relaxed text-zinc-100 placeholder:text-zinc-600",
+        "focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20",
         className,
       )}
     />
@@ -142,8 +142,8 @@ export function ViewportChips({ value, onChange }: { value: number[]; onChange: 
             aria-pressed={on}
             onClick={() => onChange(on ? value.filter((x) => x !== w) : [...value, w].sort((a, b) => b - a))}
             className={cn(
-              "h-7 rounded-md border px-2.5 font-mono text-xs transition-colors",
-              on ? "border-accent-500/60 bg-accent-500/15 text-accent-300" : "border-zinc-800 bg-zinc-900 text-zinc-500 hover:text-zinc-300",
+              "h-7 rounded-[3px] border px-2.5 font-mono text-xs transition-colors",
+              on ? "border-zinc-50 bg-zinc-50 text-zinc-950" : "border-zinc-700 bg-zinc-900 text-zinc-500 hover:text-zinc-200",
             )}
           >
             {w}
@@ -187,19 +187,19 @@ export function Dialog({
   }, [open, onClose]);
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 p-4 pt-[12vh] backdrop-blur-[2px] animate-fade-in" onMouseDown={onClose}>
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#0d0d0c]/30 p-4 pt-[12vh] backdrop-blur-[2px] animate-fade-in" onMouseDown={onClose}>
       <div
         ref={ref}
         role="dialog"
         aria-modal="true"
         aria-label={title}
         data-testid={testId}
-        className={cn("w-full rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl shadow-black/60 animate-pop", width)}
+        className={cn("w-full rounded-[3px] border border-zinc-50 bg-zinc-900 shadow-[5px_5px_0_0_var(--color-zinc-50)] animate-pop", width)}
         onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 border-b border-zinc-800 px-5 py-4">
           <div>
-            <h2 className="text-[15px] font-semibold text-zinc-100">{title}</h2>
+            <h2 className="text-[16px] font-semibold text-zinc-50">{title}</h2>
             {description && <p className="mt-0.5 text-[13px] text-zinc-500">{description}</p>}
           </div>
           <IconButton label="Close" onClick={onClose}>
@@ -214,8 +214,8 @@ export function Dialog({
 
 export function EmptyState({ icon, title, children, action }: { icon: ReactNode; title: string; children?: ReactNode; action?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 px-6 py-16 text-center">
-      <div className="mb-4 flex size-11 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-400">{icon}</div>
+    <div className="flex flex-col items-center justify-center rounded-[3px] border border-dashed border-zinc-700 bg-zinc-900 px-6 py-16 text-center">
+      <div className="mb-4 flex size-11 items-center justify-center rounded-[3px] border border-zinc-800 bg-zinc-900 text-zinc-400">{icon}</div>
       <h3 className="text-[15px] font-semibold text-zinc-100">{title}</h3>
       {children && <div className="mt-1.5 max-w-md text-[13px] text-zinc-500">{children}</div>}
       {action && <div className="mt-5 flex gap-2">{action}</div>}
@@ -225,7 +225,7 @@ export function EmptyState({ icon, title, children, action }: { icon: ReactNode;
 
 export function ErrorBox({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-[13px] text-red-200">
+    <div className="flex items-center justify-between gap-4 rounded-[3px] border border-red-500/30 bg-red-500/10 px-4 py-3 text-[13px] text-red-200">
       <span>{message}</span>
       {onRetry && (
         <Button size="sm" variant="secondary" onClick={onRetry}>
@@ -271,7 +271,7 @@ export function Segmented<T extends string>({
   size?: "sm" | "md";
 }) {
   return (
-    <div className="inline-flex rounded-lg border border-zinc-800 bg-zinc-950 p-0.5">
+    <div className="inline-flex rounded-[3px] border border-zinc-800 bg-zinc-800/50 p-0.5">
       {options.map((o) => (
         <button
           key={o.id}
@@ -282,9 +282,9 @@ export function Segmented<T extends string>({
           aria-pressed={value === o.id}
           onClick={() => onChange(o.id)}
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-md font-medium transition-colors disabled:opacity-35 disabled:pointer-events-none",
+            "inline-flex items-center gap-1.5 rounded-[3px] font-medium transition-colors disabled:opacity-35 disabled:pointer-events-none",
             size === "sm" ? "h-6 px-2 text-[11px]" : "h-7 px-2.5 text-xs",
-            value === o.id ? "bg-zinc-800 text-zinc-100 shadow-sm" : "text-zinc-500 hover:text-zinc-300",
+            value === o.id ? "bg-zinc-900 text-zinc-50 shadow-[0_0_0_1px_var(--color-zinc-700)]" : "text-zinc-500 hover:text-zinc-200",
           )}
         >
           {o.label}
@@ -305,7 +305,7 @@ export function Toggle({ on, onChange, label, kbd, testId, tone = "accent" }: { 
       data-testid={testId}
       onClick={() => onChange(!on)}
       className={cn(
-        "inline-flex h-7 items-center gap-2 rounded-md border px-2.5 text-xs font-medium transition-colors",
+        "inline-flex h-7 items-center gap-2 rounded-[3px] border px-2.5 text-xs font-medium transition-colors",
         on ? toneOn : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-200",
       )}
     >
@@ -356,7 +356,7 @@ export function Popover({
         <div
           data-testid={testId}
           className={cn(
-            "absolute top-full z-50 mt-1.5 rounded-lg border border-zinc-800 bg-zinc-900 p-1 shadow-2xl shadow-black/60 animate-pop",
+            "absolute top-full z-50 mt-1.5 rounded-[3px] border border-zinc-700 bg-zinc-900 p-1 shadow-[3px_3px_0_0_rgba(13,13,12,0.18)] animate-pop",
             align === "right" ? "right-0" : "left-0",
             width,
           )}
@@ -375,7 +375,7 @@ export function MenuItem({ icon, children, danger, className, ...rest }: ButtonH
       role="menuitem"
       {...rest}
       className={cn(
-        "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[13px] transition-colors",
+        "flex w-full items-center gap-2 rounded-[3px] px-2 py-1.5 text-left text-[13px] transition-colors",
         danger ? "text-red-300 hover:bg-red-500/10" : "text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100",
         className,
       )}

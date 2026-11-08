@@ -9,15 +9,13 @@ import { IconButton, Kbd } from "./ui";
 import { useToast } from "./Toast";
 import { NewProjectDialog } from "./NewProjectDialog";
 import { RESULT_LABEL, cn, isActive } from "../lib/format";
+import { PixelMark } from "../landing/kit";
 
 export function Logo({ className = "size-6" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" className={className} aria-hidden>
-      <rect width="32" height="32" rx="8" fill="#18181b" stroke="#3f3f46" />
-      <path d="M5 16c3-5.5 6.8-8 11-8s8 2.5 11 8c-3 5.5-6.8 8-11 8s-8-2.5-11-8z" fill="none" stroke="#a78bfa" strokeWidth="2.2" />
-      <circle cx="16" cy="16" r="3.6" fill="#a78bfa" />
-      <path d="M3 16h26" stroke="#a78bfa" strokeOpacity=".45" strokeWidth="1.2" />
-    </svg>
+    <span className={cn("inline-flex shrink-0 items-center justify-center border border-zinc-50 bg-zinc-50 p-[3px]", className)} aria-hidden>
+      <PixelMark className="size-full" color="var(--color-accent-500)" />
+    </span>
   );
 }
 
@@ -190,7 +188,7 @@ export function Layout() {
         <div className="flex h-full">
           <aside
             className={cn(
-              "hidden shrink-0 border-r border-zinc-800/80 bg-zinc-950 transition-[width] duration-150 md:block",
+              "hidden shrink-0 border-r border-zinc-800 bg-zinc-900 transition-[width] duration-150 motion-reduce:transition-none md:block",
               collapsed ? "w-14" : "w-60",
             )}
             data-testid="app-sidebar"
@@ -201,28 +199,28 @@ export function Layout() {
 
           {drawer && (
             <div className="fixed inset-0 z-50 md:hidden" data-testid="app-drawer">
-              <div className="absolute inset-0 bg-black/60 animate-fade-in" onClick={() => setDrawer(false)} />
-              <aside className="absolute inset-y-0 left-0 w-[264px] border-r border-zinc-800 bg-zinc-950 shadow-2xl animate-fade-in">
+              <div className="absolute inset-0 bg-[#0d0d0c]/30 animate-fade-in" onClick={() => setDrawer(false)} />
+              <aside className="absolute inset-y-0 left-0 w-[264px] border-r border-zinc-800 bg-zinc-900 shadow-[8px_0_30px_-12px_rgba(13,13,12,0.3)] animate-fade-in">
                 <SidebarContent collapsed={false} onToggle={() => setDrawer(false)} guestDismissed={guestDismissed} onDismissGuest={dismissGuest} drawer />
               </aside>
             </div>
           )}
 
           <div className="flex min-w-0 flex-1 flex-col">
-            <header className="flex h-11 shrink-0 items-center gap-2 border-b border-zinc-800/80 bg-zinc-950/85 px-3 backdrop-blur">
+            <header className="flex h-12 shrink-0 items-center gap-2 border-b border-zinc-800 bg-zinc-900/90 px-3 backdrop-blur sm:px-4">
               <IconButton label="Open menu" className="md:hidden" onClick={() => setDrawer(true)} data-testid="open-drawer">
                 <Menu className="size-4" />
               </IconButton>
               <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-0.5 text-[13px]" data-testid="breadcrumbs">
                 {crumbs.map((c, i) => (
                   <span key={i} className="flex min-w-0 items-center gap-0.5">
-                    {i > 0 && <ChevronRight className="size-3.5 shrink-0 text-zinc-700" />}
+                    {i > 0 && <ChevronRight className="size-3.5 shrink-0 text-zinc-600" />}
                     {c.to ? (
-                      <Link to={c.to} className="truncate rounded px-1.5 py-0.5 text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100">
+                      <Link to={c.to} className="truncate rounded px-1.5 py-0.5 text-zinc-500 hover:bg-zinc-800/60 hover:text-zinc-50">
                         {c.label}
                       </Link>
                     ) : (
-                      <span className="truncate px-1.5 text-zinc-200">{c.label}</span>
+                      <span className="truncate px-1.5 font-medium text-zinc-50">{c.label}</span>
                     )}
                   </span>
                 ))}
@@ -232,7 +230,7 @@ export function Layout() {
                 {isGuest && !sidebarCardVisible && (
                   <Link
                     to={`/signup?next=${encodeURIComponent(loc.pathname + loc.search)}`}
-                    className="inline-flex h-7 items-center gap-1.5 rounded-full border border-accent-500/40 bg-accent-500/10 px-2.5 text-xs font-medium text-accent-200 hover:bg-accent-500/20"
+                    className="app-btn-primary inline-flex h-7 items-center gap-1.5 rounded-[3px] border border-zinc-50 bg-accent-500 px-2.5 text-xs font-semibold text-white hover:bg-accent-600"
                     data-testid="guest-pill"
                   >
                     <UserPlus className="size-3.5" />
@@ -241,12 +239,13 @@ export function Layout() {
                 )}
               </div>
             </header>
-            <main className="min-h-0 flex-1 overflow-y-auto">
+            <main className="app-grid min-h-0 flex-1 overflow-y-auto">
               <Outlet />
             </main>
           </div>
         </div>
         <NewProjectDialog open={creating} onClose={() => setCreating(false)} />
+        <div className="app-grain" aria-hidden />
       </CrumbCtx.Provider>
     </ShellCtx.Provider>
   );
@@ -269,9 +268,9 @@ function SidebarContent({
   const list = projects?.data ?? [];
   return (
     <div className="flex h-full flex-col">
-      <div className={cn("flex h-11 shrink-0 items-center gap-2", collapsed ? "justify-center" : "px-3")}>
+      <div className={cn("flex h-12 shrink-0 items-center gap-2 border-b border-zinc-800", collapsed ? "justify-center" : "px-3")}>
         {!collapsed && (
-          <Link to="/projects" className="flex min-w-0 items-center gap-2 text-[14px] font-semibold tracking-tight text-zinc-100" data-testid="nav-home">
+          <Link to="/projects" className="font-pixel flex min-w-0 items-center gap-2 text-[17px] font-semibold text-zinc-50" data-testid="nav-home">
             <Logo />
             Deja View
           </Link>
@@ -291,10 +290,10 @@ function SidebarContent({
         <NavItem to="/settings" icon={<KeyRound className="size-4" />} label="Settings" collapsed={collapsed} testId="nav-settings" />
       </nav>
 
-      <div className="min-h-0 flex-1 overflow-y-auto border-t border-zinc-800/60 py-2">
+      <div className="min-h-0 flex-1 overflow-y-auto border-t border-zinc-800 py-2">
         {!collapsed && (
           <div className="flex items-center justify-between px-4 pb-1 pt-1">
-            <span className="text-[11px] font-medium text-zinc-500">Your projects</span>
+            <span className="app-eyebrow">Projects</span>
             <IconButton label="New project" className="size-6" onClick={openNewProject} data-testid="sidebar-new-project">
               <Plus className="size-3.5" />
             </IconButton>
@@ -309,18 +308,18 @@ function SidebarContent({
                 data-testid="sidebar-project"
                 className={({ isActive: on }) =>
                   cn(
-                    "flex items-center rounded-md text-[13px] transition-colors",
+                    "flex items-center rounded-[3px] text-[13px] transition-colors",
                     collapsed ? "relative size-10 justify-center" : "gap-2.5 px-2 py-1.5",
-                    on ? "bg-zinc-800/80 text-zinc-100" : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200",
+                    on ? "bg-zinc-950 text-zinc-50 shadow-[inset_2px_0_0_var(--color-accent-500)]" : "text-zinc-500 hover:bg-zinc-950 hover:text-zinc-100",
                   )
                 }
               >
                 {collapsed ? (
                   <>
-                    <span className="flex size-7 items-center justify-center rounded-md border border-zinc-800 bg-zinc-900 text-[11px] font-semibold text-zinc-300">
+                    <span className="flex size-7 items-center justify-center rounded-[3px] border border-zinc-700 bg-zinc-950 font-mono text-[11px] font-semibold text-zinc-300">
                       {p.name.trim()[0]?.toUpperCase() ?? "?"}
                     </span>
-                    <span className={cn("absolute right-1.5 top-1.5 size-2 rounded-full ring-2 ring-zinc-950", resultDot(p.last_run?.result))} />
+                    <span className={cn("absolute right-1.5 top-1.5 size-2 rounded-full ring-2 ring-zinc-900", resultDot(p.last_run?.result))} />
                   </>
                 ) : (
                   <>
@@ -338,7 +337,7 @@ function SidebarContent({
                 onClick={openNewProject}
                 title="New project"
                 aria-label="New project"
-                className="flex size-10 items-center justify-center rounded-md text-zinc-500 hover:bg-zinc-900 hover:text-zinc-200"
+                className="flex size-10 items-center justify-center rounded-[3px] text-zinc-500 hover:bg-zinc-950 hover:text-zinc-100"
                 data-testid="sidebar-new-project-rail"
               >
                 <Plus className="size-4" />
@@ -363,9 +362,9 @@ function NavItem({ to, icon, label, collapsed, end, testId }: { to: string; icon
       data-testid={testId}
       className={({ isActive: on }) =>
         cn(
-          "flex items-center rounded-md text-[13px] font-medium transition-colors",
+          "flex items-center rounded-[3px] text-[13px] font-medium transition-colors",
           collapsed ? "size-10 justify-center" : "gap-2.5 px-2 py-1.5",
-          on ? "bg-zinc-800/80 text-zinc-100" : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200",
+          on ? "bg-zinc-950 text-zinc-50 shadow-[inset_2px_0_0_var(--color-accent-500)]" : "text-zinc-500 hover:bg-zinc-950 hover:text-zinc-100",
         )
       }
     >
@@ -388,13 +387,13 @@ function AccountArea({ collapsed, guestDismissed, onDismissGuest }: { collapsed:
 
   if (collapsed)
     return (
-      <div className="flex shrink-0 flex-col items-center gap-1 border-t border-zinc-800/60 py-2">
+      <div className="flex shrink-0 flex-col items-center gap-1 border-t border-zinc-800 py-2">
         {user.is_guest ? (
-          <Link to={signupTo} title="Save your work: sign up" className="flex size-10 items-center justify-center rounded-md text-accent-300 hover:bg-zinc-900" data-testid="guest-signup-rail">
+          <Link to={signupTo} title="Save your work: sign up" className="flex size-10 items-center justify-center rounded-[3px] text-accent-300 hover:bg-zinc-950" data-testid="guest-signup-rail">
             <UserPlus className="size-4" />
           </Link>
         ) : (
-          <Link to="/settings" title={user.email ?? user.name} className="flex size-10 items-center justify-center rounded-md hover:bg-zinc-900" data-testid="account-rail">
+          <Link to="/settings" title={user.email ?? user.name} className="flex size-10 items-center justify-center rounded-[3px] hover:bg-zinc-950" data-testid="account-rail">
             <Avatar label={initials(user)} />
           </Link>
         )}
@@ -402,17 +401,17 @@ function AccountArea({ collapsed, guestDismissed, onDismissGuest }: { collapsed:
     );
 
   return (
-    <div className="shrink-0 border-t border-zinc-800/60 p-2" data-testid="account-area">
+    <div className="shrink-0 border-t border-zinc-800 p-2" data-testid="account-area">
       {user.is_guest && !guestDismissed && (
-        <div className="relative mb-2 rounded-lg border border-accent-500/25 bg-accent-500/[0.07] p-3" data-testid="guest-prompt">
+        <div className="relative mb-2 rounded-[3px] border border-zinc-700 bg-zinc-950 p-3" data-testid="guest-prompt">
           <button onClick={onDismissGuest} className="absolute right-1.5 top-1.5 rounded p-0.5 text-zinc-500 hover:text-zinc-200" aria-label="Dismiss" data-testid="guest-prompt-dismiss">
             <X className="size-3.5" />
           </button>
           <div className="text-[13px] font-medium text-zinc-100">Save your work</div>
-          <div className="mt-0.5 text-xs text-zinc-400">Keep this demo with a free account.</div>
+          <div className="mt-0.5 text-xs text-zinc-500">Free account keeps this demo.</div>
           <Link
             to={signupTo}
-            className="mt-2.5 inline-flex h-7 w-full items-center justify-center gap-1.5 rounded-md bg-accent-500 text-xs font-medium text-white hover:bg-accent-400"
+            className="app-btn-primary mt-2.5 inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-[3px] border border-zinc-50 bg-accent-500 text-xs font-semibold text-white hover:bg-accent-600"
             data-testid="guest-signup"
           >
             <UserPlus className="size-3.5" />
@@ -420,7 +419,7 @@ function AccountArea({ collapsed, guestDismissed, onDismissGuest }: { collapsed:
           </Link>
         </div>
       )}
-      <div className="flex items-center gap-2 rounded-md px-1.5 py-1">
+      <div className="flex items-center gap-2 rounded-[3px] px-1.5 py-1">
         <Link to="/settings" className="flex min-w-0 flex-1 items-center gap-2.5" data-testid="account-link">
           <Avatar label={initials(user)} />
           <span className="min-w-0">
@@ -441,7 +440,7 @@ function AccountArea({ collapsed, guestDismissed, onDismissGuest }: { collapsed:
 
 function Avatar({ label }: { label: string }) {
   return (
-    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-fuchsia-500 text-[10.5px] font-semibold text-white">
+    <span className="flex size-7 shrink-0 items-center justify-center rounded-[3px] bg-zinc-50 font-mono text-[10.5px] font-semibold text-white">
       {label}
     </span>
   );
