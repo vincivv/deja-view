@@ -82,6 +82,18 @@ export function LandingPage() {
         </div>
       </section>
 
+      <section aria-label="Benchmark sites" className="relative border-y-2 border-[var(--dv-ink)] bg-[var(--dv-panel)]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-5 sm:flex-row sm:items-center sm:gap-8 sm:px-8">
+          <span className="dv-silk shrink-0 text-[11px] text-[var(--dv-mute)]">Benchmarked on 15 live sites</span>
+          <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[17px] font-semibold tracking-tight text-[var(--dv-ink)] sm:text-[19px]">
+            {["Stripe", "Vercel", "Linear", "GitHub", "Airbnb", "Shopify", "Figma", "BBC", "The Verge", "Wikipedia", "MDN", "Tailwind", "python.org", "Hacker News"].map((s) => (
+              <li key={s} className="opacity-80 transition-opacity hover:opacity-100">{s}</li>
+            ))}
+          </ul>
+        </div>
+        <p className="mx-auto max-w-6xl px-4 pb-4 text-[11.5px] text-[var(--dv-mute)] sm:px-8">Public pages, 115 planted bugs. Not affiliated with or endorsed by these companies.</p>
+      </section>
+
       <Problem />
       <Pipeline />
       <PrComment />
