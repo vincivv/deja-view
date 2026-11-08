@@ -1,4 +1,5 @@
 """Unit tests for change-aware Wren routing. Run: python3 -m unittest discover -s ci/github-action/tests"""
+import importlib.util
 import json
 import sys
 import unittest

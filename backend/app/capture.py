@@ -1,6 +1,7 @@
 """Page capture: a shared Chromium, deterministic page loads, full-page screenshot plus a DOM snapshot."""
 import asyncio
 import io
+from urllib.parse import urlparse
 
 import numpy as np
 from PIL import Image
@@ -124,15 +125,25 @@ class Capturer:
     async def capture(self, url: str, width: int, loads: int, inject: str | None = None, meta: dict | None = None,
                       headers: dict | None = None):
         """Load `url` `loads` times in one context. Returns [(rgb uint8 array, dom dict)].
-        `headers` are extra HTTP headers for every request (e.g. a preview-protection bypass)."""
+        `headers` are extra HTTP headers (e.g. a preview-protection bypass), sent only to the page's own origin:
+        on third-party requests a custom header forces a CORS preflight that fonts and CDNs often refuse."""
         browser = await self.browser()
         async with self.sem:
             height = 900 if width >= 768 else 800
             ctx = await browser.new_context(viewport={"width": width, "height": height}, device_scale_factor=1,
                                             locale="en-US", timezone_id="America/Los_Angeles", reduced_motion="reduce",
-                                            color_scheme="light", is_mobile=width < 768, has_touch=width < 768,
-                                            extra_http_headers=headers or None)
+                                            color_scheme="light", is_mobile=width < 768, has_touch=width < 768)
             try:
+                if headers:
+                    u = urlparse(url)
+                    origin = f"{u.scheme}://{u.netloc}"
+
+                    async def _add_headers(route, request):
+                        if request.url == origin or request.url.startswith(origin + "/"):
+                            await route.continue_(headers={**request.headers, **headers})
+                        else:
+                            await route.continue_()
+                    await ctx.route("**/*", _add_headers)
                 page = await ctx.new_page()
                 results = []
                 for _ in range(loads):

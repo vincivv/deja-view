@@ -1,6 +1,7 @@
 """Comment rendering and the check's main loop against a fake Sightline server.
 Run: python3 -m unittest discover -s ci/github-action/tests"""
 import copy
+import importlib.util
 import json
 import os
 import socket

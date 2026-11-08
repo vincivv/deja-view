@@ -165,7 +165,7 @@ curl -s -X POST "$SIGHTLINE_URL/api/projects/$PROJECT_ID/runs" \
 # result: "passed" (no changes) | "changes" (needs review) | "approved" | "rejected" | "failed"
 ```
 
-`headers` (optional, up to 10) are extra HTTP headers sent with every capture request of that build only, for previews behind protection, e.g. `{"x-vercel-protection-bypass": "..."}`. They're held in memory for the build and never stored. `host`, `cookie` and `content-length` are refused.
+`headers` (optional, up to 10) are extra HTTP headers sent with the capture requests of that build only, and only to the site's own origin (not to fonts or CDNs), for previews behind protection, e.g. `{"x-vercel-protection-bypass": "..."}`. They're held in memory for the build and never stored. `host`, `cookie` and `content-length` are refused.
 
 For a ready-made GitHub pull-request check (sticky PR comment, commit status that follows the review, Wren test routing), see `ci/github-action/README.md`.
 
