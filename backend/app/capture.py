@@ -151,6 +151,13 @@ class Capturer:
                     png = await page.screenshot(full_page=True, animations="disabled", caret="hide")
                     img = np.asarray(Image.open(io.BytesIO(png)).convert("RGB"))[:MAX_HEIGHT]
                     results.append((img, dom))
+                    # every load is a first visit: a variant remembered in a cookie or storage (A/B tests,
+                    # rotating promos) is re-rolled, so it shows up as dynamic instead of sticking for the build
+                    await ctx.clear_cookies()
+                    try:
+                        await page.evaluate("() => { try { localStorage.clear(); sessionStorage.clear(); } catch (e) {} }")
+                    except Exception:
+                        pass
                 return results
             finally:
                 await ctx.close()

@@ -109,8 +109,41 @@ def content_sig(e):
     return f'{e["tag"]}|{e["text"]}|{e["src"]}|{e["bgi"]}'
 
 
+_DUR = r"\d+\s*(?:s|secs?|seconds?|m|mins?|minutes?|h|hrs?|hours?|d|days?)"
 TIMEISH = re.compile(r"^(?:\d+\s*(?:s|sec|secs|seconds?|m|min|mins|minutes?|h|hr|hrs|hours?|d|days?|w|weeks?|mo|months?|y|years?)\s+ago"
-                     r"|just now|now|today|yesterday|\d{1,2}:\d{2}(?::\d{2})?\s*(?:am|pm)?)$", re.I)
+                     r"|just now|now|today|yesterday|\d{1,2}:\d{2}(?::\d{2})?\s*(?:am|pm)?"
+                     # countdowns and durations: "17 hrs 3 mins", "2h 14m left", "in 5 minutes"
+                     rf"|(?:in\s+)?{_DUR}(?:[\s,]+(?:and\s+)?{_DUR}){{0,3}}(?:\s+(?:left|remaining|ago))?)$", re.I)
+_MON = r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?"
+_LIVE = r"(?:viewing|watching|online|left|remaining|reviews?|ratings?|votes?|stars?|views?|followers?|likes?|downloads?|sold|bought|installs?)"
+# Tokens that change with time or live data, in the order they are masked.
+_DYN_TOKENS = [
+    (re.compile(r"\b\d{4}-\d{2}-\d{2}(?:[T ][\d:.]+Z?)?\b"), "<date>"),                        # 2026-11-07
+    (re.compile(r"\b\d{1,2}[/.]\d{1,2}[/.]\d{2,4}\b"), "<date>"),                               # 11/07/2026
+    (re.compile(rf"\b{_MON}\s+\d{{1,2}}(?:st|nd|rd|th)?(?:,?\s+\d{{4}})?\b"), "<date>"),        # Nov 10, 2026
+    (re.compile(rf"\b\d{{1,2}}(?:st|nd|rd|th)?\s+{_MON}(?:,?\s+\d{{4}})?"), "<date>"),          # 10 November
+    (re.compile(r"\b(?:Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)(?:day|nesday|sday|urday)?\b\.?"), "<day>"),
+    (re.compile(r"\b\d{1,2}:\d{2}(?::\d{2})?(?:\s*[AaPp]\.?[Mm]\.?)?"), "<time>"),            # 4:52 PM, 04:12:33
+    (re.compile(rf"(?:\b{_DUR}\b[\s,]*(?:and\s+)?)+(?:ago|left|remaining)?", re.I), "<rel> "),  # 17 hrs 3 mins, 2d 14h
+    (re.compile(r"\b(?:just now|today|tonight|tomorrow|yesterday)\b", re.I), "<rel> "),
+    (re.compile(r"\bgood (?:morning|afternoon|evening|night|day)\b", re.I), "<greeting>"),
+    (re.compile(rf"\b\d[\d,.]*\s*[kKmM]?\+?(?=\s+(?:[A-Za-z]+\s+){{0,3}}?{_LIVE}\b)"), "<n>"),  # 1,284 people viewing
+]
+
+
+def dyn_mask(s):
+    for rx, tok in _DYN_TOKENS:
+        s = rx.sub(tok, s)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def is_timer_change(a, b):
+    """Same text with only time-based or live values changed: countdowns, dates, clocks, "x ago",
+    greetings, viewer/stock/review counts. These change between builds even though each build's loads agree."""
+    if a == b:
+        return False
+    ma = dyn_mask(a)
+    return ma == dyn_mask(b) and ma != re.sub(r"\s+", " ", a).strip()
 
 
 def is_volatile(e, ordinal, vol):
@@ -329,9 +362,11 @@ def compare(base_img, base_dom, base_vol, cand_loads, cand_vol=None, cand_noise=
         props = [p for p in b["st"] if fmt_val(b["st"].get(p, "")) != fmt_val(c["st"].get(p, ""))]
         n = noun(c)
         found = []
-        counter = b["text"] != c["text"] and bool(COUNTER.fullmatch(b["text"])) and bool(COUNTER.fullmatch(c["text"]))
+        counter = b["text"] != c["text"] and ((bool(COUNTER.fullmatch(b["text"])) and bool(COUNTER.fullmatch(c["text"])))
+                                              or is_timer_change(b["text"], c["text"]))
         if counter:
             noise_rects.append(c["r"])
+            ignored_c.add(ic)
             if not props:
                 if resized:
                     noisy_geo.append({"base_bbox": b["r"], "bbox": c["r"], "_noise": True})

@@ -41,6 +41,12 @@ These are genuine content updates, so there's no ground truth for them; the run 
 Pixel diff gave 1–400 regions per page. With the latest engine, python.org came to 54 changes in 27 review groups, against 113 pixel regions.
 The full rerun on the latest engine was blocked by archive.org rate limits. `bench/results/wayback.json` holds the earlier engine's results.
 
+### Edge cases: content that changes between builds
+
+Some content stays the same between one build's loads but changes by the next build, such as countdowns, dates, clock times, "3 hours ago", greetings, viewer and stock counts, and A/B variants remembered in a cookie.
+`backend/edgecases.py` checks 26 cases like these plus 9 real changes. Sightline ignores 25 of the 26 noise cases and reports all 9 real changes.
+The miss is a random A/B test stored in a cookie: with 3 loads, the same variant can come up every time by chance.
+
 ## How it works
 
 1. **Capture**: Playwright and Chromium, with animations frozen, fonts and lazy images settled, and a full-page screenshot plus a DOM snapshot of every painted element (rect, text, src, computed style).
