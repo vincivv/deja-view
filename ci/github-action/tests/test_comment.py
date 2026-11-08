@@ -50,7 +50,7 @@ class RenderTests(unittest.TestCase):
         run["groups"][0]["review"] = "approved"
         self.assertIn("4 of 5 visual changes still need review", C.render(STATUS, run))
         self.assertEqual(C.status_for("changes", STATUS["counts"], pending=4)[1],
-                         "4 of 5 visual changes still need review in Sightline")
+                         "4 of 5 visual changes still need review in Deja View")
 
     def test_approved_and_rejected(self):
         run = copy.deepcopy(RUN)
