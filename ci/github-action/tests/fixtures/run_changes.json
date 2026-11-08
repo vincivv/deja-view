@@ -1,0 +1,747 @@
+{
+ "id": "r_a8b07de7626d",
+ "project_id": "p_d9315b7109e2",
+ "number": 3,
+ "label": "PR #1 · bad-header-tweak",
+ "base_url": "http://127.0.0.1:4174",
+ "status": "done",
+ "error": null,
+ "created_at": "2026-11-08T00:16:58Z",
+ "finished_at": "2026-11-08T00:17:02Z",
+ "duration_ms": 3975,
+ "progress": {
+  "done": 8,
+  "total": 8
+ },
+ "is_baseline_build": false,
+ "result": "changes",
+ "counts": {
+  "snapshots": 8,
+  "unchanged": 4,
+  "changed": 4,
+  "new": 0,
+  "failed": 0,
+  "changes": 9,
+  "groups": 5,
+  "noise_ignored": 50,
+  "pixel_regions": 58
+ },
+ "project": {
+  "id": "p_d9315b7109e2",
+  "name": "Acme Shop (CI)"
+ },
+ "snapshots": [
+  {
+   "id": "s_12fc498ec345",
+   "run_id": "r_a8b07de7626d",
+   "path": "/",
+   "name": "Home",
+   "viewport": 1280,
+   "status": "unchanged",
+   "review": null,
+   "image_url": "/files/s_12fc498ec345.webp",
+   "width": 1280,
+   "height": 1541,
+   "baseline_image_url": "/files/s_280fac2ba2f4.webp",
+   "baseline_width": 1280,
+   "baseline_height": 1541,
+   "noise_rects": [
+    [
+     129,
+     1309,
+     1151,
+     1338
+    ],
+    [
+     129,
+     1356,
+     1151,
+     1378
+    ]
+   ],
+   "pixel_diff": {
+    "regions": [
+     [
+      1138,
+      12,
+      1182,
+      56
+     ],
+     [
+      1026,
+      24,
+      1046,
+      44
+     ]
+    ],
+    "pct": 0.34,
+    "overlay_url": "/files/s_12fc498ec345.overlay.webp"
+   },
+   "layout_shifts": [],
+   "changes": [],
+   "duration_ms": 2307,
+   "error": null
+  },
+  {
+   "id": "s_6d02a9cc5e98",
+   "run_id": "r_a8b07de7626d",
+   "path": "/",
+   "name": "Home",
+   "viewport": 390,
+   "status": "unchanged",
+   "review": null,
+   "image_url": "/files/s_6d02a9cc5e98.webp",
+   "width": 390,
+   "height": 2698,
+   "baseline_image_url": "/files/s_595304d7993e.webp",
+   "baseline_width": 390,
+   "baseline_height": 2669,
+   "noise_rects": [
+    [
+     49,
+     2408,
+     341,
+     2494
+    ],
+    [
+     49,
+     2512,
+     341,
+     2535
+    ]
+   ],
+   "pixel_diff": {
+    "regions": [
+     [
+      332,
+      19,
+      372,
+      63
+     ],
+     [
+      227,
+      31,
+      246,
+      51
+     ]
+    ],
+    "pct": 1.95,
+    "overlay_url": "/files/s_6d02a9cc5e98.overlay.webp"
+   },
+   "layout_shifts": [
+    {
+     "dx": 0,
+     "dy": 28,
+     "from_y": 2595,
+     "elements": 3,
+     "cause_change_id": null
+    }
+   ],
+   "changes": [],
+   "duration_ms": 2301,
+   "error": null
+  },
+  {
+   "id": "s_d6bbc17148af",
+   "run_id": "r_a8b07de7626d",
+   "path": "/product",
+   "name": "Product",
+   "viewport": 1280,
+   "status": "changed",
+   "review": "pending",
+   "image_url": "/files/s_d6bbc17148af.webp",
+   "width": 1280,
+   "height": 997,
+   "baseline_image_url": "/files/s_16bd9c039aaf.webp",
+   "baseline_width": 1280,
+   "baseline_height": 997,
+   "noise_rects": [
+    [
+     129,
+     765,
+     1151,
+     794
+    ],
+    [
+     129,
+     812,
+     1151,
+     834
+    ]
+   ],
+   "pixel_diff": {
+    "regions": [
+     [
+      1026,
+      24,
+      1046,
+      44
+     ],
+     [
+      1048,
+      27,
+      1067,
+      46
+     ]
+    ],
+    "pct": 15.4,
+    "overlay_url": "/files/s_d6bbc17148af.overlay.webp"
+   },
+   "layout_shifts": [
+    {
+     "dx": 0,
+     "dy": 4,
+     "from_y": 178,
+     "elements": 8,
+     "cause_change_id": "c_84c385d452bb"
+    }
+   ],
+   "changes": [
+    {
+     "id": "c_60afacd21615",
+     "snapshot_id": "s_d6bbc17148af",
+     "group_id": "g_c9f32d26fb66",
+     "kind": "style",
+     "title": "Heading font size changed",
+     "detail": "font size 36px → 40px",
+     "selector": "h1",
+     "bbox": [
+      664,
+      127,
+      1176,
+      174
+     ],
+     "base_bbox": [
+      664,
+      127,
+      1176,
+      170
+     ],
+     "before": "36px",
+     "after": "40px"
+    },
+    {
+     "id": "c_84c385d452bb",
+     "snapshot_id": "s_d6bbc17148af",
+     "group_id": "g_76ecf33796b0",
+     "kind": "removed",
+     "title": "Image missing",
+     "detail": "inline SVG",
+     "selector": "svg.photo",
+     "bbox": null,
+     "base_bbox": [
+      104,
+      109,
+      616,
+      621
+     ],
+     "before": "svg:1tmbxmh",
+     "after": null
+    }
+   ],
+   "duration_ms": 2220,
+   "error": null
+  },
+  {
+   "id": "s_9e4abb701a4d",
+   "run_id": "r_a8b07de7626d",
+   "path": "/product",
+   "name": "Product",
+   "viewport": 390,
+   "status": "changed",
+   "review": "pending",
+   "image_url": "/files/s_9e4abb701a4d.webp",
+   "width": 390,
+   "height": 1369,
+   "baseline_image_url": "/files/s_bde0135ac58b.webp",
+   "baseline_width": 390,
+   "baseline_height": 1365,
+   "noise_rects": [
+    [
+     49,
+     1108,
+     341,
+     1165
+    ],
+    [
+     49,
+     1183,
+     341,
+     1206
+    ]
+   ],
+   "pixel_diff": {
+    "regions": [
+     [
+      332,
+      19,
+      372,
+      63
+     ],
+     [
+      227,
+      31,
+      246,
+      51
+     ]
+    ],
+    "pct": 19.85,
+    "overlay_url": "/files/s_9e4abb701a4d.overlay.webp"
+   },
+   "layout_shifts": [
+    {
+     "dx": 0,
+     "dy": 4,
+     "from_y": 582,
+     "elements": 13,
+     "cause_change_id": "c_67f6d4e69364"
+    }
+   ],
+   "changes": [
+    {
+     "id": "c_67f6d4e69364",
+     "snapshot_id": "s_9e4abb701a4d",
+     "group_id": "g_c9f32d26fb66",
+     "kind": "style",
+     "title": "Heading font size changed",
+     "detail": "font size 36px → 40px",
+     "selector": "h1",
+     "bbox": [
+      24,
+      531,
+      366,
+      578
+     ],
+     "base_bbox": [
+      24,
+      531,
+      366,
+      574
+     ],
+     "before": "36px",
+     "after": "40px"
+    },
+    {
+     "id": "c_7ae1fdb90269",
+     "snapshot_id": "s_9e4abb701a4d",
+     "group_id": "g_76ecf33796b0",
+     "kind": "removed",
+     "title": "Image missing",
+     "detail": "inline SVG",
+     "selector": "svg.photo",
+     "bbox": null,
+     "base_bbox": [
+      24,
+      123,
+      366,
+      465
+     ],
+     "before": "svg:1tmbxmh",
+     "after": null
+    }
+   ],
+   "duration_ms": 2140,
+   "error": null
+  },
+  {
+   "id": "s_e1b96bda2571",
+   "run_id": "r_a8b07de7626d",
+   "path": "/pricing",
+   "name": "Pricing",
+   "viewport": 1280,
+   "status": "unchanged",
+   "review": null,
+   "image_url": "/files/s_e1b96bda2571.webp",
+   "width": 1280,
+   "height": 900,
+   "baseline_image_url": "/files/s_9672d6132c1a.webp",
+   "baseline_width": 1280,
+   "baseline_height": 900,
+   "noise_rects": [
+    [
+     1144,
+     18,
+     1176,
+     50
+    ],
+    [
+     1002,
+     26,
+     1062,
+     43
+    ]
+   ],
+   "pixel_diff": {
+    "regions": [
+     [
+      1138,
+      12,
+      1182,
+      56
+     ],
+     [
+      1026,
+      24,
+      1067,
+      46
+     ]
+    ],
+    "pct": 0.08,
+    "overlay_url": "/files/s_e1b96bda2571.overlay.webp"
+   },
+   "layout_shifts": [],
+   "changes": [],
+   "duration_ms": 3955,
+   "error": null
+  },
+  {
+   "id": "s_94d41c6ceea5",
+   "run_id": "r_a8b07de7626d",
+   "path": "/pricing",
+   "name": "Pricing",
+   "viewport": 390,
+   "status": "unchanged",
+   "review": null,
+   "image_url": "/files/s_94d41c6ceea5.webp",
+   "width": 390,
+   "height": 1410,
+   "baseline_image_url": "/files/s_68ee5ce06b95.webp",
+   "baseline_width": 390,
+   "baseline_height": 1410,
+   "noise_rects": [
+    [
+     203,
+     33,
+     263,
+     50
+    ],
+    [
+     338,
+     25,
+     366,
+     57
+    ]
+   ],
+   "pixel_diff": {
+    "regions": [
+     [
+      227,
+      31,
+      268,
+      53
+     ]
+    ],
+    "pct": 0.02,
+    "overlay_url": "/files/s_94d41c6ceea5.overlay.webp"
+   },
+   "layout_shifts": [],
+   "changes": [],
+   "duration_ms": 3943,
+   "error": null
+  },
+  {
+   "id": "s_5ad46a2a66b7",
+   "run_id": "r_a8b07de7626d",
+   "path": "/cart",
+   "name": "Cart",
+   "viewport": 1280,
+   "status": "changed",
+   "review": "pending",
+   "image_url": "/files/s_5ad46a2a66b7.webp",
+   "width": 1280,
+   "height": 900,
+   "baseline_image_url": "/files/s_9a145ee31786.webp",
+   "baseline_width": 1280,
+   "baseline_height": 900,
+   "noise_rects": [
+    [
+     1144,
+     18,
+     1176,
+     50
+    ],
+    [
+     1002,
+     26,
+     1062,
+     43
+    ]
+   ],
+   "pixel_diff": {
+    "regions": [
+     [
+      1138,
+      12,
+      1182,
+      56
+     ],
+     [
+      1026,
+      24,
+      1067,
+      46
+     ]
+    ],
+    "pct": 1.54,
+    "overlay_url": "/files/s_5ad46a2a66b7.overlay.webp"
+   },
+   "layout_shifts": [],
+   "changes": [
+    {
+     "id": "c_e603e7d09a3d",
+     "snapshot_id": "s_5ad46a2a66b7",
+     "group_id": "g_6f1277ed94aa",
+     "kind": "style",
+     "title": "Button background changed",
+     "detail": "background #4c6ef5 → #d9480f",
+     "selector": "a.btn.btn-primary.checkout",
+     "bbox": [
+      837,
+      322,
+      1187,
+      366
+     ],
+     "base_bbox": [
+      801,
+      322,
+      1151,
+      366
+     ],
+     "before": "#4c6ef5",
+     "after": "#d9480f"
+    },
+    {
+     "id": "c_ba33c81f3ff2",
+     "snapshot_id": "s_5ad46a2a66b7",
+     "group_id": "g_ea80df47c8c3",
+     "kind": "moved",
+     "title": "Button moved",
+     "detail": "moved 36px right",
+     "selector": "a.btn.btn-primary.checkout",
+     "bbox": [
+      837,
+      322,
+      1187,
+      366
+     ],
+     "base_bbox": [
+      801,
+      322,
+      1151,
+      366
+     ],
+     "before": null,
+     "after": null
+    }
+   ],
+   "duration_ms": 3950,
+   "error": null
+  },
+  {
+   "id": "s_cd8f59ff87b0",
+   "run_id": "r_a8b07de7626d",
+   "path": "/cart",
+   "name": "Cart",
+   "viewport": 390,
+   "status": "changed",
+   "review": "pending",
+   "image_url": "/files/s_cd8f59ff87b0.webp",
+   "width": 517,
+   "height": 1061,
+   "baseline_image_url": "/files/s_50f3af8df36e.webp",
+   "baseline_width": 506,
+   "baseline_height": 1038,
+   "noise_rects": [
+    [
+     203,
+     33,
+     263,
+     50
+    ],
+    [
+     338,
+     25,
+     366,
+     57
+    ]
+   ],
+   "pixel_diff": {
+    "regions": [
+     [
+      0,
+      0,
+      517,
+      1061
+     ],
+     [
+      332,
+      19,
+      372,
+      63
+     ]
+    ],
+    "pct": 5.54,
+    "overlay_url": "/files/s_cd8f59ff87b0.overlay.webp"
+   },
+   "layout_shifts": [],
+   "changes": [
+    {
+     "id": "c_3e8f7d376455",
+     "snapshot_id": "s_cd8f59ff87b0",
+     "group_id": "g_6f1277ed94aa",
+     "kind": "style",
+     "title": "Button background changed",
+     "detail": "background #4c6ef5 → #d9480f",
+     "selector": "a.btn.btn-primary.checkout",
+     "bbox": [
+      397,
+      336,
+      517,
+      380
+     ],
+     "base_bbox": [
+      361,
+      336,
+      481,
+      380
+     ],
+     "before": "#4c6ef5",
+     "after": "#d9480f"
+    },
+    {
+     "id": "c_213d8f510987",
+     "snapshot_id": "s_cd8f59ff87b0",
+     "group_id": "g_ea80df47c8c3",
+     "kind": "moved",
+     "title": "Button moved",
+     "detail": "moved 36px right",
+     "selector": "a.btn.btn-primary.checkout",
+     "bbox": [
+      397,
+      336,
+      517,
+      380
+     ],
+     "base_bbox": [
+      361,
+      336,
+      481,
+      380
+     ],
+     "before": null,
+     "after": null
+    },
+    {
+     "id": "c_402303fd3c60",
+     "snapshot_id": "s_cd8f59ff87b0",
+     "group_id": "g_613afe0602c4",
+     "kind": "resized",
+     "title": "Page width changed",
+     "detail": "506px → 517px (content overflows horizontally)",
+     "selector": "html",
+     "bbox": [
+      506,
+      0,
+      517,
+      1061
+     ],
+     "base_bbox": null,
+     "before": "506px",
+     "after": "517px"
+    }
+   ],
+   "duration_ms": 3974,
+   "error": null
+  }
+ ],
+ "groups": [
+  {
+   "id": "g_c9f32d26fb66",
+   "run_id": "r_a8b07de7626d",
+   "kind": "style",
+   "title": "Heading font size changed",
+   "detail": "font size 36px → 40px",
+   "selector": "h1",
+   "change_ids": [
+    "c_67f6d4e69364",
+    "c_60afacd21615"
+   ],
+   "snapshot_ids": [
+    "s_9e4abb701a4d",
+    "s_d6bbc17148af"
+   ],
+   "count": 2,
+   "review": "pending"
+  },
+  {
+   "id": "g_76ecf33796b0",
+   "run_id": "r_a8b07de7626d",
+   "kind": "removed",
+   "title": "Image missing",
+   "detail": "inline SVG",
+   "selector": "svg.photo",
+   "change_ids": [
+    "c_7ae1fdb90269",
+    "c_84c385d452bb"
+   ],
+   "snapshot_ids": [
+    "s_9e4abb701a4d",
+    "s_d6bbc17148af"
+   ],
+   "count": 2,
+   "review": "pending"
+  },
+  {
+   "id": "g_6f1277ed94aa",
+   "run_id": "r_a8b07de7626d",
+   "kind": "style",
+   "title": "Button background changed",
+   "detail": "background #4c6ef5 → #d9480f",
+   "selector": "a.btn.btn-primary.checkout",
+   "change_ids": [
+    "c_e603e7d09a3d",
+    "c_3e8f7d376455"
+   ],
+   "snapshot_ids": [
+    "s_5ad46a2a66b7",
+    "s_cd8f59ff87b0"
+   ],
+   "count": 2,
+   "review": "pending"
+  },
+  {
+   "id": "g_ea80df47c8c3",
+   "run_id": "r_a8b07de7626d",
+   "kind": "moved",
+   "title": "Button moved",
+   "detail": "moved 36px right",
+   "selector": "a.btn.btn-primary.checkout",
+   "change_ids": [
+    "c_ba33c81f3ff2",
+    "c_213d8f510987"
+   ],
+   "snapshot_ids": [
+    "s_5ad46a2a66b7",
+    "s_cd8f59ff87b0"
+   ],
+   "count": 2,
+   "review": "pending"
+  },
+  {
+   "id": "g_613afe0602c4",
+   "run_id": "r_a8b07de7626d",
+   "kind": "resized",
+   "title": "Page width changed",
+   "detail": "506px → 517px (content overflows horizontally)",
+   "selector": "html",
+   "change_ids": [
+    "c_402303fd3c60"
+   ],
+   "snapshot_ids": [
+    "s_cd8f59ff87b0"
+   ],
+   "count": 1,
+   "review": "pending"
+  }
+ ]
+}

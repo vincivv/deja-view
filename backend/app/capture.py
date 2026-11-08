@@ -121,14 +121,17 @@ class Capturer:
         if self._pw:
             await self._pw.stop()
 
-    async def capture(self, url: str, width: int, loads: int, inject: str | None = None, meta: dict | None = None):
-        """Load `url` `loads` times in one context. Returns [(rgb uint8 array, dom dict)]."""
+    async def capture(self, url: str, width: int, loads: int, inject: str | None = None, meta: dict | None = None,
+                      headers: dict | None = None):
+        """Load `url` `loads` times in one context. Returns [(rgb uint8 array, dom dict)].
+        `headers` are extra HTTP headers for every request (e.g. a preview-protection bypass)."""
         browser = await self.browser()
         async with self.sem:
             height = 900 if width >= 768 else 800
             ctx = await browser.new_context(viewport={"width": width, "height": height}, device_scale_factor=1,
                                             locale="en-US", timezone_id="America/Los_Angeles", reduced_motion="reduce",
-                                            color_scheme="light", is_mobile=width < 768, has_touch=width < 768)
+                                            color_scheme="light", is_mobile=width < 768, has_touch=width < 768,
+                                            extra_http_headers=headers or None)
             try:
                 page = await ctx.new_page()
                 results = []

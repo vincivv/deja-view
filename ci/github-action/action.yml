@@ -1,0 +1,120 @@
+name: Sightline visual check
+description: >-
+  Capture a preview with Sightline, post one sticky PR comment that says in plain English what changed,
+  set a commit status that follows the human review in Sightline, and route Wren tests to the flows that changed.
+branding:
+  icon: eye
+  color: blue
+
+inputs:
+  sightline_url:
+    description: Sightline server URL reachable from the runner (e.g. the https://*.trycloudflare.com from ./run.sh --public)
+    required: true
+  sightline_token:
+    description: Sightline API token (sl_...), created in Sightline Settings. Pass it from a secret.
+    required: true
+  project_id:
+    description: Sightline project id (p_...)
+    required: true
+  base_url:
+    description: URL of the build to capture (the PR preview). Empty uses the project's base URL.
+    required: false
+    default: ""
+  label:
+    description: Build label shown in Sightline. Defaults to "PR #<n>".
+    required: false
+    default: ""
+  headers:
+    description: >-
+      JSON object of extra HTTP headers Sightline sends while capturing, e.g. Vercel's
+      {"x-vercel-protection-bypass": "..."} for protected previews. Pass secrets via a secret.
+    required: false
+    default: ""
+  wren_map:
+    description: Path to the Wren routing map (case id -> pages). Skipped if the file does not exist.
+    required: false
+    default: .sightline/wren.yml
+  run_wren:
+    description: auto (run the Seldon CLI if a `seldon` binary is on PATH), true, or false
+    required: false
+    default: auto
+  wait_for_review:
+    description: When there are changes, keep the job open and follow the review in Sightline until timeout_minutes
+    required: false
+    default: "true"
+  timeout_minutes:
+    description: Total time to wait for the build and then the human review
+    required: false
+    default: "15"
+  status_context:
+    description: Name of the commit status
+    required: false
+    default: Sightline
+  github_token:
+    description: Token with pull-requests:write and statuses:write
+    required: false
+    default: ${{ github.token }}
+  pr_number:
+    description: PR to comment on. Defaults to the pull_request event's PR (set it for deployment_status runs).
+    required: false
+    default: ""
+  sha:
+    description: Commit for the status. Defaults to the PR head (or GITHUB_SHA).
+    required: false
+    default: ""
+  dry_run:
+    description: Print the GitHub API calls instead of making them
+    required: false
+    default: "false"
+
+outputs:
+  result:
+    description: passed | approved | changes | rejected | failed
+    value: ${{ steps.check.outputs.result }}
+  run_url:
+    description: The Sightline review page
+    value: ${{ steps.check.outputs.run_url }}
+  wren_selected:
+    description: Comma-separated Wren case ids routed to this PR
+    value: ${{ steps.check.outputs.wren_selected }}
+  wren_file:
+    description: Path of the filtered seldon.yml containing only the selected cases
+    value: ${{ steps.check.outputs.wren_file }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install PyYAML
+      shell: bash
+      run: python -m pip install --quiet --disable-pip-version-check pyyaml==6.0.2
+    - id: check
+      name: Sightline check
+      shell: bash
+      env:
+        SIGHTLINE_URL: ${{ inputs.sightline_url }}
+        SIGHTLINE_TOKEN: ${{ inputs.sightline_token }}
+        SIGHTLINE_PROJECT_ID: ${{ inputs.project_id }}
+        SIGHTLINE_BASE_URL: ${{ inputs.base_url }}
+        SIGHTLINE_LABEL: ${{ inputs.label }}
+        SIGHTLINE_HEADERS: ${{ inputs.headers }}
+        SIGHTLINE_WREN_MAP: ${{ inputs.wren_map }}
+        SIGHTLINE_WREN_OUT: ${{ runner.temp }}/sightline-wren
+        SIGHTLINE_RUN_WREN: ${{ inputs.run_wren }}
+        SIGHTLINE_WAIT_FOR_REVIEW: ${{ inputs.wait_for_review }}
+        SIGHTLINE_TIMEOUT_MINUTES: ${{ inputs.timeout_minutes }}
+        SIGHTLINE_STATUS_CONTEXT: ${{ inputs.status_context }}
+        SIGHTLINE_DRY_RUN: ${{ inputs.dry_run }}
+        SIGHTLINE_PR: ${{ inputs.pr_number }}
+        SIGHTLINE_SHA: ${{ inputs.sha }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      run: python "$GITHUB_ACTION_PATH/sightline_check.py"
+    - name: Upload the routed Wren test file
+      if: always() && steps.check.outputs.wren_file != ''
+      uses: actions/upload-artifact@v4
+      with:
+        name: sightline-wren
+        path: ${{ runner.temp }}/sightline-wren
+        if-no-files-found: ignore

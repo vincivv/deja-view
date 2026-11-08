@@ -96,7 +96,7 @@ interface RunDetail extends RunSummary {
 | PATCH | `/api/projects/{id}` | any of `{name, base_url, paths, viewports}` | `Project` |
 | DELETE | `/api/projects/{id}` | | `{ok: true}` |
 | GET | `/api/projects/{id}/runs` | | `RunSummary[]` (newest first) |
-| POST | `/api/projects/{id}/runs` | `{base_url?: string, label?: string}` | `RunSummary` (status `queued`) |
+| POST | `/api/projects/{id}/runs` | `{base_url?: string, label?: string, headers?: {[name]: string}}` | `RunSummary` (status `queued`) |
 | GET | `/api/projects/{id}/baselines` | | `{path, name, viewport, image_url, run_id, updated_at}[]` |
 | GET | `/api/runs/{id}` | | `RunDetail` |
 | POST | `/api/runs/{id}/review` | `{status: "approved" \| "rejected"}` | `RunDetail` (applies to every pending group) |
@@ -164,5 +164,9 @@ curl -s -X POST "$SIGHTLINE_URL/api/projects/$PROJECT_ID/runs" \
 # → RunSummary {id, status: "queued", ...}; poll GET /api/runs/{id} until status is "done" or "failed"
 # result: "passed" (no changes) | "changes" (needs review) | "approved" | "rejected" | "failed"
 ```
+
+`headers` (optional, up to 10) are extra HTTP headers sent with every capture request of that build only, for previews behind protection, e.g. `{"x-vercel-protection-bypass": "..."}`. They're held in memory for the build and never stored. `host`, `cookie` and `content-length` are refused.
+
+For a ready-made GitHub pull-request check (sticky PR comment, commit status that follows the review, Wren test routing), see `ci/github-action/README.md`.
 
 Also available: `GET /api/runs/{id}/status`, which returns a small `{id, number, status, result, counts, url}` for polling. `url` is the review page.

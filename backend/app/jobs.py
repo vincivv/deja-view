@@ -18,6 +18,7 @@ log = logging.getLogger("sightline")
 capturer = Capturer(concurrency=4)
 _group_lock = threading.Lock()
 _tasks: set[asyncio.Task] = set()
+_run_headers: dict[str, dict] = {}   # per-build capture headers: kept in memory only, never written to the DB
 
 
 # ---------------------------------------------------------------- files
@@ -49,7 +50,7 @@ def load_baseline(snap_id):
 
 
 # ---------------------------------------------------------------- runs
-def create_run(project_id, base_url=None, label=None):
+def create_run(project_id, base_url=None, label=None, headers=None):
     p = db.one("select * from projects where id=?", (project_id,))
     if not p:
         raise KeyError("project not found")
@@ -65,6 +66,8 @@ def create_run(project_id, base_url=None, label=None):
               db.now(), targets, 0 if has_base else 1))
         return rid
     rid = db.tx(make)
+    if headers:
+        _run_headers[rid] = dict(headers)
     t = asyncio.get_event_loop().create_task(execute_run(rid))
     _tasks.add(t)
     t.add_done_callback(_tasks.discard)
@@ -81,8 +84,11 @@ _project_locks: dict[str, asyncio.Lock] = {}
 async def execute_run(rid):
     # builds of one project run in order: a build started while the baseline is still capturing waits for it
     pid = db.one("select project_id from runs where id=?", (rid,))["project_id"]
-    async with _project_locks.setdefault(pid, asyncio.Lock()):
-        await _execute_run(rid)
+    try:
+        async with _project_locks.setdefault(pid, asyncio.Lock()):
+            await _execute_run(rid)
+    finally:
+        _run_headers.pop(rid, None)
 
 
 async def _execute_run(rid):
@@ -115,7 +121,7 @@ async def _snapshot(rid, project_id, base_url, pg, vp, baseline_id, sort):
     t0 = time.time()
     url = _url(base_url, pg["path"])
     try:
-        loads = await capturer.capture(url, vp, 2 if baseline_id else 3)
+        loads = await capturer.capture(url, vp, 2 if baseline_id else 3, headers=_run_headers.get(rid))
         result = await asyncio.to_thread(_process, sid, loads, baseline_id)
         _persist(sid, rid, project_id, pg, vp, baseline_id, result, int((time.time() - t0) * 1000), sort)
     except Exception as e:
